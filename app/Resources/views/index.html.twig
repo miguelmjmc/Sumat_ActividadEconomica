@@ -1,0 +1,13 @@
+{% extends '@App/adminlte/layout.html.twig' %}
+
+{% block main_title %}Inicio{% endblock main_title %}
+
+{% block main_breadcrumb %}
+    <li><a href="{{ path('homepage') }}"><i class="fa fa-home"></i> Inicio</a></li>
+{% endblock %}
+
+{% block main_container %}
+    <div class="img-container">
+        <img class="img"  style="max-width: 500px" src="{{ asset('bundles/app/img/welcome.png') }}">
+    </div>
+{% endblock %}

@@ -33,3 +33,16 @@ services:
     # AppBundle\Service\ExampleService:
     #     arguments:
     #         $someArgument: 'some_value'
+
+    AppBundle\Form\UserType:
+        arguments:  ['@security.token_storage', '@fos_user.user_manager']
+        tags: [form.type]
+
+    AppBundle\Form\TaxReturnType:
+            arguments:  ['@doctrine.orm.entity_manager']
+            tags: [form.type]
+
+    AppBundle\EventSubscriber\HistorySubscriber:
+        arguments: ['@doctrine.orm.entity_manager', '@security.token_storage']
+        tags:
+              - { name: kernel.event_subscriber }

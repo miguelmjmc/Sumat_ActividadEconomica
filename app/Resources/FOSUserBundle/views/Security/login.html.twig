@@ -1,0 +1,83 @@
+{% extends '@FOSUser/layout.html.twig' %}
+
+{% trans_default_domain 'FOSUserBundle' %}
+
+{% block content %}
+    <h2 class="text-center">INICIO DE SESIÓN</h2>
+    <form action="{{ path("fos_user_security_check") }}" method="post" id="login-form">
+        {% if csrf_token %}
+            <input type="hidden" name="_csrf_token" value="{{ csrf_token }}"/>
+        {% endif %}
+
+        <div id="u" class="form-group">
+            <input type="text" id="username" name="_username" value="" spellcheck=false class="form-control"
+                   size="18" alt="login" autocomplete="off" required="required">
+            <span class="form-highlight"></span>
+            <span class="form-bar"></span>
+            <label for="username" class="float-label">{{ 'security.login.username'|trans }}</label>
+            <erroru>
+                <i>
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                        <path d="M0 0h24v24h-24z" fill="none"/>
+                        <path d="M1 21h22l-11-19-11 19zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"/>
+                    </svg>
+                </i>
+            </erroru>
+        </div>
+        <div id="p" class="form-group">
+            <input type="password" id="password" name="_password" class="form-control" spellcheck=false size="18"
+                   alt="login" autocomplete="off" required="required">
+            <span class="form-highlight"></span>
+            <span class="form-bar"></span>
+            <label for="password" class="float-label">{{ 'security.login.password'|trans }}</label>
+            <errorp>
+                <i>
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                        <path d="M0 0h24v24h-24z" fill="none"/>
+                        <path d="M1 21h22l-11-19-11 19zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"/>
+                    </svg>
+                </i>
+            </errorp>
+        </div>
+        <div class="g-recaptcha" data-sitekey="6LdtmakUAAAAANs9JbLvUYXIifhBp8b1l39pdkXJ" style="margin: 60px 30px 20px"></div>
+        <div class="form-group">
+            <button class="btn-submit" type="submit" id="_submit" name="_submit">{{ 'security.login.submit'|trans }}</button>
+        </div>
+    </form>
+{% endblock content %}
+
+{% block scripts %}
+
+    {{ parent() }}
+
+    <script src='https://www.google.com/recaptcha/api.js'></script>
+
+    <script>
+        $(document).ready(function () {
+            $('.btn-submit').on('click', function (event) {
+
+                $('#username').val($.trim($('#username').val()));
+                $('#password').val($.trim($('#password').val()));
+
+                if ($('#username').val() == '') {
+                    $('#u').attr('errr', '')
+                } else {
+                    $('#u').removeAttr('errr');
+                }
+
+                if ($('#password').val() == '') {
+                    $('#p').attr('errr', '');
+                } else {
+                    $('#p').removeAttr('errr');
+                }
+
+                if ('' == $('#g-recaptcha-response').val()) {
+                    event.preventDefault();
+
+                    alert('Por favor resuelva el captcha');
+                }
+            });
+        });
+    </script>
+
+{% endblock scripts %}

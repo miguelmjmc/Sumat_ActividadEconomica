@@ -1,0 +1,33 @@
+Rif: Rif
+Name: Nombre
+Last name: Apellido
+Address: Dirección
+Username: Usuario
+Current password: 'Contraseña Actual'
+New password: 'Nueva Contraseña'
+Repeat password: 'Repita la contraseña'
+Email: Email
+Phone: Teléfono
+Economic activity: 'Actividades Economicas'
+Tax return economic activity: 'Actividades Economicas'
+Code: Código
+Description: Descripción
+Aliquot: 'Alícuota (%)'
+Minimum taxable: 'Mínimo Tributable (UT)'
+Business name: 'Razón Social'
+Select: Seleccione...
+Taxpayer: Contribuyente
+Period: Periodo
+Declared amount: 'Monto Declarado'
+Tax unit: 'Valor de la Unidad Tributaria (BS)'
+Tax fine1: 'Alícuota de Sanción: 1 a 15 dias (%)'
+Tax fine2: 'Alícuota de Sanción: Mayor a 15 dias (%)'
+Status: Estado
+Enabled: Habilitado
+Disabled: Desabilitado
+Rol: Rol
+User: Usuario
+Admin: Administrador
+Logo: Logo
+Profile picture: 'Foto de Perfil'
+File: Archivo

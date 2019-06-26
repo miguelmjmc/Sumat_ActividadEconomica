@@ -1,0 +1,35 @@
+{% for action in actions %}
+    {% if grammaticalGender|default == 'f' %}
+        {% if 'show' == action %}
+            <a class="modal-trigger" href="#" data-action="{{ path }}" data-method="GET"
+               title="Detalles de la {{ suffix }}"><i class="fa fa-eye"></i></a>
+        {% elseif 'edit' == action %}
+            <a class="modal-trigger" href="#" data-action="{{ path }}" data-method="PUT" title="Editar {{ suffix }}"><i
+                        class="fa fa-pencil"></i></a>
+        {% elseif 'disable' == action %}
+            <a class="modal-trigger" href="#" data-action="{{ path }}" data-method="PATCH"
+               title="Habilitar / Desabilitar {{ suffix }}"><i class="fa fa-ban"></i></a>
+        {% elseif 'delete' == action %}
+            <a class="modal-trigger" href="#" data-action="{{ path }}" data-method="DELETE"
+               title="Eliminar {{ suffix }}"><i class="fa fa-close"></i></a>
+        {% elseif 'manage' == action %}
+            <a href="{{ managePath|default('#') }}" title="Gestionar {{ suffix }}"><i class="fa fa-arrow-right"></i></a>
+        {% endif %}
+    {% else %}
+        {% if 'show' == action %}
+            <a class="modal-trigger" href="#" data-action="{{ path }}" data-method="GET"
+               title="Detalles del {{ suffix }}"><i class="fa fa-eye"></i></a>
+        {% elseif 'edit' == action %}
+            <a class="modal-trigger" href="#" data-action="{{ path }}" data-method="PUT" title="Editar {{ suffix }}"><i
+                        class="fa fa-pencil"></i></a>
+        {% elseif 'disable' == action %}
+            <a class="modal-trigger" href="#" data-action="{{ path }}" data-method="PATCH"
+               title="Habilitar / Desabilitar {{ suffix }}"><i class="fa fa-ban"></i></a>
+        {% elseif 'delete' == action %}
+            <a class="modal-trigger" href="#" data-action="{{ path }}" data-method="DELETE"
+               title="Eliminar {{ suffix }}"><i class="fa fa-close"></i></a>
+        {% elseif 'manage' == action %}
+            <a href="{{ managePath|default('#') }}" title="Gestionar {{ suffix }}"><i class="fa fa-arrow-right"></i></a>
+        {% endif %}
+    {% endif %}
+{% endfor %}

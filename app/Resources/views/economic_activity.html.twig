@@ -1,0 +1,39 @@
+{% extends '@App/adminlte/layout.html.twig' %}
+
+{% block main_title %}Actividades Economicas{% endblock main_title %}
+
+{% block main_breadcrumb %}
+    <li><a href="{{ path('homepage') }}"><i class="fa fa-home"></i> Inicio</a></li>
+    <li class="active"><a href="{{ path('economic_activity') }}"><i class="fa fa-industry"></i> Actividades Economicas</a></li>
+{% endblock %}
+
+{% block main_container %}
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box">
+                <div class="box-header with-border">
+                    <h3 class="box-title"><i class="fa fa-list-ul"></i> Listado de Actividades Economicas</h3>
+                    <div class="box-tools pull-right">
+                        <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                    </div>
+                </div>
+                <div class="box-body">
+                    <button class="btn btn-primary float-right modal-trigger" data-action="{{ path('economic_activity_modal') }}" data-method="POST">Nuevo</button>
+
+                    <table class="table table-striped table-bordered table-hover datatable" style="width:100%" data-src="{{ path('economic_activity_list') }}">
+                        <thead>
+                        <tr>
+                            <td>Última actualización</td>
+                            <td>Código</td>
+                            <td>Descripción</td>
+                            <td>Alícuota</td>
+                            <td>Mínimo Tributable</td>
+                            <td>Acciones</td>
+                        </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

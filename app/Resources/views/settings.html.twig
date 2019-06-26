@@ -1,0 +1,41 @@
+{% extends '@App/adminlte/layout.html.twig' %}
+
+{% form_theme form 'bootstrap_3_layout.html.twig' %}
+
+{% block main_title %}Configuraciones{% endblock main_title %}
+
+{% block main_breadcrumb %}
+    <li><a href="{{ path('homepage') }}"><i class="fa fa-home"></i> Inicio</a></li>
+    <li class="active"><a href="{{ path('settings') }}"><i class="fa fa-cogs"></i> Configuraciones</a></li>
+{% endblock %}
+
+{% block main_container %}
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box">
+                <div class="box-header with-border">
+                    <h3 class="box-title"><i class="fa fa-list-ul"></i> Configuraciones</h3>
+                    <div class="box-tools pull-right">
+                        <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                    </div>
+                </div>
+                <div class="box-body">
+                    <div class="row">
+                        <div class="col-md-12" style="height: 34px">
+                            <button class="btn btn-primary float-right modal-trigger" data-action="{{ path('settings_modal') }}" data-method="PUT">Editar</button>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="img-container">
+                                <label class="img-label">Logo</label>
+                                <img class="img" src="{{ asset(form.vars.value.img|default('bundles/app/img/default.png')) }}">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            {{ form(form) }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

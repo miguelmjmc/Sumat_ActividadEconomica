@@ -1,0 +1,65 @@
+{% block doctype %}<!DOCTYPE 'html'>{% endblock doctype %}
+
+{% block html %}
+    <html lang="{{ app.request.locale|default }}">
+
+    {% block head %}
+        <head>
+
+            {% block metadata %}
+
+                <meta charset="{{ metadata.charset|default('utf-8') }}">
+
+                <meta name="viewport" content="{{ metadata.viewport|default('width=device-width, initial-scale=1') }}">
+
+                <meta http-equiv="X-UA-Compatible" content="{{ metadata.xuaCompatible|default('IE=edge') }}">
+
+                {% if metadata.author|default %}
+                    <meta name="author" content="{{ metadata.author }}">
+                {% endif %}
+
+                {% if metadata.copyright|default %}
+                    <meta name="copyright" content="{{ metadata.copyright }}">
+                {% endif %}
+
+                {% if metadata.description|default %}
+                    <meta name="description" content="{{ metadata.description }}">
+                {% endif %}
+
+                {% if metadata.keywords|default %}
+                    <meta name="keywords" content="{{ metadata.keywords }}">
+                {% endif %}
+
+            {% endblock metadata %}
+
+            <title>{% block head_title %}{% endblock head_title %}</title>
+
+            {% block styles %}{% endblock styles %}
+
+        </head>
+    {% endblock head %}
+
+    {% block body %}
+        <body {% block body_tag %}{% endblock body_tag %}>
+
+        {% block content_wrapper %}
+
+            {% block header %}{% endblock header %}
+
+            {% block main %}{% endblock main %}
+
+            {% block aside %}{% endblock aside %}
+
+            {% block footer %}{% endblock footer %}
+
+            {% block hidden %}{% endblock hidden %}
+
+        {% endblock content_wrapper %}
+
+        {% block scripts %}{% endblock scripts %}
+
+        </body>
+    {% endblock body %}
+
+    </html>
+{% endblock html %}

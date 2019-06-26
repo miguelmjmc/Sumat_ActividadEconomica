@@ -1,0 +1,84 @@
+{% extends '@App/adminlte/base.html.twig' %}
+
+{% trans_default_domain 'FOSUserBundle' %}
+
+{% block styles %}
+
+    {# bootstrap 3.3.7 #}
+    <link type="text/css" rel="stylesheet" href="{{ asset('bundles/app/bootstrap/3.3.7/css/bootstrap.css') }}">
+
+    {# font-awesome 4.7.0 #}
+    <link type="text/css" rel="stylesheet" href="{{ asset('bundles/app/font-awesome/4.7.0/css/font-awesome.min.css') }}">
+
+    <link href="{{ asset('css/fos-custom.css') }}" rel="stylesheet" >
+
+{% endblock styles %}
+
+{% block head_title %}SUMAT{% endblock %}
+
+{% block header %}
+
+    {% block flashBag %}
+        <div>
+            {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+                <div class="content-flashBag" id="flashBag">
+                    <div class="alert alert-info alert-dismissible">
+                        <i class="icon fa fa-info"></i>
+                        {{ 'layout.logged_in_as'|trans({'%username%': app.user.username}) }} |
+                        <a href="{{ path('fos_user_security_logout') }}">
+                            {{ 'layout.logout'|trans }}
+                        </a>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+
+        {% if app.request.hasPreviousSession %}
+            {% for type, messages in app.session.flashbag.all() %}
+                {% for message in messages %}
+                    <div class="flash-{{ type }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endfor %}
+        {% endif %}
+
+    {% endblock flashBag %}
+
+{% endblock header %}
+
+{% block main %}
+    {% if error is defined and error %}
+        <div class="content-flashBag" id="flashBag">
+            <div class="alert alert-danger alert-dismissible">
+                <i class="icon fa fa-ban"></i>
+                {{ error.messageKey|trans(error.messageData, 'security') }}
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a></div>
+        </div>
+    {% endif %}
+
+    <div class="login">
+        <i ripple>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                <path fill="#C7C7C7"
+                      d="m12,2c-5.52,0-10,4.48-10,10s4.48,10,10,10,10-4.48,10-10-4.48-10-10-10zm1,17h-2v-2h2zm2.07-7.75-0.9,0.92c-0.411277,0.329613-0.918558,0.542566-1.20218,1.03749-0.08045,0.14038-0.189078,0.293598-0.187645,0.470854,0.02236,2.76567,0.03004-0.166108,0.07573,1.85002l-1.80787,0.04803-0.04803-1.0764c-0.02822-0.632307-0.377947-1.42259,1.17-2.83l1.24-1.26c0.37-0.36,0.59-0.86,0.59-1.41,0-1.1-0.9-2-2-2s-2,0.9-2,2h-2c0-2.21,1.79-4,4-4s4,1.79,4,4c0,0.88-0.36,1.68-0.930005,2.25z"/>
+            </svg>
+        </i>
+        <div class="photo">
+        </div>
+        {% block content %}{% endblock content %}
+        <footer>
+
+        </footer>
+    </div>
+{% endblock main %}
+
+{% block scripts %}
+
+    {# jquery 3.3.1 #}
+    <script type="text/javascript" src="{{ asset('bundles/app/jquery/3.3.1/js/jquery-3.3.1.min.js') }}"></script>
+
+    {# bootstrap 3.3.7 #}
+    <script type="text/javascript" src="{{ asset('bundles/app/bootstrap/3.3.7/js/bootstrap.min.js') }}"></script>
+
+{% endblock scripts %}

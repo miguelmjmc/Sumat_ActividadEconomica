@@ -1,0 +1,38 @@
+{% extends '@App/adminlte/layout.html.twig' %}
+
+{% block main_title %}Historial de Sesiones{% endblock main_title %}
+
+{% block main_breadcrumb %}
+    <li><a href="{{ path('homepage') }}"><i class="fa fa-home"></i> Inicio</a></li>
+    <li class="active"><a href="{{ path('history_session') }}"><i class="fa fa-history"></i> Historial de Sesiones</a></li>
+{% endblock %}
+
+{% block main_container %}
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box">
+                <div class="box-header with-border">
+                    <h3 class="box-title"><i class="fa fa-list-ul"></i> Listado de Sesiones</h3>
+                    <div class="box-tools pull-right">
+                        <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                    </div>
+                </div>
+                <div class="box-body">
+
+                    {% include '@App/base/date_filter.html.twig' %}
+
+                    <table class="table table-striped table-bordered table-hover datatable-filter" style="width:100%" data-src="{{ path('history_session_list') }}">
+                        <thead>
+                        <tr>
+                            <td>Inicio de Sesión</td>
+                            <td>Cierre de Sesión</td>
+                            <td>Usuario</td>
+                            <td>Ip</td>
+                        </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

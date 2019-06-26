@@ -1,0 +1,86 @@
+{% extends '@App/adminlte/base.html.twig' %}
+
+{#
+    BODY TAG OPTIONS:
+    =================
+    Apply one or more of the following classes to get the
+    desired effect
+    |---------------------------------------------------------|
+    | SKINS         | skin-blue                               |
+    |               | skin-black                              |
+    |               | skin-purple                             |
+    |               | skin-yellow                             |
+    |               | skin-red                                |
+    |               | skin-green                              |
+    |---------------------------------------------------------|
+    |LAYOUT OPTIONS | fixed                                   |
+    |               | layout-boxed                            |
+    |               | layout-top-nav                          |
+    |               | sidebar-collapse                        |
+    |               | sidebar-mini                            |
+    |---------------------------------------------------------|
+#}
+
+{% block body %}
+    <body class="hold-transition skin-blue sidebar-mini">
+    <div class="wrapper">
+        {% block content_wrapper %}
+
+            {{ parent() }}
+
+        {% endblock content_wrapper %}
+    </div>
+
+    {% block scripts %}{% endblock scripts %}
+
+    </body>
+{% endblock body %}
+
+{% block header %}
+    <header class="main-header">
+        {% block header_logo %}{% endblock header_logo %}
+        <nav class="navbar navbar-static-top">
+            <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">
+                <span class="sr-only">Toggle navigation</span>
+            </a>
+            <div class="navbar-custom-menu">
+                <ul class="nav navbar-nav">
+                    {% block header_widgets %}{% endblock header_widgets %}
+                </ul>
+            </div>
+        </nav>
+    </header>
+{% endblock header %}
+
+{% block aside %}
+    <aside class="main-sidebar">
+        <section class="sidebar">
+            {% block aside_widgets %}{% endblock aside_widgets %}
+
+            {% block aside_nav %}{% endblock aside_nav %}
+        </section>
+    </aside>
+{% endblock aside %}
+
+{% block main %}
+    <div class="content-wrapper">
+        <section class="content-header">
+            <h1>{% block main_title %}{% endblock main_title %}</h1>
+            <ol class="breadcrumb">
+                {% block main_breadcrumb %}{% endblock main_breadcrumb %}
+            </ol>
+        </section>
+
+        {% block flashes %}{% endblock flashes %}
+
+        <section class="content">
+            {% block main_container %}{% endblock main_container %}
+        </section>
+    </div>
+{% endblock main %}
+
+{% block footer %}
+    <footer class="main-footer">
+        {% block footer_container %}{% endblock footer_container %}
+    </footer>
+{% endblock footer %}

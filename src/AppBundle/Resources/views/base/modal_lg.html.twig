@@ -1,0 +1,116 @@
+{% form_theme form 'bootstrap_3_layout.html.twig' %}
+
+<div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h3>
+                {% if grammaticalGender|default == 'f' %}
+                    {% if 'GET' == method %}
+                        Detalles de la
+                    {% elseif 'POST' == method %}
+                        Nueva
+                    {% elseif 'PUT' == method %}
+                        Editar
+                    {% elseif 'DELETE' == method %}
+                        Eliminar
+                    {% endif %}
+                {% else %}
+                    {% if 'GET' == method %}
+                        Detalles del
+                    {% elseif 'POST' == method %}
+                        Nuevo
+                    {% elseif 'PUT' == method %}
+                        Editar
+                    {% elseif 'DELETE' == method %}
+                        Eliminar
+                    {% endif %}
+                {% endif %}
+                {{ suffix }}
+            </h3>
+        </div>
+        {{ form_start(form, {'action': action, 'method': method }) }}
+        <div class="modal-body">
+            <div class="modal-container">
+                {% if path('tax_return_modal') in app.request.pathInfo %}
+                    <div class="row">
+                        <div class="col-sm-12">
+                            {{ form_row(form.taxpayer) }}
+                        </div>
+                    </div>
+                    <div id="taxReturn-data" class="row">
+                        <div class="col-sm-6">
+                            {{ form_row(form.taxUnit) }}
+                        </div>
+                        <div class="col-sm-6">
+                            {{ form_row(form.period) }}
+                        </div>
+                        <div class="col-sm-12">
+                            {{ form_label(form.taxReturnEconomicActivity) }}
+                            <table id="taxReturn-taxReturnEconomicActivity-table"
+                                   class="table table-striped table-bordered table-hover datatable-modal"
+                                   style="width:100%">
+                                <thead>
+                                <tr>
+                                    <th>Código</th>
+                                    <th>Descripción</th>
+                                    <th>Alícuota</th>
+                                    <th>Mínimo Tributable</th>
+                                    <th>Monto Declarado</th>
+                                    <th>Monto a Pagar</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for taxReturnEconomicActivity in form.taxReturnEconomicActivity|default %}
+                                    <tr>
+                                        <td>{{ taxReturnEconomicActivity.vars.value.economicActivity.code }}</td>
+                                        <td>{{ taxReturnEconomicActivity.vars.value.economicActivity.name }}</td>
+                                        <td>{{ taxReturnEconomicActivity.vars.value.aliquotFormatted }}</td>
+                                        <td>
+                                            {{ taxReturnEconomicActivity.vars.value.minimumTaxableFormatted }} <br>
+                                            ({{ taxReturnEconomicActivity.vars.value.minimumTaxableBsFormatted }})
+                                        </td>
+                                        <td class="declared-amount"
+                                            data-id="#amount-to-pay-{{ taxReturnEconomicActivity. vars.value.id }}"
+                                            data-aliquot="{{ taxReturnEconomicActivity.vars.value.aliquot }}"
+                                            data-minimum-taxable="{{ taxReturnEconomicActivity.vars.value.minimumTaxableBs }}">
+                                            {{ form_row(taxReturnEconomicActivity.declaredAmount) }}
+                                        </td>
+                                        <td>
+                                            <span class="amount-to-pay"
+                                                  id="amount-to-pay-{{ taxReturnEconomicActivity.vars.value.id }}">
+                                                {{ taxReturnEconomicActivity.vars.value.amountToPay|number_format(2) }}
+                                            </span>
+                                            Bs
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                            {{ form_widget(form.taxReturnEconomicActivity) }}
+                            {{ form_errors(form.taxReturnEconomicActivity) }}
+                        </div>
+                        <div class="col-sm-12 total-box-container">
+                            Monto Total a Pagar:
+                            <span class="total-box">
+                                <span id="total-amount-to-pay">{{ form.vars.value.AmountToPay|default|number_format(2) }}</span> Bs
+                            </span>
+                        </div>
+                    </div>
+                {% else %}
+
+                    {{ form_widget(form) }}
+
+                {% endif %}
+            </div>
+            <div class="loader"></div>
+        </div>
+        <div class="modal-footer">
+            {% if 'GET' != method %}
+                <button type="button" class="btn btn-primary ajax-submit">Aceptar</button>
+            {% endif %}
+            <button type="button" class="btn" data-dismiss="modal" aria-hidden="true">Cerrar</button>
+        </div>
+        {{ form_end(form) }}
+    </div>
+</div>
