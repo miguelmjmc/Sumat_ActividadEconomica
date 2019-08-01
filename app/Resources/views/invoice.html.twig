@@ -1,0 +1,150 @@
+{% extends '@App/adminlte/layout.html.twig' %}
+
+{% block main_title %}Factura{% endblock main_title %}
+
+{% block styles %}
+
+    <link rel="stylesheet" href="{{ path ~ '/web/bundles/app/bootstrap/3.3.7/css/bootstrap.min.css' }}">
+
+    <style>
+
+        body {
+            padding: 50px;
+        }
+
+        header div, footer div {
+            font-weight: bold;
+            font-size: 20px;
+        }
+
+        .logo {
+            float: right;
+            max-height: 150px;
+            max-width: 250px;
+            margin-bottom: 20px;
+        }
+
+        table {
+            margin-top: 50px;
+        }
+
+        table th, table td {
+            text-align: center;
+        }
+
+        table th {
+            font-size: 20px;
+        }
+
+        .firm-container {
+            padding-top: 50px;
+        }
+
+        .issued {
+            margin-top: 50px;
+            font-weight: normal;
+        }
+    </style>
+
+{% endblock styles %}
+
+{% block body %}
+    <div class="container">
+        <div class="row">
+            <header>
+                <div class="col-xs-12">
+                    <div class="row">
+                        <div class="col-xs-6">
+                            <div class="row">
+                                <div class="col-xs-12">República Bolivariana de Venezuela</div>
+                                <div class="col-xs-12">Estado Sucre</div>
+                                <div class="col-xs-12">Alcaldia del Municipo Bermúdez</div>
+                                <div class="col-xs-12">Superintendencia Municipal de Administración Tributaria</div>
+                                <div class="col-xs-12">Rif G-20000292-1</div>
+                                <div class="col-xs-12">Dirección: Av. Carabobo, Edificio Municipal de Carupano</div>
+                            </div>
+                        </div>
+                        <div class="col-xs-6">
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <img class="logo"
+                                         src="{{  path ~ '/web/' ~ settings.img|default('bundles/app/img/default.png') }}">
+                                </div>
+                                <div class="col-xs-12 text-right">N° de Comprobante: {{ taxReturn.invoiceId }}</div>
+                                <div class="col-xs-12 text-right">Fecha: {{ taxReturn.createdAt|date('Y/m/d') }}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+            <div class="col-xs-12">
+                <table class="table table-bordered">
+                    <thead>
+                    <tr>
+                        <th>Rif</th>
+                        <th>Razón Social</th>
+                        <th>Dirección</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>{{ taxReturn.taxpayer.rif }}</td>
+                        <td>{{ taxReturn.taxpayer.name }}</td>
+                        <td>{{ taxReturn.taxpayer.address }}</td>
+                    </tr>
+                    </tbody>
+                </table>
+                <table class="table table-bordered">
+                    <thead>
+                    <tr>
+                        <th>Forma de Pago</th>
+                        <th>Objeto de Pago</th>
+                        <th>Liquidador</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>0000000000000</td>
+                        <td>Liquidación de Actividad Economica del mes {{ taxReturn.date|date('m') }} del
+                            año {{ taxReturn.date|date('Y') }}</td>
+                        <td>{{ app.user.fullName }}</td>
+                    </tr>
+                    </tbody>
+                </table>
+                <table class="table table-bordered">
+                    <thead>
+                    <tr>
+                        <th>Conceptos Asociados al Pago</th>
+                        <th>Monto</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        {% for taxReturnEconomicActivity in taxReturn.taxReturnEconomicActivity %}
+                            <td>{{ taxReturnEconomicActivity.economicActivity.fullName }}</td>
+                            <td>{{ taxReturnEconomicActivity.amountToPayFormatted }}</td>
+                        {% endfor %}
+                    </tr>
+                    </tbody>
+                    <tfoot>
+                    <tr>
+                        <th>Monto Total</th>
+                        <th>{{ taxReturn.amountToPayFormatted }}</th>
+                    </tr>
+                    </tfoot>
+                </table>
+            </div>
+            <footer>
+                <div class="col-xs-12">
+                    <div class="row firm-container">
+                        <div class="col-xs-12 text-center">________________________________</div>
+                        <div class="col-xs-12 text-center">Agente Recaudador</div>
+                    </div>
+                </div>
+                <div class="col-xs-12 issued">
+                    <small>Expedido: {{ 'now'|date('Y/m/d H:i:s') }}</small>
+                </div>
+            </footer>
+        </div>
+    </div>
+{% endblock body %}

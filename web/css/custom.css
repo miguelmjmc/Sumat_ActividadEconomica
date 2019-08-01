@@ -138,3 +138,7 @@ form[readonly] input[readonly="readonly"] {
     max-width: 300px;
 
 }
+
+.white {
+    background: #FFFFFF !important;
+}

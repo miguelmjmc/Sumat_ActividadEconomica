@@ -8,6 +8,7 @@ use AppBundle\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Event\OnFlushEventArgs;
 use Doctrine\ORM\Events;
+use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
 use Symfony\Component\HttpKernel\Event\KernelEvent;
@@ -20,7 +21,12 @@ use Symfony\Component\Security\Http\SecurityEvents;
 class HistorySubscriber implements EventSubscriberInterface
 {
     /**
-     * @var  EntityManagerInterface
+     * @var  RegistryInterface
+     */
+    private $registry;
+
+    /**
+     * @var EntityManagerInterface
      */
     private $entityManager;
 
@@ -30,9 +36,10 @@ class HistorySubscriber implements EventSubscriberInterface
     private $tokenStorage;
 
 
-    public function __construct(EntityManagerInterface $entityManager, TokenStorage $tokenStorage)
+    public function __construct(RegistryInterface $registry, TokenStorage $tokenStorage)
     {
-        $this->entityManager = $entityManager;
+        $this->registry = $registry;
+        $this->entityManager = $registry->resetManager();
         $this->tokenStorage = $tokenStorage;
     }
 
@@ -55,6 +62,8 @@ class HistorySubscriber implements EventSubscriberInterface
         /** @var User $user */
         $user = $event->getAuthenticationToken()->getUser();
 
+        $user = $this->entityManager->find(User::class, $user->getId());
+
         $history = (new HistorySession())
             ->setDateLogin(new \DateTime())
             ->setDateLogout(new \DateTime())
@@ -73,6 +82,8 @@ class HistorySubscriber implements EventSubscriberInterface
             $user = $this->tokenStorage->getToken()->getUser();
 
             if ($user instanceof User && $event->isMasterRequest()) {
+                $user = $this->entityManager->find(User::class, $user->getId());
+
                 if (false === strpos($event->getRequest()->getPathInfo(), '/_wdt/')) {
                     $history = (new HistoryRequest())
                         ->setDate(new \DateTime())

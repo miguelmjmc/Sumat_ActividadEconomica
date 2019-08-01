@@ -62,7 +62,7 @@ class Taxpayer
     /**
      * @var string
      *
-     * @Assert\Email()
+     * @Assert\Email
      * @Assert\Length(min = 10, max = 50)
      *
      * @ORM\Column(name="email", type="string", length=255, nullable=true)
@@ -77,6 +77,17 @@ class Taxpayer
      * @ORM\Column(name="phone", type="string", length=255, nullable=true)
      */
     private $phone;
+
+    /**
+     * @var \DateTime
+     *
+     * @Assert\NotBlank
+     * @Assert\Date
+     * @Assert\Range(min="2019-01-01", max="2030-12-31")
+     *
+     * @ORM\Column(name="startDateTaxReturn", type="date")
+     */
+    private $startDateTaxReturn;
 
     /**
      * @var ArrayCollection
@@ -250,6 +261,30 @@ class Taxpayer
     public function getPhone()
     {
         return $this->phone;
+    }
+
+    /**
+     * Set startDateTaxReturn
+     *
+     * @param \DateTime $startDateTaxReturn
+     *
+     * @return Taxpayer
+     */
+    public function setStartDateTaxReturn($startDateTaxReturn)
+    {
+        $this->startDateTaxReturn = $startDateTaxReturn;
+
+        return $this;
+    }
+
+    /**
+     * Get startDateTaxReturn
+     *
+     * @return \DateTime
+     */
+    public function getStartDateTaxReturn()
+    {
+        return $this->startDateTaxReturn;
     }
 
     /**

@@ -2,10 +2,10 @@
 
 namespace AppBundle\Controller;
 
-use AppBundle\Entity\Taxpayer;
+use AppBundle\Entity\Settings;
 use AppBundle\Entity\TaxReturn;
 use AppBundle\Form\TaxReturnType;
-use AppBundle\Repository\TaxReturnRepository;
+use Knp\Bundle\SnappyBundle\Snappy\Response\PdfResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -30,10 +30,7 @@ class TaxReturnController extends Controller
      */
     public function taxReturnListAction()
     {
-        /** @var TaxReturnRepository $er */
-        $er = $this->getDoctrine()->getRepository(TaxReturn::class);
-
-        $taxReturns = $er->findAllDeclared();
+        $taxReturns = $this->getDoctrine()->getRepository(TaxReturn::class)->findAll();
 
         $data = array('data' => array());
 
@@ -43,9 +40,10 @@ class TaxReturnController extends Controller
             $parameters = array(
                 'suffix' => 'declaración',
                 'grammaticalGender' => 'f',
-                'actions' => array('show', 'edit', 'delete'),
+                'actions' => array('show', 'edit', 'delete', 'pdf'),
                 'path' => $this->generateUrl('tax_return_modal', array('id' => $taxReturn->getId())),
-                'managePath' => '#',
+                'pdfTitle' => 'Ver factura',
+                'pdfPath' => $this->generateUrl('tax_return_invoice', array('id' => $taxReturn->getId())),
             );
 
             $btn = $this->renderView('@App/base/table_btn.html.twig', $parameters);
@@ -84,42 +82,21 @@ class TaxReturnController extends Controller
 
         $form->handleRequest($request);
 
-        if ('POST' === $request->getMethod()) {
-            $data = $form->getData();
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
 
-            if ($data instanceof TaxReturn) {
-                if ($data->getTaxpayer() instanceof Taxpayer) {
-                    $form = $this->createForm(TaxReturnType::class, $data, $parameters);
-
-                    $form->handleRequest($request);
-
-                    if ($form->isSubmitted() && $form->isValid()) {
-                        /** @var TaxReturn $data */
-                        $data = $form->getData();
-                        $data->setDeclaredAt(new \DateTime());
-
-                        $em = $this->getDoctrine()->getManager();
-                        $em->flush();
-
-                        return new Response('success');
-                    }
-                }
+            if ('DELETE' === $request->getMethod()) {
+                $em->remove($form->getData());
             }
 
-        } else {
-            if ($form->isSubmitted() && $form->isValid()) {
-                $em = $this->getDoctrine()->getManager();
-
-                if ('DELETE' === $request->getMethod()) {
-                    $em->remove($form->getData());
-                }
-
-                $em->flush();
-
-                return new Response('success');
+            if ('POST' === $request->getMethod()) {
+                $em->persist($form->getData());
             }
+
+            $em->flush();
+
+            return new Response('success');
         }
-
 
         $parameters = array(
             'form' => $form->createView(),
@@ -130,5 +107,33 @@ class TaxReturnController extends Controller
         );
 
         return $this->render('@App/base/modal_lg.html.twig', $parameters);
+    }
+
+    /**
+     * @param TaxReturn $taxReturn
+     *
+     * @return Response
+     *
+     * @Route("/pdf/taxReturn/{id}/invoice", name="tax_return_invoice")
+     */
+    public function taxReturnInvoiceAction(TaxReturn $taxReturn)
+    {
+        $settings = $this->getDoctrine()->getManager()->find(Settings::class, 1);
+
+        $html = $this->renderView(
+            'invoice.html.twig',
+            array(
+                'taxReturn' => $taxReturn,
+                'settings' => $settings,
+                'path' => $this->get('kernel')->getProjectDir(),
+            )
+        );
+
+        return new PdfResponse(
+            $this->get('knp_snappy.pdf')->getOutputFromHtml($html),
+            'Factura_'.$taxReturn->getInvoiceId().'.pdf',
+            'application/pdf',
+            'inline'
+        );
     }
 }

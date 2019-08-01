@@ -88,7 +88,7 @@ class TaxReturn
      * @var ArrayCollection
      *
      * @Assert\Count(min = 1)
-     * @Assert\Valid()
+     * @Assert\Valid
      *
      * @ORM\OneToMany(targetEntity="TaxReturnEconomicActivity", mappedBy="taxReturn", cascade={"all"})
      */
@@ -128,6 +128,22 @@ class TaxReturn
         }
 
         return $total;
+    }
+
+    /**
+     * @return string
+     */
+    public function getAmountToPayFormatted()
+    {
+        return number_format($this->getAmountToPay(), 2).' Bs';
+    }
+
+    /**
+     * @return string
+     */
+    public function getInvoiceId()
+    {
+        return $this->id;
     }
 
     /**

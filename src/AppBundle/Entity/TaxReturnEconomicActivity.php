@@ -118,6 +118,14 @@ class TaxReturnEconomicActivity
     }
 
     /**
+     * @return string
+     */
+    public function getAmountToPayFormatted()
+    {
+        return number_format($this->getAmountToPay(), 2).' Bs';
+    }
+
+    /**
      * Get id
      *
      * @return integer

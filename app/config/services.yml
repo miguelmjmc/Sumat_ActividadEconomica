@@ -43,6 +43,6 @@ services:
             tags: [form.type]
 
     AppBundle\EventSubscriber\HistorySubscriber:
-        arguments: ['@doctrine.orm.entity_manager', '@security.token_storage']
+        arguments: ['@doctrine', '@security.token_storage']
         tags:
               - { name: kernel.event_subscriber }

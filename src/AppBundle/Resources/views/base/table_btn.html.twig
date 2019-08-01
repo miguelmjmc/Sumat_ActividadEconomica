@@ -32,4 +32,8 @@
             <a href="{{ managePath|default('#') }}" title="Gestionar {{ suffix }}"><i class="fa fa-arrow-right"></i></a>
         {% endif %}
     {% endif %}
+
+    {% if 'pdf' == action %}
+        <a href="{{ pdfPath }}" target="_blank" title="{{ pdfTitle }}"><i class="fa fa-file"></i></a>
+    {% endif %}
 {% endfor %}

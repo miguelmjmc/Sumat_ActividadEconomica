@@ -97,6 +97,16 @@ $(document).ready(function () {
         });
     });
 
+    $(document).on('focus', 'form:not([readonly]) .datepicker-year-month', function () {
+        $(this).datepicker({
+            format: 'yyyy/mm',
+            language: 'es',
+            autoclose: true,
+            viewMode: 'months',
+            minViewMode: 'months'
+        });
+    });
+
     $(document).on('focus', '.phone', function () {
         $(this).mask('(0000) 000-0000');
     });
@@ -169,13 +179,14 @@ $(document).ready(function () {
                             table_filter.ajax.reload();
                         }
 
-                        toastr.success('Exito!. Operación realizada satisfactoriamente.');
-
                         $('#modal-default').modal('toggle');
 
+                        toastr.success('Exito!. Operación realizada satisfactoriamente.');
                     } else if ('success-reload' === data) {
                         location.reload();
                     } else if ('error' === data) {
+                        $('#modal-default').modal('toggle');
+
                         toastr.error('Oops!. La operación no pudo ser realizada. Compruebe que el registro no posea dependencias.');
                     } else if (!data.includes('input') && data.includes('/manage/credit/')) {
                         window.location.replace(data);
@@ -200,13 +211,14 @@ $(document).ready(function () {
                             table_filter.ajax.reload();
                         }
 
-                        toastr.success('Exito!. Operación realizada satisfactoriamente.');
-
                         $('#modal-default').modal('toggle');
 
+                        toastr.success('Exito!. Operación realizada satisfactoriamente.');
                     } else if ('success-reload' === data) {
                         location.reload();
                     } else if ('error' === data) {
+                        $('#modal-default').modal('toggle');
+
                         toastr.error('Oops!. La operación no pudo ser realizada. Compruebe que el registro no posea dependencias.');
                     } else if (!data.includes('input') && data.includes('/manage/credit/')) {
                         window.location.replace(data);
@@ -330,6 +342,16 @@ $(document).on('change', '#appbundle_taxreturn_taxpayer', function () {
         data: data,
         success: function (data) {
             $(document).find('#taxReturn-data').replaceWith($(data).find('#taxReturn-data'));
+            $(document).find('#taxReturn-data .help-block').hide();
+            $(document).find('#taxReturn-data .form-group').removeClass('has-error');
+            $(document).find('#taxReturn-taxReturnEconomicActivity-table').DataTable({
+                info: false,
+                language: lang,
+                lengthChange: false,
+                paging: false,
+                responsive: true,
+                searching: false
+            });
         }
     });
 });
