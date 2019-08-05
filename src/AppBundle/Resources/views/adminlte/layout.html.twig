@@ -116,6 +116,7 @@
 
         {% if is_granted('ROLE_ADMIN') %}
             <li><a href="{{ path('economic_activity') }}"><i class="fa fa-industry"></i><span>Actividades Economicas</span></a></li>
+            <li><a href="{{ path('payment_method') }}"><i class="fa fa-credit-card"></i><span>Métodos de Pago</span></a></li>
             <li><a href="{{ path('under_construction', { section: 'report' }) }}"><i class="fa fa-area-chart"></i><span>Reportes</span></a></li>
             <li><a href="{{ path('user') }}"><i class="fa fa-user-plus"></i><span>Usuarios</span></a></li>
             <li class="treeview">

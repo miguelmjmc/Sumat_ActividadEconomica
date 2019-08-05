@@ -102,7 +102,7 @@ class TaxReturnEconomicActivity
      */
     public function getMinimumTaxableBsFormatted()
     {
-        return number_format($this->getMinimumTaxableBs(), 2).' Bs';
+        return 'Bs. '.number_format($this->getMinimumTaxableBs(), 2);
     }
 
     /**
@@ -122,7 +122,7 @@ class TaxReturnEconomicActivity
      */
     public function getAmountToPayFormatted()
     {
-        return number_format($this->getAmountToPay(), 2).' Bs';
+        return 'Bs. '.number_format($this->getAmountToPay(), 2);
     }
 
     /**

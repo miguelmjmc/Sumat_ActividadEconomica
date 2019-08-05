@@ -19,6 +19,8 @@ Business name: 'Razón Social'
 Select: Seleccione...
 Taxpayer: Contribuyente
 Period: Periodo
+Payment method: 'Método de Pago'
+Payment method comment: 'Detalles del Método de Pago'
 Declared amount: 'Monto Declarado'
 Tax unit: 'Valor de la Unidad Tributaria (BS)'
 Tax fine1: 'Alícuota de Sanción: 1 a 15 dias (%)'

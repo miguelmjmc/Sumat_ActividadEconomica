@@ -122,18 +122,6 @@ class Taxpayer
     }
 
     /**
-     * @return \DateTime
-     */
-    public function getLastUpdate()
-    {
-        if ($this->updatedAt) {
-            return $this->updatedAt;
-        }
-
-        return $this->createdAt;
-    }
-
-    /**
      * Get id
      *
      * @return integer

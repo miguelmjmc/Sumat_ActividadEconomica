@@ -34,18 +34,24 @@
             <div class="modal-container">
                 {% if path('tax_return_modal') in app.request.pathInfo %}
                     <div class="row">
-                        <div class="col-sm-12">
+                        <div class="col-xs-12">
                             {{ form_row(form.taxpayer) }}
                         </div>
                     </div>
                     <div id="taxReturn-data" class="row">
-                        <div class="col-sm-6">
+                        <div class="col-xs-6">
                             {{ form_row(form.taxUnit) }}
                         </div>
-                        <div class="col-sm-6">
+                        <div class="col-xs-6">
                             {{ form_row(form.period) }}
                         </div>
-                        <div class="col-sm-12">
+                        <div class="col-xs-12">
+                            {{ form_row(form.paymentMethod) }}
+                        </div>
+                        <div class="col-xs-12">
+                            {{ form_row(form.paymentMethodComment) }}
+                        </div>
+                        <div class="col-xs-12">
                             {{ form_label(form.taxReturnEconomicActivity) }}
                             <table id="taxReturn-taxReturnEconomicActivity-table"
                                    class="table table-striped table-bordered table-hover datatable-modal"
@@ -77,11 +83,11 @@
                                             {{ form_row(taxReturnEconomicActivity.declaredAmount) }}
                                         </td>
                                         <td>
+                                            Bs.
                                             <span class="amount-to-pay"
                                                   id="amount-to-pay-{{ taxReturnEconomicActivity.vars.value.id }}">
                                                 {{ taxReturnEconomicActivity.vars.value.amountToPay|number_format(2) }}
                                             </span>
-                                            Bs
                                         </td>
                                     </tr>
                                 {% endfor %}
@@ -90,11 +96,27 @@
                             {{ form_widget(form.taxReturnEconomicActivity) }}
                             {{ form_errors(form.taxReturnEconomicActivity) }}
                         </div>
-                        <div class="col-sm-12 total-box-container">
-                            Monto Total a Pagar:
-                            <span class="total-box">
-                                <span id="total-amount-to-pay">{{ form.vars.value.AmountToPay|default|number_format(2) }}</span> Bs
-                            </span>
+                        <div class="col-xs-12">
+                            <div class="row">
+                                <div class="col-xs-12  total-box-container">
+                                    Subtotal:
+                                    <span class="total-box">
+                                        Bs. <span id="tax-return-subtotal">{{ form.vars.value.subtotal|default|number_format(2) }}</span>
+                                    </span>
+                                </div>
+                                <div class="col-xs-12 total-box-container">
+                                     Multa ({{ form.vars.value.taxFineFormatted|default('0.00 %') }}):
+                                    <span class="total-box">Bs.
+                                        <span id="tax-return-tax-fine" data-tax-fine="{{ form.vars.value.taxFine|default(0) }}">{{ form.vars.value.taxFineAmount|default|number_format(2) }}</span>
+                                    </span>
+                                </div>
+                                <div class="col-xs-12 total-box-container">
+                                    Total:
+                                    <span class="total-box">
+                                        Bs. <span id="tax-return-total">{{ form.vars.value.total|default|number_format(2) }}</span>
+                                    </span>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 {% else %}

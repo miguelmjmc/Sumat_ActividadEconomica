@@ -42,6 +42,7 @@ class TaxReturn
     /**
      * @var string
      *
+     * @Assert\NotBlank
      * @Assert\Range(min = 0, max = 9999999999.99)
      *
      * @ORM\Column(name="taxUnit", type="decimal", precision=20, scale=2)
@@ -49,31 +50,23 @@ class TaxReturn
     private $taxUnit;
 
     /**
-     * @var \DateTime
+     * @var string
      *
-     * @Assert\DateTime
+     * @Assert\NotBlank
+     * @Assert\Range(min = 0, max = 9999999999.99)
      *
-     * @ORM\Column(name="declaredAt", type="datetime", nullable=true)
+     * @ORM\Column(name="taxFine", type="decimal", precision=20, scale=2)
      */
-    private $declaredAt;
+    private $taxFine;
 
     /**
-     * @var \DateTime
+     * @var string
      *
-     * @Assert\DateTime
+     * @Assert\Length(min = 0, max = 50)
      *
-     * @ORM\Column(name="paidAt", type="datetime", nullable=true)
+     * @ORM\Column(name="paymentMethodComment", type="string", length=255, nullable=true)
      */
-    private $paidAt;
-
-    /**
-     * @var \DateTime
-     *
-     * @Assert\DateTime
-     *
-     * @ORM\Column(name="deletedAt", type="datetime", nullable=true)
-     */
-    private $deletedAt;
+    private $paymentMethodComment;
 
     /**
      * @var Taxpayer
@@ -94,6 +87,15 @@ class TaxReturn
      */
     private $taxReturnEconomicActivity;
 
+    /**
+     * @var PaymentMethod
+     *
+     * @Assert\NotBlank
+     *
+     * @ORM\ManyToOne(targetEntity="PaymentMethod", inversedBy="taxReturn")
+     */
+    private $paymentMethod;
+
 
     /**
      * Constructor
@@ -104,21 +106,33 @@ class TaxReturn
     }
 
     /**
-     * @return \DateTime
+     * @return string
      */
-    public function getLastUpdate()
+    public function getTaxFineFormatted()
     {
-        if ($this->updatedAt) {
-            return $this->updatedAt;
-        }
-
-        return $this->createdAt;
+        return $this->taxFine.' %';
     }
 
     /**
      * @return string
      */
-    public function getAmountToPay()
+    public function getTaxFineAmount()
+    {
+        return (($this->getSubtotal() * $this->taxFine) / 100);
+    }
+
+    /**
+     * @return string
+     */
+    public function getTaxFineAmountFormatted()
+    {
+        return 'Bs. '.number_format($this->getTaxFineAmount(), 2);
+    }
+
+    /**
+     * @return string
+     */
+    public function getSubtotal()
     {
        $total = 0;
 
@@ -133,9 +147,25 @@ class TaxReturn
     /**
      * @return string
      */
-    public function getAmountToPayFormatted()
+    public function getSubtotalFormatted()
     {
-        return number_format($this->getAmountToPay(), 2).' Bs';
+        return 'Bs. '.number_format($this->getSubtotal(), 2);
+    }
+
+    /**
+     * @return string
+     */
+    public function getTotal()
+    {
+        return (double)$this->getSubtotal() + (double)$this->getTaxFineAmount();
+    }
+
+    /**
+     * @return string
+     */
+    public function getTotalFormatted()
+    {
+        return 'Bs. '.number_format($this->getTotal(), 2);
     }
 
     /**
@@ -144,6 +174,32 @@ class TaxReturn
     public function getInvoiceId()
     {
         return $this->id;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isLatePayment()
+    {
+        $deadline = clone $this->getDate();
+        $deadline->modify('next month + 15 day midnight');
+
+        if ($deadline > new $this->createdAt) {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * @return int
+     */
+    public function getPastDueDays()
+    {
+        $deadline = clone $this->getDate();
+        $deadline->modify('next month + 15 day midnight');
+
+        return (new \DateTime('now'))->diff($deadline)->days;
     }
 
     /**
@@ -205,75 +261,51 @@ class TaxReturn
     }
 
     /**
-     * Set declaredAt
+     * Set taxFine
      *
-     * @param \DateTime $declaredAt
+     * @param string $taxFine
      *
      * @return TaxReturn
      */
-    public function setDeclaredAt($declaredAt)
+    public function setTaxFine($taxFine)
     {
-        $this->declaredAt = $declaredAt;
+        $this->taxFine = $taxFine;
 
         return $this;
     }
 
     /**
-     * Get declaredAt
+     * Get taxFine
      *
-     * @return \DateTime
+     * @return string
      */
-    public function getDeclaredAt()
+    public function getTaxFine()
     {
-        return $this->declaredAt;
+        return $this->taxFine;
     }
 
     /**
-     * Set paidAt
+     * Set paymentMethodComment
      *
-     * @param \DateTime $paidAt
+     * @param string $paymentMethodComment
      *
      * @return TaxReturn
      */
-    public function setPaidAt($paidAt)
+    public function setPaymentMethodComment($paymentMethodComment)
     {
-        $this->paidAt = $paidAt;
+        $this->paymentMethodComment = $paymentMethodComment;
 
         return $this;
     }
 
     /**
-     * Get paidAt
+     * Get paymentMethodComment
      *
-     * @return \DateTime
+     * @return string
      */
-    public function getPaidAt()
+    public function getPaymentMethodComment()
     {
-        return $this->paidAt;
-    }
-
-    /**
-     * Set deletedAt
-     *
-     * @param \DateTime $deletedAt
-     *
-     * @return TaxReturn
-     */
-    public function setDeletedAt($deletedAt)
-    {
-        $this->deletedAt = $deletedAt;
-
-        return $this;
-    }
-
-    /**
-     * Get deletedAt
-     *
-     * @return \DateTime
-     */
-    public function getDeletedAt()
-    {
-        return $this->deletedAt;
+        return $this->paymentMethodComment;
     }
 
     /**
@@ -319,9 +351,8 @@ class TaxReturn
      *
      * @param \AppBundle\Entity\TaxReturnEconomicActivity $taxReturnEconomicActivity
      */
-    public function removeTaxReturnEconomicActivity(
-        \AppBundle\Entity\TaxReturnEconomicActivity $taxReturnEconomicActivity
-    ) {
+    public function removeTaxReturnEconomicActivity(\AppBundle\Entity\TaxReturnEconomicActivity $taxReturnEconomicActivity)
+    {
         $this->taxReturnEconomicActivity->removeElement($taxReturnEconomicActivity);
     }
 
@@ -333,5 +364,29 @@ class TaxReturn
     public function getTaxReturnEconomicActivity()
     {
         return $this->taxReturnEconomicActivity;
+    }
+
+    /**
+     * Set paymentMethod
+     *
+     * @param \AppBundle\Entity\PaymentMethod $paymentMethod
+     *
+     * @return TaxReturn
+     */
+    public function setPaymentMethod(\AppBundle\Entity\PaymentMethod $paymentMethod = null)
+    {
+        $this->paymentMethod = $paymentMethod;
+
+        return $this;
+    }
+
+    /**
+     * Get paymentMethod
+     *
+     * @return \AppBundle\Entity\PaymentMethod
+     */
+    public function getPaymentMethod()
+    {
+        return $this->paymentMethod;
     }
 }

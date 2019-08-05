@@ -344,14 +344,8 @@ $(document).on('change', '#appbundle_taxreturn_taxpayer', function () {
             $(document).find('#taxReturn-data').replaceWith($(data).find('#taxReturn-data'));
             $(document).find('#taxReturn-data .help-block').hide();
             $(document).find('#taxReturn-data .form-group').removeClass('has-error');
-            $(document).find('#taxReturn-taxReturnEconomicActivity-table').DataTable({
-                info: false,
-                language: lang,
-                lengthChange: false,
-                paging: false,
-                responsive: true,
-                searching: false
-            });
+
+            initializeInputs();
         }
     });
 });
@@ -372,13 +366,27 @@ $(document).on('keyup', '.declared-amount', function (event) {
         }));
     }
 
-    var amountToPay = 0;
+    var subtotal = 0;
 
     $(document).find('.amount-to-pay').each(function () {
-        amountToPay += Number($(this).text().replace(/,/g, ''));
+        subtotal += Number($(this).text().replace(/,/g, ''));
     });
 
-    $(document).find($('#total-amount-to-pay')).empty().html(Number(amountToPay).toLocaleString('en', {
+    $(document).find($('#tax-return-subtotal')).empty().html(Number(subtotal).toLocaleString('en', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+    }));
+
+    var taxFine = ((subtotal * $(document).find('#tax-return-tax-fine').data('tax-fine')) / 100);
+
+    $(document).find($('#tax-return-tax-fine')).empty().html(Number(taxFine).toLocaleString('en', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+    }));
+
+    var total = subtotal + taxFine;
+
+    $(document).find($('#tax-return-total')).empty().html(Number(total).toLocaleString('en', {
         minimumFractionDigits: 2,
         maximumFractionDigits: 2
     }));

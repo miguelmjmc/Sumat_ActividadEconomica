@@ -2,8 +2,8 @@
 
 namespace AppBundle\Controller;
 
-use AppBundle\Entity\EconomicActivity;
-use AppBundle\Form\EconomicActivityType;
+use AppBundle\Entity\PaymentMethod;
+use AppBundle\Form\PaymentMethodType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -11,45 +11,41 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/admin/economicActivity")
+ * @Route("/admin/paymentMethod")
  */
-class EconomicActivityController extends Controller
+class PaymentMethodController extends Controller
 {
     /**
-     * @Route("/", name="economic_activity")
+     * @Route("/", name="payment_method")
      */
     public function indexAction()
     {
-        return $this->render('economic_activity.html.twig');
+        return $this->render('payment_method.html.twig');
     }
 
     /**
-     * @Route("/list/economicActivity", name="economic_activity_list")
+     * @Route("/list/paymentMethod", name="payment_method_list")
      */
-    public function economicActivityListAction()
+    public function paymentMethodListAction()
     {
-        $economicActivities = $this->getDoctrine()->getRepository(EconomicActivity::class)->findAll();
+        $paymentMethods = $this->getDoctrine()->getRepository(PaymentMethod::class)->findAll();
 
         $data = array('data' => array());
 
-        /** @var EconomicActivity $economicActivity */
-        foreach ($economicActivities as $economicActivity) {
+        /** @var PaymentMethod $paymentMethod */
+        foreach ($paymentMethods as $paymentMethod) {
 
             $parameters = array(
-                'suffix' => 'actividad economica',
-                'grammaticalGender' => 'f',
+                'suffix' => 'método de pago',
                 'actions' => array('show', 'edit', 'delete'),
-                'path' => $this->generateUrl('economic_activity_modal', array('id' => $economicActivity->getId())),
+                'path' => $this->generateUrl('payment_method_modal', array('id' => $paymentMethod->getId())),
             );
 
             $btn = $this->renderView('@App/base/table_btn.html.twig', $parameters);
 
             $data['data'][] = array(
-                $economicActivity->getLastUpdate()->format('Y/m/d H:i:s'),
-                $economicActivity->getCode(),
-                $economicActivity->getName(),
-                $economicActivity->getAliquotFormatted(),
-                $economicActivity->getMinimumTaxableFormatted(),
+                $paymentMethod->getLastUpdate()->format('Y/m/d H:i:s'),
+                $paymentMethod->getName(),
                 $btn,
             );
         }
@@ -59,14 +55,14 @@ class EconomicActivityController extends Controller
 
     /**
      * @param Request $request
-     * @param EconomicActivity $economicActivity
+     * @param PaymentMethod $paymentMethod
      * @param int $id
      *
      * @return Response
      *
-     * @Route("/modal/economicActivity/{id}", name="economic_activity_modal", defaults={"id": "null"})
+     * @Route("/modal/paymentMethod/{id}", name="payment_method_modal", defaults={"id": "null"})
      */
-    public function taxpayerModalAction(Request $request, EconomicActivity $economicActivity = null, $id = null)
+    public function paymentMethodModalAction(Request $request, PaymentMethod $paymentMethod = null, $id = null)
     {
         $parameters = array('method' => $request->getMethod());
 
@@ -74,7 +70,7 @@ class EconomicActivityController extends Controller
             $parameters['attr'] = array('readonly' => true);
         }
 
-        $form = $this->createForm(EconomicActivityType::class, $economicActivity, $parameters);
+        $form = $this->createForm(PaymentMethodType::class, $paymentMethod, $parameters);
 
         $form->handleRequest($request);
 
@@ -82,7 +78,7 @@ class EconomicActivityController extends Controller
             $em = $this->getDoctrine()->getManager();
 
             if ('DELETE' === $request->getMethod()) {
-                if (0 !== $economicActivity->getTaxpayer()->count() || 0 !== $economicActivity->getTaxReturnEconomicActivity()->count()) {
+                if (0 !== $paymentMethod->getTaxReturn()->count()) {
                     return new Response('error');
                 }
 
@@ -100,9 +96,8 @@ class EconomicActivityController extends Controller
 
         $parameters = array(
             'form' => $form->createView(),
-            'suffix' => 'actividad economica',
-            'grammaticalGender' => 'f',
-            'action' => $this->generateUrl('economic_activity_modal', array('id' => $id)),
+            'suffix' => 'método de pago',
+            'action' => $this->generateUrl('payment_method_modal', array('id' => $id)),
             'method' => $request->getMethod(),
         );
 

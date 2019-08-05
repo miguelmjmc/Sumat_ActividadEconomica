@@ -21,6 +21,18 @@ trait LogTrait
     private $updatedAt;
 
     /**
+     * @return \DateTime
+     */
+    public function getLastUpdate()
+    {
+        if ($this->updatedAt) {
+            return $this->updatedAt;
+        }
+
+        return $this->createdAt;
+    }
+
+    /**
      * Set createdAt
      *
      * @param \DateTime $createdAt

@@ -9,7 +9,8 @@
     <style>
 
         body {
-            padding: 50px;
+            padding: 20px 40px;
+            width: 1200px;
         }
 
         header div, footer div {
@@ -25,7 +26,7 @@
         }
 
         table {
-            margin-top: 50px;
+            margin-top: 40px;
         }
 
         table th, table td {
@@ -37,11 +38,11 @@
         }
 
         .firm-container {
-            padding-top: 50px;
+            padding-top: 40px;
         }
 
         .issued {
-            margin-top: 50px;
+            margin-top: 20px;
             font-weight: normal;
         }
     </style>
@@ -54,7 +55,7 @@
             <header>
                 <div class="col-xs-12">
                     <div class="row">
-                        <div class="col-xs-6">
+                        <div class="col-xs-7">
                             <div class="row">
                                 <div class="col-xs-12">República Bolivariana de Venezuela</div>
                                 <div class="col-xs-12">Estado Sucre</div>
@@ -64,11 +65,11 @@
                                 <div class="col-xs-12">Dirección: Av. Carabobo, Edificio Municipal de Carupano</div>
                             </div>
                         </div>
-                        <div class="col-xs-6">
+                        <div class="col-xs-5">
                             <div class="row">
                                 <div class="col-xs-12">
                                     <img class="logo"
-                                         src="{{  path ~ '/web/' ~ settings.img|default('bundles/app/img/default.png') }}">
+                                         src="{{ path ~ '/web/' ~ settings.img|default('bundles/app/img/default.png') }}">
                                 </div>
                                 <div class="col-xs-12 text-right">N° de Comprobante: {{ taxReturn.invoiceId }}</div>
                                 <div class="col-xs-12 text-right">Fecha: {{ taxReturn.createdAt|date('Y/m/d') }}</div>
@@ -104,7 +105,7 @@
                     </thead>
                     <tbody>
                     <tr>
-                        <td>0000000000000</td>
+                        <td>{{ taxReturn.paymentMethod.name }}{{ taxReturn.paymentMethodComment|default ? ' (' ~ taxReturn.paymentMethodComment ~ ')' }}</td>
                         <td>Liquidación de Actividad Economica del mes {{ taxReturn.date|date('m') }} del
                             año {{ taxReturn.date|date('Y') }}</td>
                         <td>{{ app.user.fullName }}</td>
@@ -119,17 +120,23 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr>
-                        {% for taxReturnEconomicActivity in taxReturn.taxReturnEconomicActivity %}
-                            <td>{{ taxReturnEconomicActivity.economicActivity.fullName }}</td>
+                    {% for taxReturnEconomicActivity in taxReturn.taxReturnEconomicActivity %}
+                        <tr>
+                            <td>{{ taxReturnEconomicActivity.economicActivity.fullName }}.</td>
                             <td>{{ taxReturnEconomicActivity.amountToPayFormatted }}</td>
-                        {% endfor %}
-                    </tr>
+                        </tr>
+                    {% endfor %}
+                    {% if taxReturn.latePayment %}
+                        <tr>
+                            <td>Multa del {{ taxReturn.taxFineFormatted }} del monto declarado por mora de {{ taxReturn.pastDueDays }} dias.</td>
+                            <td>{{ taxReturn.taxFineAmountFormatted }}</td>
+                        </tr>
+                    {% endif %}
                     </tbody>
                     <tfoot>
                     <tr>
                         <th>Monto Total</th>
-                        <th>{{ taxReturn.amountToPayFormatted }}</th>
+                        <th>{{ taxReturn.totalFormatted }}</th>
                     </tr>
                     </tfoot>
                 </table>

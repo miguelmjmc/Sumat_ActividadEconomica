@@ -103,18 +103,6 @@ class EconomicActivity
     }
 
     /**
-     * @return \DateTime
-     */
-    public function getLastUpdate()
-    {
-        if ($this->updatedAt) {
-            return $this->updatedAt;
-        }
-
-        return $this->createdAt;
-    }
-
-    /**
      * @return string
      */
     public function getMinimumTaxableFormatted()

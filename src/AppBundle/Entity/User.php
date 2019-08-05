@@ -104,18 +104,6 @@ class User extends BaseUser
     }
 
     /**
-     * @return \DateTime
-     */
-    public function getLastUpdate()
-    {
-        if ($this->updatedAt) {
-            return $this->updatedAt;
-        }
-
-        return $this->createdAt;
-    }
-
-    /**
      * Set name
      *
      * @param string $name
