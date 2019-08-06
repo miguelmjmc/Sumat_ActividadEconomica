@@ -137,7 +137,8 @@ $(document).ready(function () {
 
         $.ajax({
             url: $(this).data('action'),
-            type: $(this).data('method'),
+            type: 'POST',
+            data: { _method: $(this).data('method')},
             success: function (data) {
                 $('#modal-default').empty().append(data).modal('show');
                 initializeInputs()
@@ -148,7 +149,6 @@ $(document).ready(function () {
     $('#modal-default').on('hidden.bs.modal', function () {
         $(this).remove();
     });
-
 
     $(document).on('click', '.ajax-submit', function (e) {
         e.preventDefault();
@@ -166,7 +166,7 @@ $(document).ready(function () {
                 cache: false,
                 contentType: false,
                 processData: false,
-                type: form.attr('method'),
+                type: 'POST',
                 url: form.attr('action'),
                 data: new FormData($(form)[0]),
                 success: function (data) {
@@ -335,9 +335,10 @@ $(document).on('change', '#appbundle_taxreturn_taxpayer', function () {
     var data = {};
 
     data[$(this).attr('name')] = $(this).val();
+    data['_method'] = form.attr('method');
 
     $.ajax({
-        type: form.attr('method'),
+        type: 'POST',
         url: form.attr('action'),
         data: data,
         success: function (data) {
