@@ -113,6 +113,8 @@ $(document).ready(function () {
 
     $(document).on('focus', '.money', function () {
         $(this).maskMoney({
+            decimal: ',',
+            thousands: '.',
             allowZero: true
         });
     });
@@ -138,7 +140,7 @@ $(document).ready(function () {
         $.ajax({
             url: $(this).data('action'),
             type: 'POST',
-            data: { _method: $(this).data('method')},
+            data: {_method: $(this).data('method')},
             success: function (data) {
                 $('#modal-default').empty().append(data).modal('show');
                 initializeInputs()
@@ -352,16 +354,16 @@ $(document).on('change', '#appbundle_taxreturn_taxpayer', function () {
 });
 
 $(document).on('keyup', '.declared-amount', function (event) {
-    var aliquot = (($(this).find('.form-control').val().replace(/,/g, '') * $(this).data('aliquot')) / 100);
-    var minimumTaxable = $(this).data('minimum-taxable');
+    var aliquot = Number((decimalDecoder($(this).find('.form-control').val()) * Number($(this).data('aliquot'))) / 100);
+    var minimumTaxable = Number($(this).data('minimum-taxable'));
 
     if (minimumTaxable > aliquot) {
-        $(document).find($(this).data('id')).empty().html(Number(minimumTaxable).toLocaleString('en', {
+        $(document).find($(this).data('id')).empty().html(minimumTaxable.toLocaleString('de', {
             minimumFractionDigits: 2,
             maximumFractionDigits: 2
         }));
     } else {
-        $(document).find($(this).data('id')).empty().html(Number(aliquot).toLocaleString('en', {
+        $(document).find($(this).data('id')).empty().html(aliquot.toLocaleString('de', {
             minimumFractionDigits: 2,
             maximumFractionDigits: 2
         }));
@@ -370,24 +372,24 @@ $(document).on('keyup', '.declared-amount', function (event) {
     var subtotal = 0;
 
     $(document).find('.amount-to-pay').each(function () {
-        subtotal += Number($(this).text().replace(/,/g, ''));
+        subtotal += decimalDecoder($(this).text());
     });
 
-    $(document).find($('#tax-return-subtotal')).empty().html(Number(subtotal).toLocaleString('en', {
+    $(document).find($('#tax-return-subtotal')).empty().html(subtotal.toLocaleString('de', {
         minimumFractionDigits: 2,
         maximumFractionDigits: 2
     }));
 
-    var taxFine = ((subtotal * $(document).find('#tax-return-tax-fine').data('tax-fine')) / 100);
+    var taxFine = ((subtotal * Number($(document).find('#tax-return-tax-fine').data('tax-fine'))) / 100);
 
-    $(document).find($('#tax-return-tax-fine')).empty().html(Number(taxFine).toLocaleString('en', {
+    $(document).find($('#tax-return-tax-fine')).empty().html(taxFine.toLocaleString('de', {
         minimumFractionDigits: 2,
         maximumFractionDigits: 2
     }));
 
     var total = subtotal + taxFine;
 
-    $(document).find($('#tax-return-total')).empty().html(Number(total).toLocaleString('en', {
+    $(document).find($('#tax-return-total')).empty().html(total.toLocaleString('de', {
         minimumFractionDigits: 2,
         maximumFractionDigits: 2
     }));
@@ -397,6 +399,13 @@ $(document).on('keyup', '.declared-amount', function (event) {
 //================================================================================
 // functions
 //================================================================================
+
+function decimalDecoder(string) {
+    string = string.replace(/\./g, '');
+    string = string.replace(/,/g, '.');
+
+    return Number(string);
+}
 
 function dateFilter(settings, json, dateColumn) {
 

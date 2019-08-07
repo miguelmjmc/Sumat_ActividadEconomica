@@ -78,7 +78,7 @@ class TaxReturnEconomicActivity
      */
     public function getMinimumTaxableFormatted()
     {
-        return number_format($this->minimumTaxable, 2).' UT';
+        return number_format($this->minimumTaxable, 2, ',', '.').' UT';
     }
 
     /**
@@ -86,7 +86,7 @@ class TaxReturnEconomicActivity
      */
     public function getAliquotFormatted()
     {
-        return number_format($this->aliquot, 2).' %';
+        return number_format($this->aliquot, 2, ',', '.').' %';
     }
 
     /**
@@ -102,7 +102,7 @@ class TaxReturnEconomicActivity
      */
     public function getMinimumTaxableBsFormatted()
     {
-        return 'Bs. '.number_format($this->getMinimumTaxableBs(), 2);
+        return 'Bs. '.number_format($this->getMinimumTaxableBs(), 2, ',', '.');
     }
 
     /**
@@ -122,7 +122,7 @@ class TaxReturnEconomicActivity
      */
     public function getAmountToPayFormatted()
     {
-        return 'Bs. '.number_format($this->getAmountToPay(), 2);
+        return 'Bs. '.number_format($this->getAmountToPay(), 2, ',', '.');
     }
 
     /**

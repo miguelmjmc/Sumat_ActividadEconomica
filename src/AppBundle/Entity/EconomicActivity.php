@@ -107,7 +107,7 @@ class EconomicActivity
      */
     public function getMinimumTaxableFormatted()
     {
-        return number_format($this->minimumTaxable, 2).' UT';
+        return number_format($this->minimumTaxable, 2, ',', '.').' UT';
     }
 
     /**
@@ -115,7 +115,7 @@ class EconomicActivity
      */
     public function getAliquotFormatted()
     {
-        return number_format($this->aliquot, 2).' %';
+        return number_format($this->aliquot, 2, ',', '.').' %';
     }
 
     /**

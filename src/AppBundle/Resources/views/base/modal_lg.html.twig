@@ -86,7 +86,7 @@
                                             Bs.
                                             <span class="amount-to-pay"
                                                   id="amount-to-pay-{{ taxReturnEconomicActivity.vars.value.id }}">
-                                                {{ taxReturnEconomicActivity.vars.value.amountToPay|number_format(2) }}
+                                                {{ taxReturnEconomicActivity.vars.value.amountToPay|number_format(2, ',', '.') }}
                                             </span>
                                         </td>
                                     </tr>
@@ -101,19 +101,19 @@
                                 <div class="col-xs-12  total-box-container">
                                     Subtotal:
                                     <span class="total-box">
-                                        Bs. <span id="tax-return-subtotal">{{ form.vars.value.subtotal|default|number_format(2) }}</span>
+                                        Bs. <span id="tax-return-subtotal">{{ form.vars.value.subtotal|default|number_format(2, ',', '.') }}</span>
                                     </span>
                                 </div>
                                 <div class="col-xs-12 total-box-container">
-                                     Multa ({{ form.vars.value.taxFineFormatted|default('0.00 %') }}):
+                                     Multa ({{ form.vars.value.taxFineFormatted|default('0,00 %') }}):
                                     <span class="total-box">Bs.
-                                        <span id="tax-return-tax-fine" data-tax-fine="{{ form.vars.value.taxFine|default(0) }}">{{ form.vars.value.taxFineAmount|default|number_format(2) }}</span>
+                                        <span id="tax-return-tax-fine" data-tax-fine="{{ form.vars.value.taxFine|default(0) }}">{{ form.vars.value.taxFineAmount|default|number_format(2, ',', '.') }}</span>
                                     </span>
                                 </div>
                                 <div class="col-xs-12 total-box-container">
                                     Total:
                                     <span class="total-box">
-                                        Bs. <span id="tax-return-total">{{ form.vars.value.total|default|number_format(2) }}</span>
+                                        Bs. <span id="tax-return-total">{{ form.vars.value.total|default|number_format(2, ',', '.') }}</span>
                                     </span>
                                 </div>
                             </div>

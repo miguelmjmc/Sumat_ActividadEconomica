@@ -110,7 +110,11 @@ class TaxReturn
      */
     public function getTaxFineFormatted()
     {
-        return $this->taxFine.' %';
+        if ($this->taxFine) {
+            return $this->taxFine.' %';
+        }
+
+        return '0.00 %';
     }
 
     /**
@@ -126,7 +130,7 @@ class TaxReturn
      */
     public function getTaxFineAmountFormatted()
     {
-        return 'Bs. '.number_format($this->getTaxFineAmount(), 2);
+        return 'Bs. '.number_format($this->getTaxFineAmount(), 2, ',', '.');
     }
 
     /**
@@ -134,9 +138,9 @@ class TaxReturn
      */
     public function getSubtotal()
     {
-       $total = 0;
+        $total = 0;
 
-       /** @var TaxReturnEconomicActivity $taxReturnEconomicActivity */
+        /** @var TaxReturnEconomicActivity $taxReturnEconomicActivity */
         foreach ($this->getTaxReturnEconomicActivity() as $taxReturnEconomicActivity) {
             $total += (double)$taxReturnEconomicActivity->getAmountToPay();
         }
@@ -149,7 +153,7 @@ class TaxReturn
      */
     public function getSubtotalFormatted()
     {
-        return 'Bs. '.number_format($this->getSubtotal(), 2);
+        return 'Bs. '.number_format($this->getSubtotal(), 2, ',', '.');
     }
 
     /**
@@ -165,7 +169,7 @@ class TaxReturn
      */
     public function getTotalFormatted()
     {
-        return 'Bs. '.number_format($this->getTotal(), 2);
+        return 'Bs. '.number_format($this->getTotal(), 2, ',', '.');
     }
 
     /**
