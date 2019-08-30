@@ -23,7 +23,7 @@ var lang = {
     },
     buttons: {
         print: 'Imprimir',
-        copy: "Copiar",
+        copy: 'Copiar',
         copyTitle: 'Añadido al portapapeles',
         copyKeys: 'Presione <i>ctrl</i> o <i>\u2318</i> + <i>C</i> para copiar los datos de la tabla al portapapeles. <br><br>Para cancelar, haga clic en este mensaje o presione Esc.',
         copySuccess: {
@@ -54,20 +54,26 @@ toastr.options = {
     debug: false,
     newestOnTop: false,
     progressBar: false,
-    positionClass: "toast-bottom-right",
+    positionClass: 'toast-bottom-right',
     preventDuplicates: false,
     onclick: null,
     showDuration: 300,
     hideDuration: 1000,
     timeOut: 5000,
     extendedTimeOut: 1000,
-    showEasing: "swing",
-    hideEasing: "linear",
-    showMethod: "fadeIn",
-    hideMethod: "fadeOut"
+    showEasing: 'swing',
+    hideEasing: 'linear',
+    showMethod: 'fadeIn',
+    hideMethod: 'fadeOut'
 };
 
 $(document).ready(function () {
+
+    $(document).on('click', '.under-construction', function (event) {
+        event.preventDefault();
+
+        alert('Caracteristica en Construcción');
+    });
 
     var url = $('#nav-active').data('url');
     $('a[href="' + url + '"]').parents('li').addClass('active');
@@ -131,6 +137,14 @@ $(document).ready(function () {
         });
     });
 
+    $(document).on('focus', '.bank-account', function () {
+        $(this).mask('0000-0000-0000-0000-0000', {
+            translation: {
+                '0': {pattern: /[0-9]/}
+            }
+        });
+    });
+
     $(document).on('click', '.modal-trigger', function (event) {
         event.preventDefault();
 
@@ -143,7 +157,7 @@ $(document).ready(function () {
             data: {_method: $(this).data('method')},
             success: function (data) {
                 $('#modal-default').empty().append(data).modal('show');
-                initializeInputs()
+                initializeInputs();
             }
         });
     });
@@ -173,25 +187,46 @@ $(document).ready(function () {
                 data: new FormData($(form)[0]),
                 success: function (data) {
                     if ('success' === data) {
-                        if ($.fn.DataTable.isDataTable('.datatable')) {
-                            table.ajax.reload();
-                        }
+                        $.each(table, function (index, value) {
+                            if ($.fn.DataTable.isDataTable(value)) {
+                                value.ajax.reload();
+                            }
+                        });
 
-                        if ($.fn.DataTable.isDataTable('.datatable-filter')) {
-                            table_filter.ajax.reload();
-                        }
+                        $.each(tableFilter, function (index, value) {
+                            if ($.fn.DataTable.isDataTable(value)) {
+                                value.ajax.reload();
+                            }
+                        });
 
                         $('#modal-default').modal('toggle');
 
                         toastr.success('Exito!. Operación realizada satisfactoriamente.');
+
+                        $.ajax({
+                            type: 'GET',
+                            url: window.location.pathname,
+                            success: function (data) {
+                                $('#callout').replaceWith($(data).find('#callout'));
+                                $('#sidebar-info').replaceWith($(data).find('#sidebar-info'));
+                                $('#taxpayer-profile').replaceWith($(data).find('#taxpayer-profile'));
+                                $('#taxpayer-profile-economicActivity-table').appendTo($('#taxpayer-profile #appbundle_taxpayer_economicActivity').parents('.form-group'));
+                                $('#taxpayer-profile-economicActivity-table').DataTable({
+                                    info: false,
+                                    language: lang,
+                                    lengthChange: false,
+                                    paging: false,
+                                    responsive: true,
+                                    searching: false
+                                });
+                            }
+                        });
                     } else if ('success-reload' === data) {
                         location.reload();
                     } else if ('error' === data) {
                         $('#modal-default').modal('toggle');
 
-                        toastr.error('Oops!. La operación no pudo ser realizada. Compruebe que el registro no posea dependencias.');
-                    } else if (!data.includes('input') && data.includes('/manage/credit/')) {
-                        window.location.replace(data);
+                        toastr.error('Oops!. La operación no pudo ser realizada. Verifique que el registro no sea una dependencia de otros registros.');
                     } else {
                         $('#modal-default').empty().append(data);
                         initializeInputs();
@@ -205,25 +240,46 @@ $(document).ready(function () {
                 data: form.serialize(),
                 success: function (data) {
                     if ('success' === data) {
-                        if ($.fn.DataTable.isDataTable('.datatable')) {
-                            table.ajax.reload();
-                        }
+                        $.each(table, function (index, value) {
+                            if ($.fn.DataTable.isDataTable(value)) {
+                                value.ajax.reload();
+                            }
+                        });
 
-                        if ($.fn.DataTable.isDataTable('.datatable-filter')) {
-                            table_filter.ajax.reload();
-                        }
+                        $.each(tableFilter, function (index, value) {
+                            if ($.fn.DataTable.isDataTable(value)) {
+                                value.ajax.reload();
+                            }
+                        });
 
                         $('#modal-default').modal('toggle');
 
                         toastr.success('Exito!. Operación realizada satisfactoriamente.');
+
+                        $.ajax({
+                            type: 'GET',
+                            url: window.location.pathname,
+                            success: function (data) {
+                                $('#callout').replaceWith($(data).find('#callout'));
+                                $('#sidebar-info').replaceWith($(data).find('#sidebar-info'));
+                                $('#taxpayer-profile > div').replaceWith($(data).find('#taxpayer-profile > div'));
+                                $('#taxpayer-profile-economicActivity-table').appendTo($('#taxpayer-profile #appbundle_taxpayer_economicActivity').parents('.form-group'));
+                                $('#taxpayer-profile-economicActivity-table').DataTable({
+                                    info: false,
+                                    language: lang,
+                                    lengthChange: false,
+                                    paging: false,
+                                    responsive: true,
+                                    searching: false
+                                });
+                            }
+                        });
                     } else if ('success-reload' === data) {
                         location.reload();
                     } else if ('error' === data) {
                         $('#modal-default').modal('toggle');
 
-                        toastr.error('Oops!. La operación no pudo ser realizada. Compruebe que el registro no posea dependencias.');
-                    } else if (!data.includes('input') && data.includes('/manage/credit/')) {
-                        window.location.replace(data);
+                        toastr.error('Oops!. La operación no pudo ser realizada. Verifique que el registro no sea una dependencia de otros registros.');
                     } else {
                         $('#modal-default').empty().append(data);
                         initializeInputs();
@@ -235,164 +291,152 @@ $(document).ready(function () {
 
     $('.btn-new').appendTo('.add-btn-container');
 
-    var selector1 = $('.datatable');
-    var table = $('.datatable').DataTable({
-        order: [0, 'DESC'],
-        ajax: selector1.data('src'),
-        language: lang,
-        responsive: true,
-        dom: "<'row'<'col-sm-8 float-right-content'B><'col-sm-4'<'btn-add-container'>><'col-sm-12 date-filter-container'><'col-sm-6'l><'col-sm-6'f>><'row'<'col-sm-12'tr>><'row'<'col-sm-5'i><'col-sm-7'p>>",
-        select: {
-            style: 'os',
-            selector: 'td:not(:last-child)',
-            blurable: true
-        },
-        buttons: [
-            {
-                extend: 'copy',
-                exportOptions: {
-                    columns: ':not(:last-child)'
-                }
-            },
-            {
-                extend: 'csv',
-                exportOptions: {
-                    columns: ':not(:last-child)'
-                }
-            },
-            {
-                extend: 'excel',
-                exportOptions: {
-                    columns: ':not(:last-child)'
-                }
-            },
-            {
-                extend: 'pdf',
-                exportOptions: {
-                    columns: ':not(:last-child)'
-                }
-            },
-            {
-                extend: 'print',
-                exportOptions: {
-                    columns: ':not(:last-child)'
-                }
+    var table = [];
+
+    $('.datatable').each(function (index) {
+        table[index] = $(this).DataTable({
+            info: false,
+            lengthChange: false,
+            paging: false,
+            searching: false,
+            ajax: $(this).data('src'),
+            language: lang,
+            responsive: true,
+            dom: "<'row'<'col-sm-8 float-right-content'><'col-sm-4'<'btn-add-container'>><'col-sm-12 date-filter-container'><'col-sm-6'l><'col-sm-6'f>><'row'<'col-sm-12'tr>><'row'<'col-sm-5'i><'col-sm-7'p>>",
+            select: {
+                style: 'os',
+                selector: 'td:not(:last-child)',
+                blurable: true
             }
-        ]
+        });
     });
 
-    var selector2 = $('.datatable-filter');
-    var table_filter = $('.datatable-filter').DataTable({
-        order: [0, 'DESC'],
-        ajax: selector2.data('src'),
-        language: lang,
-        responsive: true,
-        dom: "<'row'<'col-sm-8 float-right-content'B><'col-sm-4'<'btn-add-container'>><'col-sm-12 date-filter-container'><'col-sm-6'l><'col-sm-6'f>><'row'<'col-sm-12'tr>><'row'<'col-sm-5'i><'col-sm-7'p>>",
-        initComplete: function (settings, json) {
-            dateFilter(settings, json, 0);
-        },
-        select: {
-            style: 'os',
-            selector: 'td:not(:last-child)',
-            blurable: true
-        },
-        buttons: [
-            {
-                extend: 'copy',
-                exportOptions: {
-                    columns: ':not(:last-child)'
-                }
+    var tableFilter = [];
+
+    $('.datatable-filter').each(function (index) {
+        tableFilter[index] = $(this).DataTable({
+            order: [0, 'DESC'],
+            ajax: $(this).data('src'),
+            language: lang,
+            responsive: true,
+            dom: "<'row'<'col-sm-8 float-right-content'B><'col-sm-4'<'btn-add-container'>><'col-sm-12 date-filter-container'><'col-sm-6'l><'col-sm-6'f>><'row'<'col-sm-12'tr>><'row'<'col-sm-5'i><'col-sm-7'p>>",
+            initComplete: function (settings, json) {
+                dateFilter(settings, json, 0);
             },
-            {
-                extend: 'csv',
-                exportOptions: {
-                    columns: ':not(:last-child)'
-                }
+            select: {
+                style: 'os',
+                selector: 'td:not(:last-child)',
+                blurable: true
             },
-            {
-                extend: 'excel',
-                exportOptions: {
-                    columns: ':not(:last-child)'
+            buttons: [
+                {
+                    extend: 'copy',
+                    exportOptions: {
+                        columns: ':not(:last-child)'
+                    }
+                },
+                {
+                    extend: 'csv',
+                    exportOptions: {
+                        columns: ':not(:last-child)'
+                    }
+                },
+                {
+                    extend: 'excel',
+                    exportOptions: {
+                        columns: ':not(:last-child)'
+                    }
+                },
+                {
+                    extend: 'pdf',
+                    exportOptions: {
+                        columns: ':not(:last-child)'
+                    }
+                },
+                {
+                    extend: 'print',
+                    exportOptions: {
+                        columns: ':not(:last-child)'
+                    }
                 }
-            },
-            {
-                extend: 'pdf',
-                exportOptions: {
-                    columns: ':not(:last-child)'
-                }
-            },
-            {
-                extend: 'print',
-                exportOptions: {
-                    columns: ':not(:last-child)'
-                }
-            }
-        ]
+            ]
+        });
     });
-});
 
-$(document).on('change', '#appbundle_taxreturn_taxpayer', function () {
+    $('#taxpayer-profile-economicActivity-table').appendTo($('#taxpayer-profile #appbundle_taxpayer_economicActivity').parents('.form-group'));
 
-    var form = $(this).closest('form');
-    var data = {};
+    $('#taxpayer-profile-economicActivity-table').DataTable({
+        info: false,
+        language: lang,
+        lengthChange: false,
+        paging: false,
+        responsive: true,
+        searching: false
+    });
 
-    data[$(this).attr('name')] = $(this).val();
-    data['_method'] = form.attr('method');
+    $(document).on('change', '#appbundle_taxreturn_taxpayer', function () {
 
-    $.ajax({
-        type: 'POST',
-        url: form.attr('action'),
-        data: data,
-        success: function (data) {
-            $(document).find('#taxReturn-data').replaceWith($(data).find('#taxReturn-data'));
-            $(document).find('#taxReturn-data .help-block').hide();
-            $(document).find('#taxReturn-data .form-group').removeClass('has-error');
+        var form = $(this).closest('form');
+        var data = {};
 
-            initializeInputs();
+        data[$(this).attr('name')] = $(this).val();
+        data['_method'] = form.attr('method');
+
+        $.ajax({
+            type: 'POST',
+            url: form.attr('action'),
+            data: data,
+            success: function (data) {
+                $(document).find('#taxReturn-data').replaceWith($(data).find('#taxReturn-data'));
+                $(document).find('#taxReturn-data .help-block').hide();
+                $(document).find('#taxReturn-data .form-group').removeClass('has-error');
+
+                initializeInputs();
+            }
+        });
+    });
+
+    $(document).on('keyup', '.declared-amount', function (event) {
+        var aliquot = Number((decimalDecoder($(this).find('.form-control').val()) * Number($(this).data('aliquot'))) / 100);
+        var minimumTaxable = Number($(this).data('minimum-taxable'));
+
+        if (minimumTaxable > aliquot) {
+            $(document).find($(this).data('id')).empty().html(minimumTaxable.toLocaleString('de', {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            }));
+        } else {
+            $(document).find($(this).data('id')).empty().html(aliquot.toLocaleString('de', {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            }));
         }
-    });
-});
 
-$(document).on('keyup', '.declared-amount', function (event) {
-    var aliquot = Number((decimalDecoder($(this).find('.form-control').val()) * Number($(this).data('aliquot'))) / 100);
-    var minimumTaxable = Number($(this).data('minimum-taxable'));
+        var subtotal = 0;
 
-    if (minimumTaxable > aliquot) {
-        $(document).find($(this).data('id')).empty().html(minimumTaxable.toLocaleString('de', {
+        $(document).find('.amount-to-pay').each(function () {
+            subtotal += decimalDecoder($(this).text());
+        });
+
+        $(document).find($('#tax-return-subtotal')).empty().html(subtotal.toLocaleString('de', {
             minimumFractionDigits: 2,
             maximumFractionDigits: 2
         }));
-    } else {
-        $(document).find($(this).data('id')).empty().html(aliquot.toLocaleString('de', {
+
+        var taxFine = ((subtotal * Number($(document).find('#tax-return-tax-fine').data('tax-fine'))) / 100);
+
+        $(document).find($('#tax-return-tax-fine')).empty().html(taxFine.toLocaleString('de', {
             minimumFractionDigits: 2,
             maximumFractionDigits: 2
         }));
-    }
 
-    var subtotal = 0;
+        var total = subtotal + taxFine;
 
-    $(document).find('.amount-to-pay').each(function () {
-        subtotal += decimalDecoder($(this).text());
+        $(document).find($('#tax-return-total')).empty().html(total.toLocaleString('de', {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+        }));
     });
-
-    $(document).find($('#tax-return-subtotal')).empty().html(subtotal.toLocaleString('de', {
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2
-    }));
-
-    var taxFine = ((subtotal * Number($(document).find('#tax-return-tax-fine').data('tax-fine'))) / 100);
-
-    $(document).find($('#tax-return-tax-fine')).empty().html(taxFine.toLocaleString('de', {
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2
-    }));
-
-    var total = subtotal + taxFine;
-
-    $(document).find($('#tax-return-total')).empty().html(total.toLocaleString('de', {
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2
-    }));
 });
 
 //================================================================================
@@ -497,6 +541,4 @@ function initializeInputs() {
         responsive: true,
         searching: false
     });
-
-    $("#taxpayer-economicActivity-table").appendTo($('#appbundle_taxpayer_economicActivity').parents('.form-group'));
 }

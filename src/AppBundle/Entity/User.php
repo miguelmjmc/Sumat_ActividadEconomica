@@ -32,7 +32,7 @@ class User extends BaseUser
     protected $id;
 
     /**
-     * @var string
+     * @var string|null
      *
      * @Assert\NotBlank
      * @Assert\Length(min = 4, max = 20)
@@ -42,7 +42,7 @@ class User extends BaseUser
     private $name;
 
     /**
-     * @var string
+     * @var string|null
      *
      * @Assert\NotBlank
      * @Assert\Length(min = 4, max = 20)
@@ -52,7 +52,7 @@ class User extends BaseUser
     private $lastName;
 
     /**
-     * @var string
+     * @var string|null
      *
      * @Assert\File(maxSize = "2048k", mimeTypes = {"image/png", "image/jpeg"})
      *
@@ -104,13 +104,13 @@ class User extends BaseUser
     }
 
     /**
-     * Set name
+     * Set name.
      *
-     * @param string $name
+     * @param string|null $name
      *
      * @return User
      */
-    public function setName($name)
+    public function setName($name = null)
     {
         $this->name = $name;
 
@@ -118,9 +118,9 @@ class User extends BaseUser
     }
 
     /**
-     * Get name
+     * Get name.
      *
-     * @return string
+     * @return string|null
      */
     public function getName()
     {
@@ -128,13 +128,13 @@ class User extends BaseUser
     }
 
     /**
-     * Set lastName
+     * Set lastName.
      *
-     * @param string $lastName
+     * @param string|null $lastName
      *
      * @return User
      */
-    public function setLastName($lastName)
+    public function setLastName($lastName = null)
     {
         $this->lastName = $lastName;
 
@@ -142,9 +142,9 @@ class User extends BaseUser
     }
 
     /**
-     * Get lastName
+     * Get lastName.
      *
-     * @return string
+     * @return string|null
      */
     public function getLastName()
     {
@@ -152,13 +152,13 @@ class User extends BaseUser
     }
 
     /**
-     * Set img
+     * Set img.
      *
-     * @param string $img
+     * @param string|null $img
      *
      * @return User
      */
-    public function setImg($img)
+    public function setImg($img = null)
     {
         $this->img = $img;
 
@@ -166,9 +166,9 @@ class User extends BaseUser
     }
 
     /**
-     * Get img
+     * Get img.
      *
-     * @return string
+     * @return string|null
      */
     public function getImg()
     {
@@ -176,7 +176,7 @@ class User extends BaseUser
     }
 
     /**
-     * Add historySession
+     * Add historySession.
      *
      * @param \AppBundle\Entity\HistorySession $historySession
      *
@@ -190,17 +190,19 @@ class User extends BaseUser
     }
 
     /**
-     * Remove historySession
+     * Remove historySession.
      *
      * @param \AppBundle\Entity\HistorySession $historySession
+     *
+     * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
      */
     public function removeHistorySession(\AppBundle\Entity\HistorySession $historySession)
     {
-        $this->historySession->removeElement($historySession);
+        return $this->historySession->removeElement($historySession);
     }
 
     /**
-     * Get historySession
+     * Get historySession.
      *
      * @return \Doctrine\Common\Collections\Collection
      */
@@ -210,7 +212,7 @@ class User extends BaseUser
     }
 
     /**
-     * Add historyRequest
+     * Add historyRequest.
      *
      * @param \AppBundle\Entity\HistoryRequest $historyRequest
      *
@@ -224,17 +226,19 @@ class User extends BaseUser
     }
 
     /**
-     * Remove historyRequest
+     * Remove historyRequest.
      *
      * @param \AppBundle\Entity\HistoryRequest $historyRequest
+     *
+     * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
      */
     public function removeHistoryRequest(\AppBundle\Entity\HistoryRequest $historyRequest)
     {
-        $this->historyRequest->removeElement($historyRequest);
+        return $this->historyRequest->removeElement($historyRequest);
     }
 
     /**
-     * Get historyRequest
+     * Get historyRequest.
      *
      * @return \Doctrine\Common\Collections\Collection
      */

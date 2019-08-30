@@ -33,6 +33,11 @@
         {% endif %}
     {% endif %}
 
+    {% if 'custom' == action %}
+        <a class="modal-trigger" href="#" data-action="{{ customPath }}" data-method="{{ customMethod }}"
+           title="{{ customTitle }}"><i class="{{ customIcon }}"></i></a>
+    {% endif %}
+
     {% if 'pdf' == action %}
         <a href="{{ pdfPath }}" target="_blank" title="{{ pdfTitle }}"><i class="fa fa-file"></i></a>
     {% endif %}

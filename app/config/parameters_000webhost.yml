@@ -1,0 +1,12 @@
+# This file is auto-generated during the composer install
+parameters:
+    database_host: localhost
+    database_port: null
+    database_name: id10077821_sumat
+    database_user: id10077821_admin
+    database_password: zxcv.1234
+    mailer_transport: smtp
+    mailer_host: 127.0.0.1
+    mailer_user: mail
+    mailer_password: null
+    secret: 00af2040dcdc21d27e784b5ecc9cfb2235fb078d

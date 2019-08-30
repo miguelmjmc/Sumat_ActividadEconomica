@@ -35,6 +35,8 @@ class HistoryController extends Controller
     }
 
     /**
+     * @return Response
+     *
      * @Route("/list/historySession", name="history_session_list")
      */
     public function historySessionListAction()
@@ -57,6 +59,8 @@ class HistoryController extends Controller
     }
 
     /**
+     * @return Response
+     *
      * @Route("/list/historyRequest", name="history_request_list")
      */
     public function historyRequestListAction()

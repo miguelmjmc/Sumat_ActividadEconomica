@@ -23,6 +23,8 @@ class UserController extends Controller
     }
 
     /**
+     * @return Response
+     *
      * @Route("/admin/user/list/user", name="user_list")
      */
     public function userListAction()
@@ -91,7 +93,7 @@ class UserController extends Controller
 
         $parameters = array(
             'form' => $form->createView(),
-            'suffix' => 'usuario',
+            'suffix' => 'Usuario',
             'action' => $this->generateUrl('user_modal', array('id' => $id)),
             'method' => $request->getMethod(),
         );

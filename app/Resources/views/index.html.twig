@@ -7,7 +7,62 @@
 {% endblock main_breadcrumb %}
 
 {% block main_container %}
-    <div class="img-container">
-        <img class="img"  style="max-width: 500px" src="{{ asset('bundles/app/img/welcome.png') }}">
+    <div class="row">
+        <div class="col-lg-3 col-xs-6">
+            <div class="small-box bg-aqua">
+                <div class="inner">
+                    <h3>{{ taxpayerTotals.total }}</h3>
+                    <p>Contribuyentes <br> Registrados</p>
+                </div>
+                <div class="icon">
+                    <i class="fa fa-info"></i>
+                </div>
+                <a href="{{ path('taxpayer') }}" class="small-box-footer">
+                    Listar <i class="fa fa-arrow-circle-right"></i>
+                </a>
+            </div>
+        </div>
+        <div class="col-lg-3 col-xs-6">
+            <div class="small-box bg-green">
+                <div class="inner">
+                    <h3>{{ taxpayerTotals.solvent }}</h3>
+                    <p>Contribuyentes <br> Solventes</p>
+                </div>
+                <div class="icon">
+                    <i class="fa fa-check"></i>
+                </div>
+                <a href="{{ path('taxpayer', { filter: 'solvent' }) }}" class="small-box-footer">
+                    Listar <i class="fa fa-arrow-circle-right"></i>
+                </a>
+            </div>
+        </div>
+        <div class="col-lg-3 col-xs-6">
+            <div class="small-box bg-yellow">
+                <div class="inner">
+                    <h3>{{ taxpayerTotals.gracePeriod }}</h3>
+                    <p>Contribuyentes <br> En periodo de gracia</p>
+                </div>
+                <div class="icon">
+                    <i class="fa fa-clock-o"></i>
+                </div>
+                <a href="{{ path('taxpayer', { filter: 'gracePeriod' }) }}" class="small-box-footer">
+                    Listar <i class="fa fa-arrow-circle-right"></i>
+                </a>
+            </div>
+        </div>
+        <div class="col-lg-3 col-xs-6">
+            <div class="small-box bg-red">
+                <div class="inner">
+                    <h3>{{ taxpayerTotals.insolvent }}</h3>
+                    <p>Contribuyentes <br> Insolventes</p>
+                </div>
+                <div class="icon">
+                    <i class="fa fa-warning"></i>
+                </div>
+                <a href="{{ path('taxpayer', { filter: 'insolvent' }) }}" class="small-box-footer">
+                    Listar <i class="fa fa-arrow-circle-right"></i>
+                </a>
+            </div>
+        </div>
     </div>
 {% endblock main_container %}

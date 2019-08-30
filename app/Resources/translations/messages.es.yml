@@ -1,4 +1,5 @@
 Rif: Rif
+Dni: Documento de Identificación
 Name: Nombre
 Last name: Apellido
 Address: Dirección
@@ -8,7 +9,7 @@ New password: 'Nueva Contraseña'
 Repeat password: 'Repita la contraseña'
 Email: Email
 Phone: Teléfono
-Start date tax return: 'Inicio de Declaración'
+Start tax return: 'Inicio de Declaración'
 Economic activity: 'Actividades Economicas'
 Tax return economic activity: 'Actividades Economicas'
 Code: Código
@@ -34,3 +35,10 @@ Admin: Administrador
 Logo: Logo
 Profile picture: 'Foto de Perfil'
 File: Archivo
+Account holder: 'Titular'
+Number: Número
+Comment: Observaciones
+Bank account type: 'Tipo de Cuenta'
+Serial: Serial
+Brand: Marca
+Taxpayer bank account: 'Cuenta Asociada'

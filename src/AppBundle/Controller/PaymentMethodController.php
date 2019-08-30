@@ -16,6 +16,8 @@ use Symfony\Component\Routing\Annotation\Route;
 class PaymentMethodController extends Controller
 {
     /**
+     * @return Response
+     *
      * @Route("/", name="payment_method")
      */
     public function indexAction()
@@ -24,6 +26,8 @@ class PaymentMethodController extends Controller
     }
 
     /**
+     * @return Response
+     *
      * @Route("/list/paymentMethod", name="payment_method_list")
      */
     public function paymentMethodListAction()
@@ -96,7 +100,7 @@ class PaymentMethodController extends Controller
 
         $parameters = array(
             'form' => $form->createView(),
-            'suffix' => 'método de pago',
+            'suffix' => 'Método de Pago',
             'action' => $this->generateUrl('payment_method_modal', array('id' => $id)),
             'method' => $request->getMethod(),
         );

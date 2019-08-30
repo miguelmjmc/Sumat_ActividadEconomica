@@ -60,7 +60,7 @@ class Taxpayer
     private $address;
 
     /**
-     * @var string
+     * @var string|null
      *
      * @Assert\Email
      * @Assert\Length(min = 10, max = 50)
@@ -70,7 +70,7 @@ class Taxpayer
     private $email;
 
     /**
-     * @var string
+     * @var string|null
      *
      * @Assert\Length(min = 15, max = 15)
      *
@@ -85,9 +85,18 @@ class Taxpayer
      * @Assert\Date
      * @Assert\Range(min="2019-01-01", max="2030-12-31")
      *
-     * @ORM\Column(name="startDateTaxReturn", type="date")
+     * @ORM\Column(name="startTaxReturn", type="date")
      */
-    private $startDateTaxReturn;
+    private $startTaxReturn;
+
+    /**
+     * @var string|null
+     *
+     * @Assert\File(maxSize = "2048k", mimeTypes = {"image/png", "image/jpeg"})
+     *
+     * @ORM\Column(name="img", type="string", length=255, nullable=true)
+     */
+    private $img;
 
     /**
      * @var ArrayCollection
@@ -102,6 +111,13 @@ class Taxpayer
      * @ORM\OneToMany(targetEntity="TaxReturn", mappedBy="taxpayer")
      */
     private $taxReturn;
+
+    /**
+     * @var ArrayCollection
+     *
+     * @ORM\OneToMany(targetEntity="TaxpayerBankAccount", mappedBy="taxpayer")
+     */
+    private $taxpayerBankAccount;
 
 
     /**
@@ -122,9 +138,229 @@ class Taxpayer
     }
 
     /**
-     * Get id
+     * @return TaxReturn
+     */
+    public function getLastTaxReturn()
+    {
+        $lastTaxReturn = null;
+
+        if (0 < $this->getTaxReturn()->count()) {
+
+            /** @var TaxReturn $lastTaxReturn */
+            $lastTaxReturn = $this->getTaxReturn()->get(0);
+
+            /** @var TaxReturn $taxReturn */
+            foreach ($this->getTaxReturn() as $taxReturn) {
+                if ($lastTaxReturn->getDate() < $taxReturn->getDate()) {
+                    $lastTaxReturn = $taxReturn;
+                }
+            }
+        }
+
+        return $lastTaxReturn;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isSolvent()
+    {
+        $date = clone $this->startTaxReturn;
+        $date->modify('first day of next month midnight');
+
+        if (new \DateTime('now') < $date) {
+            return true;
+        }
+
+        $lastTaxReturn = $this->getLastTaxReturn();
+
+        if ($lastTaxReturn instanceof TaxReturn) {
+            $date = clone $lastTaxReturn->getDate();
+            $date->modify('first day of next month midnight');
+            $date->modify('+1 month');
+
+            if (new \DateTime('now') < $date) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isGracePeriod()
+    {
+        if ($this->isSolvent()) {
+            return false;
+        }
+
+        $date = clone $this->startTaxReturn;
+        $date->modify('first day of next month midnight');
+        $date->modify('+15 days');
+
+        if (new \DateTime('now') < $date) {
+            return true;
+        }
+
+        $lastTaxReturn = $this->getLastTaxReturn();
+
+        if ($lastTaxReturn instanceof TaxReturn) {
+            $date = clone $lastTaxReturn->getDate();
+            $date->modify('first day of next month midnight');
+            $date->modify('+1 month');
+            $date->modify('+15 days');
+
+
+            if (new \DateTime('now') < $date) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isInsolvent()
+    {
+        if ($this->isSolvent() || $this->isGracePeriod()) {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * @return string
+     */
+    public function getStatus()
+    {
+        if ($this->isSolvent()) {
+            return '<span class="label label-success">Solvente</span>';
+        }
+
+        if ($this->isGracePeriod()) {
+            return '<span class="label label-warning">Periodo de Gracia</span>';
+        }
+
+        return '<span class="label label-danger">Inolvente</span>';
+    }
+
+    /**
+     * @return int
+     */
+    public function getStatusCode()
+    {
+        if ($this->isSolvent()) {
+            return 2;
+        }
+
+        if ($this->isGracePeriod()) {
+            return 1;
+        }
+
+        return 0;
+    }
+
+    /**
+     * @return float
+     */
+    public function getDeclaredAmount()
+    {
+        $total = 0;
+
+        /** @var TaxReturn $taxReturn */
+        foreach ($this->taxReturn as $taxReturn) {
+            $total += (float)$taxReturn->getDeclaredAmount();
+        }
+
+        return (float)$total;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDeclaredAmountFormatted()
+    {
+        return 'Bs. '.number_format($this->getDeclaredAmount(), 2, ',', '.');
+    }
+
+    /**
+     * @return float
+     */
+    public function getEconomicActivityAmount()
+    {
+        $total = 0;
+
+        /** @var TaxReturn $taxReturn */
+        foreach ($this->taxReturn as $taxReturn) {
+            $total += (float)$taxReturn->getEconomicActivityAmount();
+        }
+
+        return (float)$total;
+    }
+
+    /**
+     * @return string
+     */
+    public function getEconomicActivityAmountFormatted()
+    {
+        return 'Bs. '.number_format($this->getEconomicActivityAmount(), 2, ',', '.');
+    }
+
+    /**
+     * @return float
+     */
+    public function getTaxFineAmount()
+    {
+        $total = 0;
+
+        /** @var TaxReturn $taxReturn */
+        foreach ($this->taxReturn as $taxReturn) {
+            $total += (float)$taxReturn->getTaxFineAmount();
+        }
+
+        return (float)$total;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTaxFineAmountFormatted()
+    {
+        return 'Bs. '.number_format($this->getTaxFineAmount(), 2, ',', '.');
+    }
+
+    /**
+     * @return float
+     */
+    public function getTotalAmount()
+    {
+        $total = 0;
+
+        /** @var TaxReturn $taxReturn */
+        foreach ($this->taxReturn as $taxReturn) {
+            $total += (float)$taxReturn->getTotalAmount();
+        }
+
+        return (float)$total;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTotalAmountFormatted()
+    {
+        return 'Bs. '.number_format($this->getTotalAmount(), 2, ',', '.');
+    }
+
+    /**
+     * Get id.
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -132,7 +368,7 @@ class Taxpayer
     }
 
     /**
-     * Set rif
+     * Set rif.
      *
      * @param string $rif
      *
@@ -146,7 +382,7 @@ class Taxpayer
     }
 
     /**
-     * Get rif
+     * Get rif.
      *
      * @return string
      */
@@ -156,7 +392,7 @@ class Taxpayer
     }
 
     /**
-     * Set name
+     * Set name.
      *
      * @param string $name
      *
@@ -170,7 +406,7 @@ class Taxpayer
     }
 
     /**
-     * Get name
+     * Get name.
      *
      * @return string
      */
@@ -180,7 +416,7 @@ class Taxpayer
     }
 
     /**
-     * Set address
+     * Set address.
      *
      * @param string $address
      *
@@ -194,7 +430,7 @@ class Taxpayer
     }
 
     /**
-     * Get address
+     * Get address.
      *
      * @return string
      */
@@ -204,13 +440,13 @@ class Taxpayer
     }
 
     /**
-     * Set email
+     * Set email.
      *
-     * @param string $email
+     * @param string|null $email
      *
      * @return Taxpayer
      */
-    public function setEmail($email)
+    public function setEmail($email = null)
     {
         $this->email = $email;
 
@@ -218,9 +454,9 @@ class Taxpayer
     }
 
     /**
-     * Get email
+     * Get email.
      *
-     * @return string
+     * @return string|null
      */
     public function getEmail()
     {
@@ -228,13 +464,13 @@ class Taxpayer
     }
 
     /**
-     * Set phone
+     * Set phone.
      *
-     * @param string $phone
+     * @param string|null $phone
      *
      * @return Taxpayer
      */
-    public function setPhone($phone)
+    public function setPhone($phone = null)
     {
         $this->phone = $phone;
 
@@ -242,9 +478,9 @@ class Taxpayer
     }
 
     /**
-     * Get phone
+     * Get phone.
      *
-     * @return string
+     * @return string|null
      */
     public function getPhone()
     {
@@ -252,31 +488,55 @@ class Taxpayer
     }
 
     /**
-     * Set startDateTaxReturn
+     * Set startTaxReturn.
      *
-     * @param \DateTime $startDateTaxReturn
+     * @param \DateTime $startTaxReturn
      *
      * @return Taxpayer
      */
-    public function setStartDateTaxReturn($startDateTaxReturn)
+    public function setStartTaxReturn($startTaxReturn)
     {
-        $this->startDateTaxReturn = $startDateTaxReturn;
+        $this->startTaxReturn = $startTaxReturn;
 
         return $this;
     }
 
     /**
-     * Get startDateTaxReturn
+     * Get startTaxReturn.
      *
      * @return \DateTime
      */
-    public function getStartDateTaxReturn()
+    public function getStartTaxReturn()
     {
-        return $this->startDateTaxReturn;
+        return $this->startTaxReturn;
     }
 
     /**
-     * Add economicActivity
+     * Set img.
+     *
+     * @param string|null $img
+     *
+     * @return Taxpayer
+     */
+    public function setImg($img = null)
+    {
+        $this->img = $img;
+
+        return $this;
+    }
+
+    /**
+     * Get img.
+     *
+     * @return string|null
+     */
+    public function getImg()
+    {
+        return $this->img;
+    }
+
+    /**
+     * Add economicActivity.
      *
      * @param \AppBundle\Entity\EconomicActivity $economicActivity
      *
@@ -290,17 +550,19 @@ class Taxpayer
     }
 
     /**
-     * Remove economicActivity
+     * Remove economicActivity.
      *
      * @param \AppBundle\Entity\EconomicActivity $economicActivity
+     *
+     * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
      */
     public function removeEconomicActivity(\AppBundle\Entity\EconomicActivity $economicActivity)
     {
-        $this->economicActivity->removeElement($economicActivity);
+        return $this->economicActivity->removeElement($economicActivity);
     }
 
     /**
-     * Get economicActivity
+     * Get economicActivity.
      *
      * @return \Doctrine\Common\Collections\Collection
      */
@@ -310,7 +572,7 @@ class Taxpayer
     }
 
     /**
-     * Add taxReturn
+     * Add taxReturn.
      *
      * @param \AppBundle\Entity\TaxReturn $taxReturn
      *
@@ -324,22 +586,60 @@ class Taxpayer
     }
 
     /**
-     * Remove taxReturn
+     * Remove taxReturn.
      *
      * @param \AppBundle\Entity\TaxReturn $taxReturn
+     *
+     * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
      */
     public function removeTaxReturn(\AppBundle\Entity\TaxReturn $taxReturn)
     {
-        $this->taxReturn->removeElement($taxReturn);
+        return $this->taxReturn->removeElement($taxReturn);
     }
 
     /**
-     * Get taxReturn
+     * Get taxReturn.
      *
      * @return \Doctrine\Common\Collections\Collection
      */
     public function getTaxReturn()
     {
         return $this->taxReturn;
+    }
+
+    /**
+     * Add taxpayerBankAccount.
+     *
+     * @param \AppBundle\Entity\TaxpayerBankAccount $taxpayerBankAccount
+     *
+     * @return Taxpayer
+     */
+    public function addTaxpayerBankAccount(\AppBundle\Entity\TaxpayerBankAccount $taxpayerBankAccount)
+    {
+        $this->taxpayerBankAccount[] = $taxpayerBankAccount;
+
+        return $this;
+    }
+
+    /**
+     * Remove taxpayerBankAccount.
+     *
+     * @param \AppBundle\Entity\TaxpayerBankAccount $taxpayerBankAccount
+     *
+     * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
+     */
+    public function removeTaxpayerBankAccount(\AppBundle\Entity\TaxpayerBankAccount $taxpayerBankAccount)
+    {
+        return $this->taxpayerBankAccount->removeElement($taxpayerBankAccount);
+    }
+
+    /**
+     * Get taxpayerBankAccount.
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getTaxpayerBankAccount()
+    {
+        return $this->taxpayerBankAccount;
     }
 }

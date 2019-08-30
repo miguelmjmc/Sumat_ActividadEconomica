@@ -32,35 +32,7 @@
         {{ form_start(form, {'action': action, 'method': method }) }}
         <div class="modal-body">
             <div class="modal-container">
-
                 {{ form_widget(form) }}
-
-                {% if path('taxpayer_modal') in app.request.pathInfo %}
-                    {% if 'GET' == app.request.method or 'DELETE' == app.request.method %}
-                        <table id="taxpayer-economicActivity-table"
-                               class="table table-striped table-bordered table-hover datatable-modal"
-                               style="width:100%">
-                            <thead>
-                            <tr>
-                                <th>Código</th>
-                                <th>Descripción</th>
-                                <th>Alícuota</th>
-                                <th>Mínimo Tributable</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            {% for economicActivity in form.vars.value.economicActivity|default %}
-                                <tr>
-                                    <td>{{ economicActivity.code }}</td>
-                                    <td>{{ economicActivity.name }}</td>
-                                    <td>{{ economicActivity.aliquotFormatted }}</td>
-                                    <td>{{ economicActivity.minimumTaxableFormatted }}</td>
-                                </tr>
-                            {% endfor %}
-                            </tbody>
-                        </table>
-                    {% endif %}
-                {% endif %}
             </div>
             <div class="loader"></div>
         </div>

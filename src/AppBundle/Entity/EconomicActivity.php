@@ -119,9 +119,9 @@ class EconomicActivity
     }
 
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -129,7 +129,7 @@ class EconomicActivity
     }
 
     /**
-     * Set code
+     * Set code.
      *
      * @param string $code
      *
@@ -143,7 +143,7 @@ class EconomicActivity
     }
 
     /**
-     * Get code
+     * Get code.
      *
      * @return string
      */
@@ -153,7 +153,7 @@ class EconomicActivity
     }
 
     /**
-     * Set name
+     * Set name.
      *
      * @param string $name
      *
@@ -167,7 +167,7 @@ class EconomicActivity
     }
 
     /**
-     * Get name
+     * Get name.
      *
      * @return string
      */
@@ -177,7 +177,7 @@ class EconomicActivity
     }
 
     /**
-     * Set aliquot
+     * Set aliquot.
      *
      * @param string $aliquot
      *
@@ -191,7 +191,7 @@ class EconomicActivity
     }
 
     /**
-     * Get aliquot
+     * Get aliquot.
      *
      * @return string
      */
@@ -201,7 +201,7 @@ class EconomicActivity
     }
 
     /**
-     * Set minimumTaxable
+     * Set minimumTaxable.
      *
      * @param string $minimumTaxable
      *
@@ -215,7 +215,7 @@ class EconomicActivity
     }
 
     /**
-     * Get minimumTaxable
+     * Get minimumTaxable.
      *
      * @return string
      */
@@ -225,7 +225,7 @@ class EconomicActivity
     }
 
     /**
-     * Add taxpayer
+     * Add taxpayer.
      *
      * @param \AppBundle\Entity\Taxpayer $taxpayer
      *
@@ -239,17 +239,19 @@ class EconomicActivity
     }
 
     /**
-     * Remove taxpayer
+     * Remove taxpayer.
      *
      * @param \AppBundle\Entity\Taxpayer $taxpayer
+     *
+     * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
      */
     public function removeTaxpayer(\AppBundle\Entity\Taxpayer $taxpayer)
     {
-        $this->taxpayer->removeElement($taxpayer);
+        return $this->taxpayer->removeElement($taxpayer);
     }
 
     /**
-     * Get taxpayer
+     * Get taxpayer.
      *
      * @return \Doctrine\Common\Collections\Collection
      */
@@ -259,7 +261,7 @@ class EconomicActivity
     }
 
     /**
-     * Add taxReturnEconomicActivity
+     * Add taxReturnEconomicActivity.
      *
      * @param \AppBundle\Entity\TaxReturnEconomicActivity $taxReturnEconomicActivity
      *
@@ -273,17 +275,19 @@ class EconomicActivity
     }
 
     /**
-     * Remove taxReturnEconomicActivity
+     * Remove taxReturnEconomicActivity.
      *
      * @param \AppBundle\Entity\TaxReturnEconomicActivity $taxReturnEconomicActivity
+     *
+     * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
      */
     public function removeTaxReturnEconomicActivity(\AppBundle\Entity\TaxReturnEconomicActivity $taxReturnEconomicActivity)
     {
-        $this->taxReturnEconomicActivity->removeElement($taxReturnEconomicActivity);
+        return $this->taxReturnEconomicActivity->removeElement($taxReturnEconomicActivity);
     }
 
     /**
-     * Get taxReturnEconomicActivity
+     * Get taxReturnEconomicActivity.
      *
      * @return \Doctrine\Common\Collections\Collection
      */

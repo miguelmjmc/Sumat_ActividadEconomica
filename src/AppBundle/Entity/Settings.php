@@ -63,9 +63,9 @@ class Settings
 
 
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -73,7 +73,7 @@ class Settings
     }
 
     /**
-     * Set taxUnit
+     * Set taxUnit.
      *
      * @param string $taxUnit
      *
@@ -87,7 +87,7 @@ class Settings
     }
 
     /**
-     * Get taxUnit
+     * Get taxUnit.
      *
      * @return string
      */
@@ -97,7 +97,7 @@ class Settings
     }
 
     /**
-     * Set taxFine1
+     * Set taxFine1.
      *
      * @param string $taxFine1
      *
@@ -111,7 +111,7 @@ class Settings
     }
 
     /**
-     * Get taxFine1
+     * Get taxFine1.
      *
      * @return string
      */
@@ -121,7 +121,7 @@ class Settings
     }
 
     /**
-     * Set taxFine2
+     * Set taxFine2.
      *
      * @param string $taxFine2
      *
@@ -135,7 +135,7 @@ class Settings
     }
 
     /**
-     * Get taxFine2
+     * Get taxFine2.
      *
      * @return string
      */
@@ -145,13 +145,13 @@ class Settings
     }
 
     /**
-     * Set img
+     * Set img.
      *
-     * @param string $img
+     * @param string|null $img
      *
      * @return Settings
      */
-    public function setImg($img)
+    public function setImg($img = null)
     {
         $this->img = $img;
 
@@ -159,9 +159,9 @@ class Settings
     }
 
     /**
-     * Get img
+     * Get img.
      *
-     * @return string
+     * @return string|null
      */
     public function getImg()
     {

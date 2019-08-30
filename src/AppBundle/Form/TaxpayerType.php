@@ -22,14 +22,14 @@ class TaxpayerType extends AbstractType
         $taxReturn = $data instanceof Taxpayer ? $data->getTaxReturn()->count() : 0;
 
         $economicActivityClass = 'selectpicker';
-        $startDateTaxReturnClass = 'datepicker-year-month';
+        $startTaxReturnClass = 'datepicker-year-month';
 
         if ('GET' === $builder->getMethod() || 'DELETE' === $builder->getMethod()) {
             $economicActivityClass .= ' hidden';
         }
 
         if ('POST' === $builder->getMethod() || 'PUT' === $builder->getMethod()) {
-            $startDateTaxReturnClass .= ' white';
+            $startTaxReturnClass .= ' white';
         }
 
         $builder
@@ -39,13 +39,13 @@ class TaxpayerType extends AbstractType
             ->add('email')
             ->add('phone', null, array('attr' => array('class' => 'phone')))
             ->add(
-                'startDateTaxReturn',
+                'startTaxReturn',
                 DateType::class,
                 array(
                     'widget' => 'single_text',
                     'format' => 'yyyy/MM',
                     'html5' => false,
-                    'attr' => array('class' => $taxReturn === 0 ? $startDateTaxReturnClass : '', 'readonly' => true),
+                    'attr' => array('class' => $taxReturn === 0 ? $startTaxReturnClass : '', 'readonly' => true),
                     'disabled' => $taxReturn === 0 ? false : true,
                 )
             )

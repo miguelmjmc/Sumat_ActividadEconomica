@@ -16,6 +16,8 @@ use Symfony\Component\Routing\Annotation\Route;
 class EconomicActivityController extends Controller
 {
     /**
+     * @return Response
+     *
      * @Route("/", name="economic_activity")
      */
     public function indexAction()
@@ -24,6 +26,8 @@ class EconomicActivityController extends Controller
     }
 
     /**
+     * @return Response
+     *
      * @Route("/list/economicActivity", name="economic_activity_list")
      */
     public function economicActivityListAction()
@@ -100,7 +104,7 @@ class EconomicActivityController extends Controller
 
         $parameters = array(
             'form' => $form->createView(),
-            'suffix' => 'actividad economica',
+            'suffix' => 'Actividad Economica',
             'grammaticalGender' => 'f',
             'action' => $this->generateUrl('economic_activity_modal', array('id' => $id)),
             'method' => $request->getMethod(),

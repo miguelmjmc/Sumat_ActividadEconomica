@@ -65,7 +65,7 @@ class SettingsController extends Controller
 
         $parameters = array(
             'form' => $form->createView(),
-            'suffix' => 'perfil de la compañia',
+            'suffix' => 'Configuraciones',
             'action' => $this->generateUrl('settings_modal'),
             'method' => $method,
         );

@@ -12,7 +12,16 @@
         <div class="col-md-12">
             <div class="box">
                 <div class="box-header with-border">
-                    <h3 class="box-title"><i class="fa fa-list-ul"></i> Listado de Contribuyentes</h3>
+                    <h3 class="box-title">
+                        <i class="fa fa-list-ul"></i> Listado de Contribuyentes
+                        {% if 'solvent' == app.request.query.get('filter')|default %}
+                            (Solventes)
+                        {% elseif 'gracePeriod' == app.request.query.get('filter')|default %}
+                            (En Periodo de Gracia)
+                        {% elseif 'insolvent' == app.request.query.get('filter')|default %}
+                            (Insolventes)
+                        {% endif %}
+                    </h3>
                     <div class="box-tools pull-right">
                         <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
                     </div>
@@ -23,14 +32,14 @@
 
                     <button class="btn btn-primary float-right modal-trigger" data-action="{{ path('taxpayer_modal') }}" data-method="POST">Nuevo</button>
 
-                    <table class="table table-striped table-bordered table-hover datatable-filter" style="width:100%" data-src="{{ path('taxpayer_list') }}">
+                    <table class="table table-striped table-bordered table-hover datatable-filter" style="width:100%" data-src="{{ path('taxpayer_list', { filter: app.request.query.get('filter') }) }}">
                         <thead>
                         <tr>
-                            <td>Última actualización</td>
-                            <td>Rif</td>
-                            <td>Razón Social</td>
-                            <td>Estado</td>
-                            <td>Acciones</td>
+                            <th>Última actualización</th>
+                            <th>Rif</th>
+                            <th>Razón Social</th>
+                            <th>Estado</th>
+                            <th>Acciones</th>
                         </tr>
                         </thead>
                     </table>

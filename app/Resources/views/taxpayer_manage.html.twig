@@ -1,0 +1,242 @@
+{% extends '@App/adminlte/layout.html.twig' %}
+
+{% form_theme form 'bootstrap_3_layout.html.twig' %}
+
+{% block main_title %}Contribuyente
+    <small>{{ taxpayer.fullName }}</small>{% endblock main_title %}
+
+{% block main_breadcrumb %}
+    <li><a href="{{ path('homepage') }}"><i class="fa fa-home"></i> Inicio</a></li>
+    <li><a href="{{ path('taxpayer') }}"><i class="fa fa-users"></i> Contribuyentes</a></li>
+    <li class="active"><a href="{{ path('taxpayer_manage', { id: taxpayer.id }) }}"><i
+                    class="fa fa-user"></i> {{ taxpayer.fullName }}</a></li>
+{% endblock main_breadcrumb %}
+
+{% block main_container %}
+    <div class="row">
+        <div id="callout" class="col-md-12">
+            {% if taxpayer.insolvent %}
+                <div class="callout callout-danger">
+                    <h4><i class="fa fa-warning"></i> Atención!</h4>
+                    <p>El contribuyente se encuentra insolvente.</p>
+                </div>
+            {% endif %}
+        </div>
+        <div id="sidebar-info" class="col-md-3">
+            <div class="box box-primary">
+                <div class="box-body box-profile">
+                    <img class="profile-user-img img-responsive img-circle"
+                         src="{{ asset(taxpayer.img|default('bundles/app/img/industry.png')) }}">
+                    <h3 class="profile-username text-center">{{ taxpayer.name }}</h3>
+                    <p class="text-muted text-center">{{ taxpayer.rif }}</p>
+
+                    <ul class="list-group list-group-unbordered">
+
+                        <li class="list-group-item">
+                            <b>Estado</b>
+                            <a class="pull-right" style="padding-top: 5px;">{{ taxpayer.status|raw }}</a>
+                        </li>
+                        <li class="list-group-item">
+                            <b>Decraraciones Totales</b>
+                            <a class="pull-right">{{ taxpayer.taxReturn.count }}</a>
+                        </li>
+                        <li class="list-group-item">
+                            <b>Inicio de Declaración</b>
+                            <a class="pull-right">{{ taxpayer.startTaxReturn|date('m/Y') }}</a>
+                        </li>
+                        <li class="list-group-item">
+                            <b>Última Declaración</b>
+                            <a class="pull-right">{{ taxpayer.lastTaxReturn|default ? taxpayer.lastTaxReturn.date|date('m/Y') : 'nunca' }}</a>
+                        </li>
+                    </ul>
+                    <a href="#" class="btn btn-primary btn-block under-construction"><b>Ver en Google Maps</b></a>
+                </div>
+            </div>
+            <div class="box box-primary">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Resumen</h3>
+                </div>
+                <div class="box-body">
+                    <strong>Declaración Total</strong>
+                    <p class="text-muted">{{ taxpayer.declaredAmountFormatted }}</p>
+                    <hr>
+                    <strong>Recaudación por Actividad</strong>
+                    <p class="text-muted">{{ taxpayer.economicActivityAmountFormatted }}</p>
+                    <hr>
+                    <strong>Recaudación por Multas</strong>
+                    <p class="text-muted">{{ taxpayer.taxFineAmountFormatted }}</p>
+                    <hr>
+                    <strong>Recaudación Total</strong>
+                    <p class="text-muted">{{ taxpayer.totalAmountFormatted }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-9">
+            <div class="nav-tabs-custom">
+                <ul class="nav nav-tabs">
+                    <li class="active">
+                        <a href="#taxReturn" data-toggle="tab" aria-expanded="true">Declaraciones</a>
+                    </li>
+                    <li>
+                        <a href="#taxpayer-profile" data-toggle="tab" aria-expanded="false">Perfil</a></li>
+                    <li>
+                        <a href="#financialData" data-toggle="tab" aria-expanded="false">Datos Financieros</a>
+                    </li>
+                    <li>
+                        <a href="#statistics" data-toggle="tab" aria-expanded="false">Estadísticas</a>
+                    </li>
+                </ul>
+                <div class="tab-content">
+                    <div class="tab-pane active" id="taxReturn">
+                        {% include '@App/base/date_filter.html.twig' %}
+                        <button class="btn btn-primary float-right modal-trigger"
+                                data-action="{{ path('tax_return_modal', { taxpayerId: taxpayer.id }) }}"
+                                data-method="POST">Nuevo
+                        </button>
+                        <table class="table table-striped table-bordered table-hover datatable-filter"
+                               style="width:100%"
+                               data-src="{{ path('taxpayer_tax_return_list', { id: taxpayer.id }) }}">
+                            <thead>
+                            <tr>
+                                <th>Última actualización</th>
+                                <th>Periodo</th>
+                                <th>Monto Declarado</th>
+                                <th>Monto Pagado</th>
+                                <th>Acciones</th>
+                            </tr>
+                            </thead>
+                        </table>
+                    </div>
+                    <div class="tab-pane" id="taxpayer-profile">
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <button class="btn btn-primary float-right modal-trigger"
+                                        data-action="{{ path('taxpayer_modal', { id: taxpayer.id }) }}"
+                                        data-method="PUT">Editar
+                                </button>
+                            </div>
+                            <div class="col-xs-12">
+                                {{ form(form) }}
+                                <table id="taxpayer-profile-economicActivity-table"
+                                       class="table table-striped table-bordered table-hover" style="width:100%">
+                                    <thead>
+                                    <tr>
+                                        <th>Código</th>
+                                        <th>Descripción</th>
+                                        <th>Alícuota</th>
+                                        <th>Mínimo Tributable</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for economicActivity in form.vars.value.economicActivity|default %}
+                                        <tr>
+                                            <td>{{ economicActivity.code }}</td>
+                                            <td>{{ economicActivity.name }}</td>
+                                            <td>{{ economicActivity.aliquotFormatted }}</td>
+                                            <td>{{ economicActivity.minimumTaxableFormatted }}</td>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="financialData">
+                        <div class="post">
+                            <div class="row">
+                                <div class="col-xs-9">
+                                    <h3 style="margin-top: 0">Cuentas Bancarias</h3>
+                                </div>
+                                <div class="col-xs-3">
+                                    <button class="btn btn-primary float-right modal-trigger"
+                                            data-action="{{ path('taxpayer_bank_account_modal', { id: taxpayer.id }) }}"
+                                            data-method="POST">Nuevo
+                                    </button>
+                                </div>
+                                <div class="col-xs-12">
+                                    <table class="table table-striped table-bordered table-hover datatable"
+                                           style="width:100%"
+                                           data-src="{{ path('taxpayer_bank_account_list', { id: taxpayer.id }) }}">
+                                        <thead>
+                                        <tr>
+                                            <th>Numero de Cuenta</th>
+                                            <th>Tipo de Cuenta</th>
+                                            <th>Titular</th>
+                                            <th>DNI</th>
+                                            <th>Acciones</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody></tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="post">
+                            <div class="row">
+                                <div class="col-xs-9">
+                                    <h3 style="margin-top: 0">Puntos de Venta</h3>
+                                </div>
+                                <div class="col-xs-3">
+                                    <button class="btn btn-primary float-right modal-trigger"
+                                            data-action="{{ path('taxpayer_point_of_sale_modal', { id: taxpayer.id }) }}"
+                                            data-method="POST">Nuevo
+                                    </button>
+                                </div>
+                                <div class="col-xs-12">
+                                    <table class="table table-striped table-bordered table-hover datatable"
+                                           style="width:100%"
+                                           data-src="{{ path('taxpayer_point_of_sale_list', { id: taxpayer.id }) }}">
+                                        <thead>
+                                        <tr>
+                                            <th>Serial</th>
+                                            <th>Marca</th>
+                                            <th>Cuenta Asociada</th>
+                                            <th>Acciones</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody></tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="post">
+                            <div class="row">
+                                <div class="col-xs-9">
+                                    <h3 style="margin-top: 0">Biopago</h3>
+                                </div>
+                                <div class="col-xs-3">
+                                    <button class="btn btn-primary float-right modal-trigger"
+                                            data-action="{{ path('taxpayer_bio_payment_modal', { id: taxpayer.id }) }}"
+                                            data-method="POST">Nuevo
+                                    </button>
+                                </div>
+                                <div class="col-xs-12">
+                                    <table class="table table-striped table-bordered table-hover datatable"
+                                           style="width:100%"
+                                           data-src="{{ path('taxpayer_bio_payment_list', { id: taxpayer.id }) }}">
+                                        <thead>
+                                        <tr>
+                                            <th>Serial</th>
+                                            <th>Marca</th>
+                                            <th>Cuenta Asociada</th>
+                                            <th>Acciones</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody></tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="statistics">
+                        <div class="img-container">
+                            <img class="img" src="{{ asset('bundles/app/img/construction.png') }}"
+                                 style="max-width: 500px">
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+{% endblock main_container %}

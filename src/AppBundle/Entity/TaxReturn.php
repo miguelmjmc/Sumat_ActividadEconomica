@@ -60,7 +60,7 @@ class TaxReturn
     private $taxFine;
 
     /**
-     * @var string
+     * @var string|null
      *
      * @Assert\Length(min = 0, max = 50)
      *
@@ -74,6 +74,7 @@ class TaxReturn
      * @Assert\NotBlank
      *
      * @ORM\ManyToOne(targetEntity="Taxpayer", inversedBy="taxReturn")
+     * @ORM\JoinColumn(nullable=false)
      */
     private $taxpayer;
 
@@ -93,6 +94,7 @@ class TaxReturn
      * @Assert\NotBlank
      *
      * @ORM\ManyToOne(targetEntity="PaymentMethod", inversedBy="taxReturn")
+     * @ORM\JoinColumn(nullable=false)
      */
     private $paymentMethod;
 
@@ -111,18 +113,18 @@ class TaxReturn
     public function getTaxFineFormatted()
     {
         if ($this->taxFine) {
-            return $this->taxFine.' %';
+            return number_format($this->taxFine, 2, ',', '.').' %';
         }
 
-        return '0.00 %';
+        return '0,00 %';
     }
 
     /**
-     * @return string
+     * @return float
      */
     public function getTaxFineAmount()
     {
-        return (($this->getSubtotal() * $this->taxFine) / 100);
+        return (float)(($this->getEconomicActivityAmount() * $this->taxFine) / 100);
     }
 
     /**
@@ -134,42 +136,65 @@ class TaxReturn
     }
 
     /**
-     * @return string
+     * @return float
      */
-    public function getSubtotal()
+    public function getDeclaredAmount()
     {
         $total = 0;
 
         /** @var TaxReturnEconomicActivity $taxReturnEconomicActivity */
         foreach ($this->getTaxReturnEconomicActivity() as $taxReturnEconomicActivity) {
-            $total += (double)$taxReturnEconomicActivity->getAmountToPay();
+            $total += (float)$taxReturnEconomicActivity->getDeclaredAmount();
         }
 
-        return $total;
+        return (float)$total;
     }
 
     /**
      * @return string
      */
-    public function getSubtotalFormatted()
+    public function getDeclaredAmountFormatted()
     {
-        return 'Bs. '.number_format($this->getSubtotal(), 2, ',', '.');
+        return 'Bs. '.number_format($this->getDeclaredAmount(), 2, ',', '.');
+    }
+
+    /**
+     * @return float
+     */
+    public function getEconomicActivityAmount()
+    {
+        $total = 0;
+
+        /** @var TaxReturnEconomicActivity $taxReturnEconomicActivity */
+        foreach ($this->getTaxReturnEconomicActivity() as $taxReturnEconomicActivity) {
+            $total += (float)$taxReturnEconomicActivity->getEconomicActivityAmount();
+        }
+
+        return (float)$total;
     }
 
     /**
      * @return string
      */
-    public function getTotal()
+    public function getEconomicActivityAmountFormatted()
     {
-        return (double)$this->getSubtotal() + (double)$this->getTaxFineAmount();
+        return 'Bs. '.number_format($this->getEconomicActivityAmount(), 2, ',', '.');
+    }
+
+    /**
+     * @return float
+     */
+    public function getTotalAmount()
+    {
+        return (float)($this->getEconomicActivityAmount() + $this->getTaxFineAmount());
     }
 
     /**
      * @return string
      */
-    public function getTotalFormatted()
+    public function getTotalAmountFormatted()
     {
-        return 'Bs. '.number_format($this->getTotal(), 2, ',', '.');
+        return 'Bs. '.number_format($this->getTotalAmount(), 2, ',', '.');
     }
 
     /**
@@ -177,7 +202,7 @@ class TaxReturn
      */
     public function getInvoiceId()
     {
-        return $this->id;
+        return str_pad($this->getId(), 10, "0", STR_PAD_LEFT);
     }
 
     /**
@@ -207,9 +232,9 @@ class TaxReturn
     }
 
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -217,7 +242,7 @@ class TaxReturn
     }
 
     /**
-     * Set date
+     * Set date.
      *
      * @param \DateTime $date
      *
@@ -231,7 +256,7 @@ class TaxReturn
     }
 
     /**
-     * Get date
+     * Get date.
      *
      * @return \DateTime
      */
@@ -241,7 +266,7 @@ class TaxReturn
     }
 
     /**
-     * Set taxUnit
+     * Set taxUnit.
      *
      * @param string $taxUnit
      *
@@ -255,7 +280,7 @@ class TaxReturn
     }
 
     /**
-     * Get taxUnit
+     * Get taxUnit.
      *
      * @return string
      */
@@ -265,7 +290,7 @@ class TaxReturn
     }
 
     /**
-     * Set taxFine
+     * Set taxFine.
      *
      * @param string $taxFine
      *
@@ -279,7 +304,7 @@ class TaxReturn
     }
 
     /**
-     * Get taxFine
+     * Get taxFine.
      *
      * @return string
      */
@@ -289,13 +314,13 @@ class TaxReturn
     }
 
     /**
-     * Set paymentMethodComment
+     * Set paymentMethodComment.
      *
-     * @param string $paymentMethodComment
+     * @param string|null $paymentMethodComment
      *
      * @return TaxReturn
      */
-    public function setPaymentMethodComment($paymentMethodComment)
+    public function setPaymentMethodComment($paymentMethodComment = null)
     {
         $this->paymentMethodComment = $paymentMethodComment;
 
@@ -303,9 +328,9 @@ class TaxReturn
     }
 
     /**
-     * Get paymentMethodComment
+     * Get paymentMethodComment.
      *
-     * @return string
+     * @return string|null
      */
     public function getPaymentMethodComment()
     {
@@ -313,13 +338,13 @@ class TaxReturn
     }
 
     /**
-     * Set taxpayer
+     * Set taxpayer.
      *
      * @param \AppBundle\Entity\Taxpayer $taxpayer
      *
      * @return TaxReturn
      */
-    public function setTaxpayer(\AppBundle\Entity\Taxpayer $taxpayer = null)
+    public function setTaxpayer(\AppBundle\Entity\Taxpayer $taxpayer)
     {
         $this->taxpayer = $taxpayer;
 
@@ -327,7 +352,7 @@ class TaxReturn
     }
 
     /**
-     * Get taxpayer
+     * Get taxpayer.
      *
      * @return \AppBundle\Entity\Taxpayer
      */
@@ -337,7 +362,7 @@ class TaxReturn
     }
 
     /**
-     * Add taxReturnEconomicActivity
+     * Add taxReturnEconomicActivity.
      *
      * @param \AppBundle\Entity\TaxReturnEconomicActivity $taxReturnEconomicActivity
      *
@@ -351,17 +376,19 @@ class TaxReturn
     }
 
     /**
-     * Remove taxReturnEconomicActivity
+     * Remove taxReturnEconomicActivity.
      *
      * @param \AppBundle\Entity\TaxReturnEconomicActivity $taxReturnEconomicActivity
+     *
+     * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
      */
     public function removeTaxReturnEconomicActivity(\AppBundle\Entity\TaxReturnEconomicActivity $taxReturnEconomicActivity)
     {
-        $this->taxReturnEconomicActivity->removeElement($taxReturnEconomicActivity);
+        return $this->taxReturnEconomicActivity->removeElement($taxReturnEconomicActivity);
     }
 
     /**
-     * Get taxReturnEconomicActivity
+     * Get taxReturnEconomicActivity.
      *
      * @return \Doctrine\Common\Collections\Collection
      */
@@ -371,13 +398,13 @@ class TaxReturn
     }
 
     /**
-     * Set paymentMethod
+     * Set paymentMethod.
      *
      * @param \AppBundle\Entity\PaymentMethod $paymentMethod
      *
      * @return TaxReturn
      */
-    public function setPaymentMethod(\AppBundle\Entity\PaymentMethod $paymentMethod = null)
+    public function setPaymentMethod(\AppBundle\Entity\PaymentMethod $paymentMethod)
     {
         $this->paymentMethod = $paymentMethod;
 
@@ -385,7 +412,7 @@ class TaxReturn
     }
 
     /**
-     * Get paymentMethod
+     * Get paymentMethod.
      *
      * @return \AppBundle\Entity\PaymentMethod
      */

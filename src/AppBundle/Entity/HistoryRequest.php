@@ -65,9 +65,9 @@ class HistoryRequest
 
 
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -75,7 +75,7 @@ class HistoryRequest
     }
 
     /**
-     * Set date
+     * Set date.
      *
      * @param \DateTime $date
      *
@@ -89,7 +89,7 @@ class HistoryRequest
     }
 
     /**
-     * Get date
+     * Get date.
      *
      * @return \DateTime
      */
@@ -99,7 +99,7 @@ class HistoryRequest
     }
 
     /**
-     * Set uri
+     * Set uri.
      *
      * @param string $uri
      *
@@ -113,7 +113,7 @@ class HistoryRequest
     }
 
     /**
-     * Get uri
+     * Get uri.
      *
      * @return string
      */
@@ -123,7 +123,7 @@ class HistoryRequest
     }
 
     /**
-     * Set method
+     * Set method.
      *
      * @param string $method
      *
@@ -137,7 +137,7 @@ class HistoryRequest
     }
 
     /**
-     * Get method
+     * Get method.
      *
      * @return string
      */
@@ -147,7 +147,7 @@ class HistoryRequest
     }
 
     /**
-     * Set statusCode
+     * Set statusCode.
      *
      * @param string $statusCode
      *
@@ -161,7 +161,7 @@ class HistoryRequest
     }
 
     /**
-     * Get statusCode
+     * Get statusCode.
      *
      * @return string
      */
@@ -171,7 +171,7 @@ class HistoryRequest
     }
 
     /**
-     * Set ip
+     * Set ip.
      *
      * @param string $ip
      *
@@ -185,7 +185,7 @@ class HistoryRequest
     }
 
     /**
-     * Get ip
+     * Get ip.
      *
      * @return string
      */
@@ -195,9 +195,9 @@ class HistoryRequest
     }
 
     /**
-     * Set user
+     * Set user.
      *
-     * @param \AppBundle\Entity\User $user
+     * @param \AppBundle\Entity\User|null $user
      *
      * @return HistoryRequest
      */
@@ -209,9 +209,9 @@ class HistoryRequest
     }
 
     /**
-     * Get user
+     * Get user.
      *
-     * @return \AppBundle\Entity\User
+     * @return \AppBundle\Entity\User|null
      */
     public function getUser()
     {

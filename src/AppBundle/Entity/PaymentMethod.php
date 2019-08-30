@@ -56,9 +56,9 @@ class PaymentMethod
     }
 
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -66,7 +66,7 @@ class PaymentMethod
     }
 
     /**
-     * Set name
+     * Set name.
      *
      * @param string $name
      *
@@ -80,7 +80,7 @@ class PaymentMethod
     }
 
     /**
-     * Get name
+     * Get name.
      *
      * @return string
      */
@@ -90,7 +90,7 @@ class PaymentMethod
     }
 
     /**
-     * Add taxReturn
+     * Add taxReturn.
      *
      * @param \AppBundle\Entity\TaxReturn $taxReturn
      *
@@ -104,17 +104,19 @@ class PaymentMethod
     }
 
     /**
-     * Remove taxReturn
+     * Remove taxReturn.
      *
      * @param \AppBundle\Entity\TaxReturn $taxReturn
+     *
+     * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
      */
     public function removeTaxReturn(\AppBundle\Entity\TaxReturn $taxReturn)
     {
-        $this->taxReturn->removeElement($taxReturn);
+        return $this->taxReturn->removeElement($taxReturn);
     }
 
     /**
-     * Get taxReturn
+     * Get taxReturn.
      *
      * @return \Doctrine\Common\Collections\Collection
      */

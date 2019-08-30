@@ -35,10 +35,10 @@ class TaxReturnType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $em = $this->entityManager;
-
         /** @var TaxReturn $data */
         $data = $builder->getData();
+
+        $em = $this->entityManager;
 
         /** @var Settings $settings */
         $settings = $this->entityManager->getRepository(Settings::class)->find(1);
@@ -51,139 +51,209 @@ class TaxReturnType extends AbstractType
             $taxUnit = $settings->getTaxUnit();
         }
 
-        $builder
-            ->add(
-                'taxpayer',
-                null,
-                array(
-                    'choice_label' => 'fullName',
-                    'placeholder' => 'Select',
-                    'attr' => array('class' => 'selectpicker'),
-                    'disabled' => $builder->getMethod() === 'POST' ? false : true,
-                )
-            )
-            ->add(
-                'period',
-                null,
-                array(
-                    'mapped' => false,
-                    'disabled' => true,
-                    'data' => $data instanceof TaxReturn && $data->getDate() instanceof \DateTime ? $data->getDate()->format('Y/m') : null,
-                )
-            )
-            ->add('taxUnit', null, array('disabled' => true, 'data' => $taxUnit))
-            ->add(
-                'taxReturnEconomicActivity',
-                CollectionType::class,
-                array(
-                    'entry_type' => TaxReturnEconomicActivityType::class,
-                    'entry_options' => array('label' => false),
-                )
-            )
-            ->add(
-                'paymentMethod',
-                null,
-                array(
-                    'choice_label' => 'name',
-                    'placeholder' => 'Select',
-                    'disabled' => $builder->getMethod() === 'PUT' ? false : true,
-                    'attr' => array('class' => 'selectpicker'),
-                )
-            )
-            ->add(
-                'paymentMethodComment',
-                TextareaType::class,
-                array('disabled' => $builder->getMethod() === 'PUT' ? false : true)
-            );
+        if ($data instanceof TaxReturn) {
 
-        $builder->get('taxpayer')->addEventListener(
-            FormEvents::POST_SUBMIT,
-            function (FormEvent $event) use ($em) {
-                $data = $event->getData();
+            if (!$data->getTaxUnit()) {
+                $data->setTaxUnit($taxUnit);
+            }
 
-                /** @var Taxpayer $taxpayer */
-                $taxpayer = $em->find(Taxpayer::class, $data);
+            if (!$data->getDate()) {
+                $data->setDate($this->getDate($data->getTaxpayer()));
+            }
 
-                $taxReturnEconomicActivities = array();
+            if (!$data->getTaxFine()) {
+                $data->setTaxFine($this->getTaxFine($data->getDate()));
+            }
 
-                if ($taxpayer instanceof Taxpayer) {
-                    /** @var EconomicActivity $economicActivity */
-                    foreach ($taxpayer->getEconomicActivity() as $key => $economicActivity) {
-                        $taxReturnEconomicActivity = (new TaxReturnEconomicActivity())
-                            ->setEconomicActivity($economicActivity)
-                            ->setAliquot($economicActivity->getAliquot())
-                            ->setDeclaredAmount(0)
-                            ->setMinimumTaxable($economicActivity->getMinimumTaxable());
+            if (0 === $data->getTaxReturnEconomicActivity()->count()) {
+                /** @var EconomicActivity $economicActivity */
+                foreach ($data->getTaxpayer()->getEconomicActivity() as $key => $economicActivity) {
+                    $taxReturnEconomicActivity = (new TaxReturnEconomicActivity())
+                        ->setEconomicActivity($economicActivity)
+                        ->setAliquot($economicActivity->getAliquot())
+                        ->setDeclaredAmount(0)
+                        ->setMinimumTaxable($economicActivity->getMinimumTaxable())
+                        ->setTaxReturn($data)
+                    ;
 
-                        $taxReturnEconomicActivities[] = $taxReturnEconomicActivity;
-                    }
+                    $data->addTaxReturnEconomicActivity($taxReturnEconomicActivity);
                 }
+            }
 
-                $event->getForm()->getParent()->add(
+            $builder
+                ->add(
+                    'taxpayer',
+                    null,
+                    array(
+                        'choice_label' => 'fullName',
+                        'placeholder' => 'Select',
+                        'attr' => array('class' => 'selectpicker'),
+                        'disabled' => true,
+                    )
+                )
+                ->add('taxUnit', null, array('disabled' => true))
+                ->add(
                     'period',
                     null,
                     array(
                         'mapped' => false,
                         'disabled' => true,
-                        'data' => $this->getDate($taxpayer) instanceof \DateTime ? $this->getDate($taxpayer)->format('Y/m') : '',
+                        'data' => $data->getDate() ? $data->getDate()->format('Y/m') : '',
                     )
-                );
-
-                $event->getForm()->getParent()->add(
+                )
+                ->add(
                     'paymentMethod',
                     null,
                     array(
                         'choice_label' => 'name',
                         'placeholder' => 'Select',
-                        'disabled' => $taxpayer instanceof Taxpayer ? false : true,
+                        'disabled' => $data->getDate() instanceof \DateTime ? false : true,
                         'attr' => array('class' => 'selectpicker'),
                     )
-                );
-
-                $event->getForm()->getParent()->add(
+                )
+                ->add(
                     'paymentMethodComment',
                     TextareaType::class,
-                    array('disabled' => $taxpayer instanceof Taxpayer ? false : true)
+                    array('disabled' => $data->getDate() instanceof \DateTime ? false : true)
+                )
+                ->add(
+                    'taxReturnEconomicActivity',
+                    CollectionType::class,
+                    array(
+                        'entry_type' => TaxReturnEconomicActivityType::class,
+                        'entry_options' => array(
+                            'label' => false,
+                            'disabled' => $data->getDate() instanceof \DateTime ? false : true,
+                        ),
+                    )
                 );
-
-                $event->getForm()->getParent()->add(
+        } else {
+            $builder
+                ->add(
+                    'taxpayer',
+                    null,
+                    array(
+                        'choice_label' => 'fullName',
+                        'placeholder' => 'Select',
+                        'attr' => array('class' => 'selectpicker'),
+                    )
+                )
+                ->add('taxUnit', null, array('disabled' => true, 'data' => $taxUnit))
+                ->add('period', null, array('mapped' => false, 'disabled' => true))
+                ->add(
+                    'paymentMethod',
+                    null,
+                    array(
+                        'choice_label' => 'name',
+                        'placeholder' => 'Select',
+                        'disabled' => true,
+                        'attr' => array('class' => 'selectpicker'),
+                    )
+                )
+                ->add('paymentMethodComment', TextareaType::class, array('disabled' => true))
+                ->add(
                     'taxReturnEconomicActivity',
                     CollectionType::class,
                     array(
                         'entry_type' => TaxReturnEconomicActivityType::class,
                         'entry_options' => array('label' => false),
-                        'data' => $taxReturnEconomicActivities,
                     )
                 );
-            }
-        );
 
-        $builder->addEventListener(
-            FormEvents::SUBMIT,
-            function (FormEvent $event) {
-                /** @var TaxReturn $data */
-                $data = $event->getData();
-                $form = $event->getForm();
+            $builder->get('taxpayer')->addEventListener(
+                FormEvents::POST_SUBMIT,
+                function (FormEvent $event) use ($em) {
+                    $data = $event->getData();
 
-                if (!$data->getDate()) {
-                    $data->setDate($this->getDate($data->getTaxpayer()));
-                }
+                    /** @var Taxpayer $taxpayer */
+                    $taxpayer = $em->find(Taxpayer::class, $data);
 
-                if (!$data->getTaxUnit()) {
-                    $data->setTaxUnit($form->get('taxUnit')->getData());
-                }
+                    $taxReturnEconomicActivities = array();
 
-                if (!$data->getTaxFine() && $data->getDate()) {
-                    $data->setTaxFine($this->getTaxFine($data->getDate()));
-                }
+                    if ($taxpayer instanceof Taxpayer) {
+                        /** @var EconomicActivity $economicActivity */
+                        foreach ($taxpayer->getEconomicActivity() as $key => $economicActivity) {
+                            $taxReturnEconomicActivity = (new TaxReturnEconomicActivity())
+                                ->setEconomicActivity($economicActivity)
+                                ->setAliquot($economicActivity->getAliquot())
+                                ->setDeclaredAmount(0)
+                                ->setMinimumTaxable($economicActivity->getMinimumTaxable());
 
-                $data->getTaxReturnEconomicActivity()->forAll(
-                    function ($key, TaxReturnEconomicActivity $taxReturnEconomicActivity) use ($data) {
-                        $taxReturnEconomicActivity->setTaxReturn($data);
+                            $taxReturnEconomicActivities[] = $taxReturnEconomicActivity;
+                        }
                     }
-                );
-            }
-        );
+
+                    $date = $this->getDate($taxpayer);
+
+                    $event->getForm()->getParent()->add(
+                        'period',
+                        null,
+                        array(
+                            'mapped' => false,
+                            'disabled' => true,
+                            'data' => $date instanceof \DateTime ? $date->format('Y/m') : '',
+                        )
+                    );
+
+                    $event->getForm()->getParent()->add(
+                        'paymentMethod',
+                        null,
+                        array(
+                            'choice_label' => 'name',
+                            'placeholder' => 'Select',
+                            'disabled' => $taxpayer instanceof Taxpayer && $date instanceof \DateTime ? false : true,
+                            'attr' => array('class' => 'selectpicker'),
+                        )
+                    );
+
+                    $event->getForm()->getParent()->add(
+                        'paymentMethodComment',
+                        TextareaType::class,
+                        array('disabled' => $taxpayer instanceof Taxpayer && $date instanceof \DateTime ? false : true)
+                    );
+
+                    $event->getForm()->getParent()->add(
+                        'taxReturnEconomicActivity',
+                        CollectionType::class,
+                        array(
+                            'entry_type' => TaxReturnEconomicActivityType::class,
+                            'entry_options' => array(
+                                'label' => false,
+                                'disabled' => $taxpayer instanceof Taxpayer && $date instanceof \DateTime ? false : true,
+                            ),
+                            'data' => $taxReturnEconomicActivities,
+                        )
+                    );
+                }
+            );
+
+            $builder->addEventListener(
+                FormEvents::SUBMIT,
+                function (FormEvent $event) {
+                    /** @var TaxReturn $data */
+                    $data = $event->getData();
+                    $form = $event->getForm();
+
+                    if (!$data->getDate()) {
+                        $data->setDate($this->getDate($data->getTaxpayer()));
+                    }
+
+                    if (!$data->getTaxUnit()) {
+                        $data->setTaxUnit($form->get('taxUnit')->getData());
+                    }
+
+                    if (!$data->getTaxFine() && $data->getDate()) {
+                        $data->setTaxFine($this->getTaxFine($data->getDate()));
+                    }
+
+                    $data->getTaxReturnEconomicActivity()->forAll(
+                        function ($key, TaxReturnEconomicActivity $taxReturnEconomicActivity) use ($data) {
+                            $taxReturnEconomicActivity->setTaxReturn($data);
+                        }
+                    );
+                }
+            );
+        }
     }
 
     /**
@@ -214,8 +284,8 @@ class TaxReturnType extends AbstractType
             return null;
         }
 
-        if ($taxpayer->getStartDateTaxReturn() < new \DateTime('first day of this month midnight')) {
-            return $taxpayer->getStartDateTaxReturn();
+        if ($taxpayer->getStartTaxReturn() < new \DateTime('first day of this month midnight')) {
+            return $taxpayer->getStartTaxReturn();
         }
 
         return null;
@@ -223,6 +293,7 @@ class TaxReturnType extends AbstractType
 
     /**
      * @param \Datetime $date
+     *
      * @return float
      */
     public function getTaxFine(\DateTime $date = null)

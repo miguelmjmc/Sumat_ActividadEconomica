@@ -123,7 +123,7 @@
                     {% for taxReturnEconomicActivity in taxReturn.taxReturnEconomicActivity %}
                         <tr>
                             <td>{{ taxReturnEconomicActivity.economicActivity.fullName }}.</td>
-                            <td>{{ taxReturnEconomicActivity.amountToPayFormatted }}</td>
+                            <td>{{ taxReturnEconomicActivity.economicActivityAmountFormatted }}</td>
                         </tr>
                     {% endfor %}
                     {% if taxReturn.latePayment %}
@@ -136,7 +136,7 @@
                     <tfoot>
                     <tr>
                         <th>Monto Total</th>
-                        <th>{{ taxReturn.totalFormatted }}</th>
+                        <th>{{ taxReturn.totalAmountFormatted }}</th>
                     </tr>
                     </tfoot>
                 </table>

@@ -146,3 +146,8 @@ form[readonly] input[readonly="readonly"] {
 .white {
     background: #FFFFFF !important;
 }
+
+.icon {
+    top: 10px !important;
+    right: 20px !important;
+}

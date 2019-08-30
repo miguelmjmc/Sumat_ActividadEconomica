@@ -60,6 +60,7 @@ class TaxReturnEconomicActivity
      * @Assert\NotBlank
      *
      * @ORM\ManyToOne(targetEntity="TaxReturn", inversedBy="taxReturnEconomicActivity")
+     * @ORM\JoinColumn(nullable=false)
      */
     private $taxReturn;
 
@@ -69,17 +70,10 @@ class TaxReturnEconomicActivity
      * @Assert\NotBlank
      *
      * @ORM\ManyToOne(targetEntity="EconomicActivity", inversedBy="taxReturnEconomicActivity")
+     * @ORM\JoinColumn(nullable=false)
      */
     private $economicActivity;
 
-
-    /**
-     * @return string
-     */
-    public function getMinimumTaxableFormatted()
-    {
-        return number_format($this->minimumTaxable, 2, ',', '.').' UT';
-    }
 
     /**
      * @return string
@@ -92,9 +86,17 @@ class TaxReturnEconomicActivity
     /**
      * @return string
      */
+    public function getMinimumTaxableFormatted()
+    {
+        return number_format($this->minimumTaxable, 2, ',', '.').' UT';
+    }
+
+    /**
+     * @return float
+     */
     public function getMinimumTaxableBs()
     {
-        return $this->minimumTaxable * $this->getTaxReturn()->getTaxUnit();
+        return (float)$this->minimumTaxable * $this->getTaxReturn()->getTaxUnit();
     }
 
     /**
@@ -105,30 +107,39 @@ class TaxReturnEconomicActivity
         return 'Bs. '.number_format($this->getMinimumTaxableBs(), 2, ',', '.');
     }
 
+
     /**
      * @return string
      */
-    public function getAmountToPay()
+    public function getDeclaredAmountFormatted()
+    {
+        return 'Bs. '.number_format($this->declaredAmount, 2, ',', '.');
+    }
+
+    /**
+     * @return float
+     */
+    public function getEconomicActivityAmount()
     {
         if ($this->getMinimumTaxableBs() > (($this->declaredAmount * $this->aliquot) / 100)) {
             return $this->getMinimumTaxableBs();
         }
 
-        return ($this->declaredAmount * $this->aliquot) / 100;
+        return (float)($this->declaredAmount * $this->aliquot) / 100;
     }
 
     /**
      * @return string
      */
-    public function getAmountToPayFormatted()
+    public function getEconomicActivityAmountFormatted()
     {
-        return 'Bs. '.number_format($this->getAmountToPay(), 2, ',', '.');
+        return 'Bs. '.number_format($this->getEconomicActivityAmount(), 2, ',', '.');
     }
 
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -136,7 +147,7 @@ class TaxReturnEconomicActivity
     }
 
     /**
-     * Set aliquot
+     * Set aliquot.
      *
      * @param string $aliquot
      *
@@ -150,7 +161,7 @@ class TaxReturnEconomicActivity
     }
 
     /**
-     * Get aliquot
+     * Get aliquot.
      *
      * @return string
      */
@@ -160,7 +171,7 @@ class TaxReturnEconomicActivity
     }
 
     /**
-     * Set minimumTaxable
+     * Set minimumTaxable.
      *
      * @param string $minimumTaxable
      *
@@ -174,7 +185,7 @@ class TaxReturnEconomicActivity
     }
 
     /**
-     * Get minimumTaxable
+     * Get minimumTaxable.
      *
      * @return string
      */
@@ -184,7 +195,7 @@ class TaxReturnEconomicActivity
     }
 
     /**
-     * Set declaredAmount
+     * Set declaredAmount.
      *
      * @param string $declaredAmount
      *
@@ -198,7 +209,7 @@ class TaxReturnEconomicActivity
     }
 
     /**
-     * Get declaredAmount
+     * Get declaredAmount.
      *
      * @return string
      */
@@ -208,13 +219,13 @@ class TaxReturnEconomicActivity
     }
 
     /**
-     * Set taxReturn
+     * Set taxReturn.
      *
      * @param \AppBundle\Entity\TaxReturn $taxReturn
      *
      * @return TaxReturnEconomicActivity
      */
-    public function setTaxReturn(\AppBundle\Entity\TaxReturn $taxReturn = null)
+    public function setTaxReturn(\AppBundle\Entity\TaxReturn $taxReturn)
     {
         $this->taxReturn = $taxReturn;
 
@@ -222,7 +233,7 @@ class TaxReturnEconomicActivity
     }
 
     /**
-     * Get taxReturn
+     * Get taxReturn.
      *
      * @return \AppBundle\Entity\TaxReturn
      */
@@ -232,13 +243,13 @@ class TaxReturnEconomicActivity
     }
 
     /**
-     * Set economicActivity
+     * Set economicActivity.
      *
      * @param \AppBundle\Entity\EconomicActivity $economicActivity
      *
      * @return TaxReturnEconomicActivity
      */
-    public function setEconomicActivity(\AppBundle\Entity\EconomicActivity $economicActivity = null)
+    public function setEconomicActivity(\AppBundle\Entity\EconomicActivity $economicActivity)
     {
         $this->economicActivity = $economicActivity;
 
@@ -246,7 +257,7 @@ class TaxReturnEconomicActivity
     }
 
     /**
-     * Get economicActivity
+     * Get economicActivity.
      *
      * @return \AppBundle\Entity\EconomicActivity
      */

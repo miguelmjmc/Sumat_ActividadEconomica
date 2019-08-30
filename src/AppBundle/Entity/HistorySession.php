@@ -51,9 +51,9 @@ class HistorySession
 
 
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -61,7 +61,7 @@ class HistorySession
     }
 
     /**
-     * Set dateLogin
+     * Set dateLogin.
      *
      * @param \DateTime $dateLogin
      *
@@ -75,7 +75,7 @@ class HistorySession
     }
 
     /**
-     * Get dateLogin
+     * Get dateLogin.
      *
      * @return \DateTime
      */
@@ -85,7 +85,7 @@ class HistorySession
     }
 
     /**
-     * Set dateLogout
+     * Set dateLogout.
      *
      * @param \DateTime $dateLogout
      *
@@ -99,7 +99,7 @@ class HistorySession
     }
 
     /**
-     * Get dateLogout
+     * Get dateLogout.
      *
      * @return \DateTime
      */
@@ -109,7 +109,7 @@ class HistorySession
     }
 
     /**
-     * Set ip
+     * Set ip.
      *
      * @param string $ip
      *
@@ -123,7 +123,7 @@ class HistorySession
     }
 
     /**
-     * Get ip
+     * Get ip.
      *
      * @return string
      */
@@ -133,9 +133,9 @@ class HistorySession
     }
 
     /**
-     * Set user
+     * Set user.
      *
-     * @param \AppBundle\Entity\User $user
+     * @param \AppBundle\Entity\User|null $user
      *
      * @return HistorySession
      */
@@ -147,9 +147,9 @@ class HistorySession
     }
 
     /**
-     * Get user
+     * Get user.
      *
-     * @return \AppBundle\Entity\User
+     * @return \AppBundle\Entity\User|null
      */
     public function getUser()
     {
