@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/admin/paymentMethod")
+ * @Route("/system/admin/paymentMethod")
  */
 class PaymentMethodController extends Controller
 {
@@ -22,7 +22,7 @@ class PaymentMethodController extends Controller
      */
     public function indexAction()
     {
-        return $this->render('payment_method.html.twig');
+        return $this->render('manager/payment_method.html.twig');
     }
 
     /**

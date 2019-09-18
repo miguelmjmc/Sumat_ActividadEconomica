@@ -3,7 +3,9 @@
 namespace AppBundle\Form\Events;
 
 use AppBundle\Entity\Settings;
+use AppBundle\Entity\Taxpayer;
 use AppBundle\Entity\User;
+use AppBundle\Entity\WebsiteSettings;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\FormEvent;
@@ -29,15 +31,15 @@ class UploadFileSubscriber implements EventSubscriberInterface
         if ('POST' === $form->getConfig()->getMethod() || 'PUT' === $form->getConfig()->getMethod()) {
 
             $label = function () use ($data) {
-                if ($data instanceof Settings) {
+                if ($data instanceof Settings || $data instanceof WebsiteSettings || $data instanceof Taxpayer) {
                     return 'Logo';
                 }
 
-                if ($data instanceof User){
+                if ($data instanceof User) {
                     return 'Profile picture';
                 }
 
-                return 'File';
+                return 'Image';
             };
 
             $form->add(
@@ -60,19 +62,21 @@ class UploadFileSubscriber implements EventSubscriberInterface
         $form = $event->getForm();
 
         if ($data instanceof Settings || $data instanceof User) {
-            if ($form->isValid() && $form['file']->getData()) {
-                /** @var UploadedFile $file */
-                $file = $form['file']->getData();
+            if ($form->isValid()) {
+                if ($form['file']->getData() instanceof UploadedFile) {
+                    /** @var UploadedFile $file */
+                    $file = $form['file']->getData();
 
-                $fileName = md5(uniqid()).'.'.$file->guessExtension();
+                    $fileName = md5(uniqid()).'.'.$file->guessExtension();
 
-                $file->move('img', $fileName);
+                    $file->move('img', $fileName);
 
-                if (file_exists($data->getImg())) {
-                    unlink($data->getImg());
+                    if (file_exists($data->getImg())) {
+                        unlink($data->getImg());
+                    }
+
+                    $data->setImg('img/'.$fileName);
                 }
-
-                $data->setImg('img/'.$fileName);
             }
         }
     }

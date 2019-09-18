@@ -3,10 +3,14 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Taxpayer;
+use AppBundle\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
+/**
+ * @Route("/system")
+ */
 class DefaultController extends Controller
 {
     /**
@@ -16,6 +20,13 @@ class DefaultController extends Controller
      */
     public function indexAction()
     {
+        /** @var User $user */
+        $user = $this->getUser();
+
+        if (!$this->isGranted('ROLE_FISCAL', $user)) {
+            $this->render('manager/index.html.twig');
+        }
+
         $taxpayers = $this->getDoctrine()->getRepository(Taxpayer::class)->findAll();
 
         $taxpayerTotals = array(
@@ -44,7 +55,7 @@ class DefaultController extends Controller
             }
         }
 
-        return $this->render('index.html.twig', array('taxpayerTotals' => $taxpayerTotals));
+        return $this->render('manager/index.html.twig', array('taxpayerTotals' => $taxpayerTotals));
     }
 
     /**

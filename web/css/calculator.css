@@ -1,0 +1,50 @@
+.screen {
+    height: 50px;
+    margin: 15px;
+    padding: 10px 20px;
+    color: black;
+    text-align: right;
+    font-size: 24px;
+    letter-spacing: 3px;
+    overflow: hidden;
+    border: lightgray 1px solid;
+    border-radius: 7px;
+    box-shadow: inset rgba(0, 0, 0, 1) 0 1px 4px, inset rgba(225, 225, 225, 0.3) 0 -2px 4px -2px;
+    background: white;
+    box-sizing: border-box;
+}
+
+.buttons {
+    padding: 10px 30px;
+}
+
+.buttons .col-xs-3, .buttons .col-xs-4, .buttons .col-xs-8 {
+    padding: 0;
+}
+
+.buttons a {
+    display: block;
+    width: 90%;
+    margin: 5px;
+    color: #c0c0c0;
+    font-family: "Myriad Pro", Arial, sans-serif;
+    font-size: 1.6em;
+    font-weight: 500;
+    border: lightgray 1px solid;
+    border-radius: 5px;
+    text-align: center;
+    text-shadow: #000 0 -1px 0;
+    box-shadow: inset rgba(255, 255, 255, 0.1) 0 1px 0, inset rgba(0, 0, 0, 0.2) 0 -2px 2px;
+    background: linear-gradient(top, whitesmoke, white);
+    box-sizing: border-box;
+    cursor: pointer;
+}
+
+.buttons a:active {
+    box-shadow: inset rgba(0, 0, 0, 0.5) 0 2px 8px;
+    background-image: linear-gradient(top, #2f2f2f 0%, #363636 100%);
+}
+
+.equal {
+    height: 80px;
+}

@@ -21,7 +21,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/taxpayer")
+ * @Route("/system/tax/taxpayer")
  */
 class TaxpayerController extends Controller
 {
@@ -32,7 +32,7 @@ class TaxpayerController extends Controller
      */
     public function indexAction()
     {
-        return $this->render('taxpayer.html.twig');
+        return $this->render('manager/taxpayer.html.twig');
     }
 
     /**
@@ -172,7 +172,7 @@ class TaxpayerController extends Controller
         $form = $this->createForm(TaxpayerType::class, $taxpayer, array('disabled' => true, 'method' => 'GET'));
 
         return $this->render(
-            'taxpayer_manage.html.twig',
+            'manager/taxpayer_manage.html.twig',
             array('taxpayer' => $taxpayer, 'form' => $form->createView())
         );
     }

@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ settings.title|default }}</title>
+
+    {% block styles %}
+        <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
+        <link href='https://fonts.googleapis.com/css?family=Kaushan+Script' rel='stylesheet' type='text/css'>
+        <link href='https://fonts.googleapis.com/css?family=Roboto+Slab:400,100,300,700' rel='stylesheet'
+              type='text/css'>
+        <link href='https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic,700italic' rel='stylesheet'
+              type='text/css'>
+
+        <link href="{{ asset('bundles/app/bootstrap/4.1.3/css/bootstrap.min.css') }}" rel="stylesheet"
+              type="text/css">
+        <link href="{{ asset('bundles/app/font-awesome/4.7.0/css/font-awesome.min.css') }}" rel="stylesheet"
+              type="text/css">
+        <link href="{{ asset('bundles/app/animsition/4.0.2/css/animsition.min.css') }}" rel="stylesheet"
+              type="text/css">
+        <link href="{{ asset('bundles/app/flag-icon/3.2.1/css/flag-icon.min.css') }}" rel="stylesheet"
+              type="text/css">
+        <link href="{{ asset('bundles/app/owl-carousel/2.3.4/css/owl.carousel.min.css') }}" rel="stylesheet"
+              type="text/css">
+        <link href="{{ asset('bundles/app/owl-carousel/2.3.4/css/owl.theme.default.min.css') }}" rel="stylesheet"
+              type="text/css">
+
+        <link href="{{ asset('css/website.min.css') }}" rel="stylesheet" type="text/css">
+        <link href="{{ asset('css/website_custom.css') }}" rel="stylesheet" type="text/css">
+
+    {% endblock %}
+</head>
+<body>
+<div id="page-top" class="animsition">
+    <header>
+        {% block header %}
+            <nav class="navbar navbar-expand-lg navbar-dark"
+                 id="mainNav" {{ settings.navColor|default ? 'style="color:' ~ settings.navColor ~ ';"' }}>
+                <div class="container">
+                    <a class="navbar-brand js-scroll-trigger"
+                       href="{{ path('homepage') }}">{{ settings.title|default }}</a>
+                    <button class="navbar-toggler navbar-toggler-right btn-outline-light" type="button"
+                            data-toggle="collapse"
+                            data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false"
+                            aria-label="Toggle navigation">
+                        Menú
+                        <i class="fa fa-bars"></i>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarResponsive">
+                        <ul class="navbar-nav ml-auto">
+                            <li class="nav-item">
+                                <a class="nav-link js-scroll-trigger" href="{{ path('website') }}">Inicio</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link js-scroll-trigger"
+                                   href="{{ path('homepage') }}">Servicios</a>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown2" role="button"
+                                   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <i class="fa fa-globe"></i> Lenguaje
+                                </a>
+                                <div class="dropdown-menu notranslate" aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item lang-select" href="#googtrans(es|es)" data-lang="es"> <i
+                                                class="flag-icon flag-icon-es"></i>ES</a>
+                                    <a class="dropdown-item lang-select" href="#googtrans(es|en)" data-lang="en"><i
+                                                class="flag-icon flag-icon-gb"></i>EN</a>
+                                    <a class="dropdown-item lang-select" href="#googtrans(es|pt)" data-lang="pt"><i
+                                                class="flag-icon flag-icon-pt"></i>PT</a>
+                                    <a class="dropdown-item lang-select" href="#googtrans(es|ru)" data-lang="ru"><i
+                                                class="flag-icon flag-icon-ru"></i>RU</a>
+                                    <a class="dropdown-item lang-select" href="#googtrans(es|zh-CN)"
+                                       data-lang="zh-CN"><i
+                                                class="flag-icon flag-icon-cn"></i>ZH</a>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+        {% endblock %}
+    </header>
+
+    {% block main %}{% endblock %}
+
+    {% block aside %}
+        <div class="social">
+            <ul>
+                {% if settings.facebook|default %}
+                    <li><a href="{{ settings.facebook }}" target="_blank" class="fa fa-facebook" title="Facebook"></a>
+                    </li>
+                {% endif %}
+                {% if settings.twitter|default %}
+                    <li><a href="{{ settings.twitter }}" target="_blank" class="fa fa-twitter" title="Twitter"></a></li>
+                {% endif %}
+                {% if settings.instagram|default %}
+                    <li><a href="{{ settings.instagram }}" target="_blank" class="fa fa-instagram"
+                           title="Instagram"></a></li>
+                {% endif %}
+                {% if settings.youtube|default %}
+                    <li><a href="{{ settings.youtube }}" target="_blank" class="fa fa-youtube-play" title="Youtube"></a>
+                    </li>
+                {% endif %}
+            </ul>
+        </div>
+    {% endblock %}
+
+    {% block footer %}
+        <footer class="bg-light">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <span class="copyright">{{ settings.copyright|default }}</span>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    {% endblock %}
+
+    <div id="google_translate_element" class="hidden"></div>
+
+    {% block scripts %}
+        <script src="{{ asset('bundles/app/jquery/3.3.1/js/jquery-3.3.1.min.js') }}"></script>
+        <script src="{{ asset('bundles/app/bootstrap/4.1.3/js/bootstrap.min.js') }}"></script>
+        <script src="{{ asset('bundles/app/jquery-easing/1.4.1/js/jquery.easing.min.js') }}"></script>
+        <script src="{{ asset('bundles/app/animsition/4.0.2/js/animsition.min.js') }}"></script>
+        <script src="{{ asset('bundles/app/owl-carousel/2.3.4/js/owl.carousel.min.js') }}"></script>
+        <script src="{{ asset('bundles/app/pixelcog-parallax-js/1.5.0/js/parallax.min.js') }}"></script>
+        <script src="{{ asset('bundles/app/sticky-kit/1.1.3/js/sticky-kit.min.js') }}"></script>
+
+        <script src="{{ asset('js/website.min.js') }}"></script>
+        <script src="{{ asset('js/website_custom.js') }}"></script>
+
+        <script type="text/javascript"
+                src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
+    {% endblock %}
+</div>
+</body>
+</html>

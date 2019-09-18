@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/admin/settings")
+ * @Route("/system/admin/settings")
  */
 class SettingsController extends Controller
 {
@@ -27,7 +27,7 @@ class SettingsController extends Controller
 
         $form = $this->createForm(SettingsType::class, $settings, $parameters);
 
-        return $this->render('settings.html.twig', array('form' => $form->createView()));
+        return $this->render('manager/settings.html.twig', array('form' => $form->createView()));
     }
 
     /**

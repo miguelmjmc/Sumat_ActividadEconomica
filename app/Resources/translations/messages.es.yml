@@ -34,6 +34,7 @@ User: Usuario
 Admin: Administrador
 Logo: Logo
 Profile picture: 'Foto de Perfil'
+Image: Imagen
 File: Archivo
 Account holder: 'Titular'
 Number: Número
@@ -42,3 +43,8 @@ Bank account type: 'Tipo de Cuenta'
 Serial: Serial
 Brand: Marca
 Taxpayer bank account: 'Cuenta Asociada'
+Title: Título
+Content: Contenido
+Url: Url
+Start date: Fecha de Inicio
+End date: Fecha de Culminación

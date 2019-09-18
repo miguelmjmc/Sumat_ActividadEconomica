@@ -533,6 +533,15 @@ function initializeInputs() {
         selectedTextFormat: 'count'
     });
 
+    $('.summernote').summernote({
+        dialogsInBody: true,
+        lang: 'es-ES'
+    });
+
+    if($('.summernote').is('[readonly]')) {
+        $('.summernote').summernote('disable');
+    }
+
     $('.datatable-modal').DataTable({
         info: false,
         language: lang,

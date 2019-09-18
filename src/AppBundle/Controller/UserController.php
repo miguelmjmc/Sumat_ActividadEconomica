@@ -10,6 +10,9 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
+/**
+ * @Route("/system")
+ */
 class UserController extends Controller
 {
     /**
@@ -19,7 +22,7 @@ class UserController extends Controller
      */
     public function indexAction()
     {
-        return $this->render('user.html.twig');
+        return $this->render('manager/user.html.twig');
     }
 
     /**
@@ -117,7 +120,7 @@ class UserController extends Controller
 
         $form = $this->createForm(UserType::class, $user, $parameters);
 
-        return $this->render('user_profile.html.twig', array('form' => $form->createView()));
+        return $this->render('manager/user_profile.html.twig', array('form' => $form->createView()));
     }
 
     /**

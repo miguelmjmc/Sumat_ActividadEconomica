@@ -1,0 +1,79 @@
+{% extends 'website/layout.html.twig' %}
+
+{% block header %}
+
+    {{ parent() }}
+
+    <nav class="navbar navbar-expand-md sub-navbar fixed-top">
+        <div class="container">
+            <a class="navbar-brand js-scroll-trigger" href="{{ path('homepage', {'_fragment': 'page-top'}) }}">{{ 'layout.header.nav.title'|trans }}</a>
+            <div class="collapse navbar-collapse">
+                <ul class="navbar-nav text-capitalize ml-auto">
+                    <li class="nav-item">
+                        <a class="nav-link js-scroll-trigger" href="{{ path('mayor', {'_fragment': 'first-section'}) }}">Biografía</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link js-scroll-trigger" href="{{ path('mayor', {'_fragment': 'second-section'}) }}">Trayectoria</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link js-scroll-trigger" href="{{ path('mayor', {'_fragment': 'third-section'}) }}">Metas</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+{% endblock %}
+
+{% block main %}
+    <section id="first-section">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6 order-lg-2">
+                    <div class="p-5">
+                        <img class="img-fluid rounded-circle" src="" alt="">
+                    </div>
+                </div>
+                <div class="col-lg-6 order-lg-1">
+                    <div class="p-5">
+                        <h2 class="display-4">{{ 'mayor.section.first.title'|trans }}</h2>
+                        <p>{{ 'mayor.section.first.content'|trans }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="bg-light" id="second-section">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6">
+                    <div class="p-5">
+                        <img class="img-fluid rounded-circle" src="" alt="">
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="p-5">
+                        <h2 class="display-4">{{ 'mayor.section.second.title'|trans }}</h2>
+                        <p>{{ 'mayor.section.second.content'|trans }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section id="third-section">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6 order-lg-2">
+                    <div class="p-5">
+                        <img class="img-fluid rounded-circle" src="" alt="">
+                    </div>
+                </div>
+                <div class="col-lg-6 order-lg-1">
+                    <div class="p-5">
+                        <h2 class="display-4">{{ 'mayor.section.third.title'|trans }}</h2>
+                        <p>{{ 'mayor.section.third.content'|trans }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}

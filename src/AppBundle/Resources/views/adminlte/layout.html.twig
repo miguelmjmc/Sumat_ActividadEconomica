@@ -4,54 +4,54 @@
 
 {% block styles %}
 
-    {# bootstrap 3.3.7 #}
     <link type="text/css" rel="stylesheet" href="{{ asset('bundles/app/bootstrap/3.3.7/css/bootstrap.min.css') }}">
-
-    {# font-awesome 4.7.0 #}
-    <link type="text/css" rel="stylesheet" href="{{ asset('bundles/app/font-awesome/4.7.0/css/font-awesome.min.css') }}">
-
-    {# adminlte 2.4.8 #}
+    <link type="text/css" rel="stylesheet"
+          href="{{ asset('bundles/app/font-awesome/4.7.0/css/font-awesome.min.css') }}">
     <link rel="stylesheet" href="{{ asset('bundles/app/adminlte/2.4.8/css/adminlte.min.css') }}">
     <link rel="stylesheet" href="{{ asset('bundles/app/adminlte/2.4.8/css/skins/all-skins.min.css') }}">
+    <link type="text/css" rel="stylesheet"
+          href="{{ asset('bundles/app/datatables/1.10.18/css/datatables-bootstrap3-all.min.css') }}">
 
-    {# datatables 1.10.18 #}
-    <link type="text/css" rel="stylesheet" href="{{ asset('bundles/app/datatables/1.10.18/css/datatables-bootstrap3-all.min.css') }}">
-
-    <link type="text/css" rel="stylesheet" href="{{ asset('bundles/app/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css') }}">
-    <link type="text/css" rel="stylesheet" href="{{ asset('bundles/app/bootstrap-select/1.13.9/css/bootstrap-select.min.css') }}">
+    <link type="text/css" rel="stylesheet"
+          href="{{ asset('bundles/app/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css') }}">
+    <link type="text/css" rel="stylesheet"
+          href="{{ asset('bundles/app/bootstrap-select/1.13.9/css/bootstrap-select.min.css') }}">
     <link type="text/css" rel="stylesheet" href="{{ asset('bundles/app/toastr/2.1.4/css/toastr.min.css') }}">
-
+    <link type="text/css" rel="stylesheet" href="{{ asset('bundles/app/summernote/0.8.12/css/summernote.css') }}">
 
     {# google fonts #}
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
 
     {# custom #}
+    <link type="text/css" rel="stylesheet" href="{{ asset('css/calculator.css') }}">
     <link type="text/css" rel="stylesheet" href="{{ asset('css/custom.css') }}">
 
 {% endblock styles %}
 
 {% block scripts %}
 
-    {# jquery 3.3.1 #}
     <script type="text/javascript" src="{{ asset('bundles/app/jquery/3.3.1/js/jquery-3.3.1.min.js') }}"></script>
-
-    {# bootstrap 3.3.7 #}
     <script type="text/javascript" src="{{ asset('bundles/app/bootstrap/3.3.7/js/bootstrap.min.js') }}"></script>
-
-    {# adminlte 2.4.8 #}
     <script type="text/javascript" src="{{ asset('bundles/app/adminlte/2.4.8/js/adminlte.min.js') }}"></script>
-
-    {# datatables 1.10.18 #}
-    <script type="text/javascript" src="{{ asset('bundles/app/datatables/1.10.18/js/datatables-bootstrap3-all.min.js') }}"></script>
-
-    <script type="text/javascript" src="{{ asset('bundles/app/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('bundles/app/bootstrap-datepicker/1.9.0/locales/bootstrap-datepicker.es.min.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('bundles/app/bootstrap-select/1.13.9/js/bootstrap-select.min.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('bundles/app/jquery-mask-money/3.1.1/js/jquery.maskMoney.min.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('bundles/app/jquery-mask-plugin/1.14.15/js/jquery.mask.min.js') }}"></script>
+    <script type="text/javascript"
+            src="{{ asset('bundles/app/datatables/1.10.18/js/datatables-bootstrap3-all.min.js') }}"></script>
+    <script type="text/javascript"
+            src="{{ asset('bundles/app/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js') }}"></script>
+    <script type="text/javascript"
+            src="{{ asset('bundles/app/bootstrap-datepicker/1.9.0/locales/bootstrap-datepicker.es.min.js') }}"></script>
+    <script type="text/javascript"
+            src="{{ asset('bundles/app/bootstrap-select/1.13.9/js/bootstrap-select.min.js') }}"></script>
+    <script type="text/javascript"
+            src="{{ asset('bundles/app/jquery-mask-money/3.1.1/js/jquery.maskMoney.min.js') }}"></script>
+    <script type="text/javascript"
+            src="{{ asset('bundles/app/jquery-mask-plugin/1.14.15/js/jquery.mask.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('bundles/app/toastr/2.1.4/js/toastr.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('bundles/app/summernote/0.8.12/js/summernote.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('bundles/app/summernote/0.8.12/lang/summernote-es-ES.js') }}"></script>
 
-
+    {# custom #}
+    <script type="text/javascript" src="{{ asset('js/calculator.js') }}"></script>
     <script type="text/javascript" src="{{ asset('js/custom.js') }}"></script>
 
 {% endblock scripts %}
@@ -69,12 +69,14 @@
 
     <li class="dropdown user user-menu">
         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-            <img src="{{ asset(app.user.img|default('bundles/app/img/user.png')) }}" class="user-image" alt="User Image">
+            <img src="{{ asset(app.user.img|default('bundles/app/img/user.png')) }}" class="user-image"
+                 alt="User Image">
             <span class="hidden-xs">{{ app.user.fullName|default }}</span>
         </a>
         <ul class="dropdown-menu">
             <li class="user-header">
-                <img src="{{ asset(app.user.img|default('bundles/app/img/user.png')) }}" class="img-circle" alt="User Image">
+                <img src="{{ asset(app.user.img|default('bundles/app/img/user.png')) }}" class="img-circle"
+                     alt="User Image">
                 <p>
                     {{ app.user.fullName|default }}
                     <small>Usuario desde el {{ app.user.createdAt|default ? app.user.createdAt|date('d/m/Y') }}</small>
@@ -97,7 +99,8 @@
 
     <div class="user-panel">
         <div class="pull-left image">
-            <img src="{{ asset(app.user.img|default('bundles/app/img/user.png')) }}" class="img-circle" alt="User Image">
+            <img src="{{ asset(app.user.img|default('bundles/app/img/user.png')) }}" class="img-circle"
+                 alt="User Image">
         </div>
         <div class="pull-left info">
             <p>{{ app.user.fullName|default }}</p>
@@ -111,30 +114,79 @@
     <ul id="nav-active" class="sidebar-menu" data-widget="tree" data-url="{{ app.request.pathinfo }}">
         <li class="header">MENÚ</li>
         <li><a href="{{ path('homepage') }}"><i class="fa fa-home"></i><span>Inicio</span></a></li>
-        <li><a href="{{ path('tax_return') }}"><i class="fa fa-money"></i><span>Declaraciones</span></a></li>
-        <li><a href="{{ path('taxpayer') }}"><i class="fa fa-users"></i><span>Contribuyentes</span></a></li>
+
+        {% if is_granted('ROLE_FISCAL') %}
+            <li><a href="{{ path('tax_return') }}"><i class="fa fa-money"></i><span>Declaraciones</span></a></li>
+            <li><a href="{{ path('taxpayer') }}"><i class="fa fa-users"></i><span>Contribuyentes</span></a></li>
+        {% endif %}
+
+        {% if is_granted('ROLE_WEBSITE_MANAGER') %}
+            <li class="treeview">
+                <a href="#"><i class="fa fa fa-desktop"></i><span>Sitio Web</span><span class="pull-right-container"><i
+                                class="fa fa-angle-left pull-right"></i></span></a>
+                <ul class="treeview-menu">
+                    <li><a href="{{ path('website_main_slide') }}"><i class="fa fa-circle-o"></i>Diapositivas</a>
+                    <li><a href="{{ path('website_related_page') }}"><i class="fa fa-circle-o"></i>Enlaces de Interes</a>
+                    <li><a href="{{ path('website_notice') }}"><i class="fa fa-circle-o"></i>Noticias</a>
+                    <li><a href="{{ path('website_video') }}"><i class="fa fa-circle-o"></i>Videos</a>
+                    <li><a href="{{ path('website_activity') }}"><i class="fa fa-circle-o"></i>Actividades</a>
+                    </li>
+                </ul>
+            </li>
+        {% endif %}
 
         {% if is_granted('ROLE_ADMIN') %}
-            <li><a href="{{ path('economic_activity') }}"><i class="fa fa-industry"></i><span>Actividades Economicas</span></a></li>
-            <li><a href="{{ path('payment_method') }}"><i class="fa fa-credit-card"></i><span>Métodos de Pago</span></a></li>
-            <li><a href="{{ path('under_construction', { section: 'report' }) }}"><i class="fa fa-area-chart"></i><span>Reportes</span></a></li>
+            <li><a href="{{ path('under_construction', { section: 'report' }) }}"><i class="fa fa-area-chart"></i><span>Reportes</span></a>
+            </li>
             <li><a href="{{ path('user') }}"><i class="fa fa-user-plus"></i><span>Usuarios</span></a></li>
             <li class="treeview">
-                <a href="#"><i class="fa fa fa-history"></i> <span>Historiales</span><span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span></a>
+                <a href="#"><i class="fa fa fa-history"></i> <span>Historiales</span><span class="pull-right-container"><i
+                                class="fa fa-angle-left pull-right"></i></span></a>
                 <ul class="treeview-menu">
                     <li><a href="{{ path('history_session') }}"><i class="fa fa-circle-o"></i>Sesiones</a></li>
                     <li><a href="{{ path('history_request') }}"><i class="fa fa-circle-o"></i>Peticiones</a></li>
-                    <li><a href="{{ path('under_construction', { section: 'about' }) }}"><i class="fa fa-circle-o"></i>Operaciones</a></li>
+                    <li><a href="{{ path('under_construction', { section: 'operation' }) }}"><i
+                                    class="fa fa-circle-o"></i>Operaciones</a>
+                    </li>
                 </ul>
             </li>
-            <li><a href="{{ path('settings') }}"><i class="fa fa-cogs"></i><span>Configuraciónes</span></a></li>
+            <li class="treeview">
+                <a href="#"><i class="fa fa fa-cogs"></i> <span>Configuraciones</span><span
+                            class="pull-right-container"><i
+                                class="fa fa-angle-left pull-right"></i></span></a>
+                <ul class="treeview-menu">
+                    <li><a href="{{ path('settings') }}"><i class="fa fa-circle-o"></i><span>Configuraciónes</span></a>
+                    </li>
+                    <li><a href="{{ path('economic_activity') }}"><i class="fa fa-circle-o"></i><span>Actividades Economicas</span></a>
+                    </li>
+                    <li><a href="{{ path('payment_method') }}"><i
+                                    class="fa fa-circle-o"></i><span>Métodos de Pago</span></a></li>
+                </ul>
+            </li>
         {% endif %}
+
+        <li><a href="#" class="calculator-trigger"><i class="fa fa-calculator"></i> <span>Calculadora</span></a></li>
+        <li class="treeview">
+            <a href="#"><i class="fa fa fa-info-circle"></i> <span>Ayuda</span><span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span></a>
+            <ul class="treeview-menu">
+                <li><a href="{{ path('under_construction', { section: 'faq' }) }}"><i class="fa fa-circle-o"></i>Pregustas Frecuentes</a></li>
+                <li><a href="{{ path('under_construction', { section: 'manual' }) }}"><i class="fa fa-circle-o"></i>Manual de Usuario</a></li>
+                <li><a href="{{ path('under_construction', { section: 'about' }) }}"><i class="fa fa-circle-o"></i>Acerca de</a></li>
+                <li><a href="{{ path('under_construction', { section: 'support' }) }}"><i class="fa fa-circle-o"></i>Soporte</a></li>
+            </ul>
+        </li>
     </ul>
 {% endblock aside_nav %}
 
 {% block footer_container %}
-        <div class="pull-right hidden-xs">
-            Desarrollado por Jesús Meneses y Miguel Malavé.
-        </div>
-        <strong>Copyright &copy; 2019. El Universo de la Construcción.C.A</strong>.
+    <div class="pull-right hidden-xs">
+        Versión: V.0.1 - beta
+    </div>
+    <strong>Copyright &copy; 2019. El Universo de la Construcción.C.A</strong>.
 {% endblock footer_container %}
+
+{% block hidden %}
+
+    {% include '@App/base/calculator.html.twig' %}
+
+{% endblock %}

@@ -1,0 +1,260 @@
+{% extends 'website/layout.html.twig' %}
+
+{% block header %}
+
+    {{ parent() }}
+
+    <nav class="navbar navbar-expand-md sub-navbar fixed-top">
+        <div class="container">
+            <a class="navbar-brand js-scroll-trigger" href="{{ path('homepage', {'_fragment': 'page-top'}) }}">{{ settings.title|default }}</a>
+            <div class="collapse navbar-collapse">
+                <ul class="navbar-nav text-capitalize ml-auto">
+                    <li class="nav-item">
+                        <a class="nav-link js-scroll-trigger" href="{{ path('homepage', {'_fragment': 'page-top'}) }}">Inicio</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link js-scroll-trigger" href="{{ path('homepage', {'_fragment': 'related-pages'}) }}">Enlaces</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link js-scroll-trigger" href="{{ path('homepage', {'_fragment': 'notices'}) }}">Noticias</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link js-scroll-trigger" href="{{ path('homepage', {'_fragment': 'videos'}) }}">Videos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link js-scroll-trigger" href="{{ path('homepage', {'_fragment': 'timetable'}) }}">Agenda</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link js-scroll-trigger" href="{{ path('homepage', {'_fragment': 'address'}) }}">Ubicación</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link js-scroll-trigger" href="{{ path('homepage', {'_fragment': 'contact'}) }}">Contactos</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="masthead">
+        <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+            <ol class="carousel-indicators">
+                {% for slide in slides %}
+                    <li data-target="#carouselExampleIndicators" data-slide-to="{{ loop.index }}"></li>
+                {% endfor %}
+            </ol>
+            <div class="carousel-inner">
+                {% for slide in slides %}
+                        <div class="carousel-item {% if loop.index == 1 %} active {% endif %}">
+                            <img class="d-block w-100 img-fit" src="{{ asset(slide.img) }}" alt="{{ slide.title }}">
+                            <div class="carousel-caption d-none d-md-block">
+                                <h5>{{ slide.title }}</h5>
+                                <p>{{ slide.content }}</p>
+                            </div>
+                        </div>
+                {% endfor %}
+            </div>
+            <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="sr-only">Previous</span>
+            </a>
+            <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="sr-only">Next</span>
+            </a>
+        </div>
+    </div>
+{% endblock %}
+
+{% block main %}
+    <section class="py-5" id="related-pages">
+        <div class="container">
+            <div class="row">
+                <div class="owl-carousel-img owl-carousel owl-theme">
+                    {% for relatedPage in relatedPages %}
+                        <div class="item">
+                            <a href="{{ relatedPage.url }}" target="_blank">
+                                <img src="{{ asset(relatedPage.img) }}" title="{{ relatedPage.title }}" alt="{{ relatedPage.title }}">
+                            </a>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="bg-light" id="notices">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <h2 class="section-heading">Noticias</h2>
+                    <h3 class="section-subheading text-muted"></h3>
+                </div>
+            </div>
+            <div class="row">
+                {% for notice in notices %}
+                    <div class="col-md-4 col-sm-6 notice-item" title="{{ notice.title }}">
+                        <a class="notice-link" data-toggle="modal" href="{{ path('website_notice', { 'id': notice.id}) }}">
+                            <div class="notice-hover">
+                                <div class="notice-hover-content">
+                                    <i class="fa fa-plus fa-3x"></i>
+                                </div>
+                            </div>
+                            <img class="img-fluid" src="{{ asset(notice.img) }}" alt="">
+                        </a>
+                        <div class="notice-caption">
+                            <h4></h4>
+                            <p class="text-muted">{{ notice.title }}</p>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+    <section class="py-5" id="videos">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <h2 class="section-heading">Videos</h2>
+                    <h3 class="section-subheading text-muted"></h3>
+                </div>
+            </div>
+            <div class="row">
+                <div class="owl-carousel-video owl-carousel owl-theme">
+                    {% for video in videos %}
+                        <div class="item-video">
+                            <a class="owl-video" href="{{ video.url }}"></a>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="bg-light" id="timetable">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <h2 class="section-heading">Agenda de Actividades</h2>
+                    <h3 class="section-subheading text-muted"></h3>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <ul class="timeline">
+                        {% for activity in activities %}
+                            <li {% if loop.index % 2 == 0 %} class="timeline-inverted" {% endif %}>
+                                <div class="timeline-image">
+                                    <img class="rounded-circle img-fluid" src="{{ asset(activity.img) }}" alt="{{ activity.title }}">
+                                </div>
+                                <div class="timeline-panel">
+                                    <div class="timeline-heading">
+                                        <h4>{{ activity.startDate|date('d-m-Y') }}  {{ activity.endDate > activity.startDate ? ' / ' ~ activity.endDate|date('d-m-Y') }}</h4>
+                                        <h4 class="subheading">{{ activity.title }}</h4>
+                                    </div>
+                                    <div class="timeline-body">
+                                        <p class="text-muted">{{ activity.content }}</p>
+                                    </div>
+                                </div>
+                            </li>
+                        {% endfor %}
+                        <li class="timeline-inverted">
+                            <div class="timeline-image">
+                                <h4>Próximamente</h4>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section id="address">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <h2 class="section-heading">Ubicación</h2>
+                    <h3 class="section-subheading text-muted"></h3>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-7">
+                    <div id="map"></div>
+                </div>
+                <div class="col-md-5">
+                    <div>
+                        <h4><i class="fa fa-map-marker"></i>Dirección</h4>
+                        <p class="text-muted">{{ settings.address|default }}</p>
+                    </div>
+                    <div>
+                        <h4><i class="fa fa-map-marker"></i>Coordenadas</h4>
+                        <p class="text-muted">Latitud: {{ settings.latitude|default }}, Longitud: {{ settings.longitude|default }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section id="contact" class="parallax-window" data-parallax="scroll" data-image-src="{{ asset('img/website/contact_us3.jpg') }}">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <h2 class="section-heading">Contactos</h2>
+                    <h3 class="section-subheading text-muted"></h3>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-5">
+                    <div>
+                        <h4><i class="fa fa-phone"></i>Teléfonos</h4>
+                        <p class="text-muted">{{ settings.phone1|default }} {{ settings.phone2|default ? ' / ' ~ settings.phone2 }}</p>
+                    </div>
+                    <div>
+                        <h4><i class="fa fa-envelope"></i>Email</h4>
+                        <p class="text-muted">
+                            <a href="mailto:{{ settings.email1|default }}">{{ settings.email1|default }}</a>
+                            {{ settings.email2|default ? (' / <a href="mailto:' ~ settings.email2 ~ '">' ~ settings.email2 ~ '</a>')|raw }}
+                        </p>
+                    </div>
+                    <div>
+                        <h4><i class="fa fa-share-square-o"></i>Redes Sociales</h4>
+                        {% if settings.facebook|default %}
+                            <a href="{{ settings.facebook }}" target="_blank" class="fa fa-facebook" title="Facebook"> </a>
+                        {% endif %}
+                        {% if settings.twitter|default %}
+                            <a href="{{ settings.twitter }}" target="_blank" class="fa fa-twitter" title="Twitter"></a>
+                        {% endif %}
+                        {% if settings.instagram|default %}
+                            <a href="{{ settings.instagram }}" target="_blank" class="fa fa-instagram" title="Instagram"></a>
+                        {% endif %}
+                        {% if settings.youtube|default %}
+                            <a href="{{ settings.youtube }}" target="_blank" class="fa fa-youtube-play" title="Youtube"></a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}
+
+{% block scripts %}
+
+    {{ parent() }}
+
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBFZ4rT8ZdNw8TR0eBRw-hV7-qMu8GVTiY&callback=initMap"></script>
+
+    <script type="text/javascript">
+        function initMap() {
+            var myLatLng = {lat: {{ settings.latitude|default }}, lng: {{ settings.longitude|default }} };
+
+            var map = new google.maps.Map(document.getElementById('map'), {
+                zoom: 16,
+                center: myLatLng,
+                disableDefaultUI: true,
+                styles: mapStyle
+            });
+
+            var marker = new google.maps.Marker({
+                position: myLatLng,
+                map: map,
+                title: 'Alcaldía Bolivariana del Municipio Bermúdez'
+            });
+        }
+    </script>
+
+{% endblock %}

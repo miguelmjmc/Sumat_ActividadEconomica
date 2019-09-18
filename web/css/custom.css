@@ -151,3 +151,28 @@ form[readonly] input[readonly="readonly"] {
     top: 10px !important;
     right: 20px !important;
 }
+
+.modal-img-container, .modal-iframe-container {
+    border: 1px solid #cccccc;
+    border-radius: 2px;
+    padding: 10px;
+    text-align: center;
+}
+
+.modal-img-container img {
+    max-height: 400px;
+    max-width: 100%;
+}
+
+.modal-iframe-container iframe {
+    height: 300px;
+    width: 100%;
+}
+
+.form-control {
+    border-radius: 2px;
+}
+
+.note-group-select-from-files {
+    display: none;
+}

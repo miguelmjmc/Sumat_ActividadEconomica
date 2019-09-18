@@ -14,7 +14,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/taxReturn")
+ * @Route("/system/tax/taxReturn")
  */
 class TaxReturnController extends Controller
 {
@@ -25,7 +25,7 @@ class TaxReturnController extends Controller
      */
     public function indexAction()
     {
-        return $this->render('tax_return.html.twig');
+        return $this->render('manager/tax_return.html.twig');
     }
 
     /**
@@ -137,7 +137,7 @@ class TaxReturnController extends Controller
         $settings = $this->getDoctrine()->getManager()->find(Settings::class, 1);
 
         $html = $this->renderView(
-            'invoice.html.twig',
+            'manager/invoice.html.twig',
             array(
                 'taxReturn' => $taxReturn,
                 'settings' => $settings,

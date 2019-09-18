@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/admin/history")
+ * @Route("/system/admin/history")
  */
 class HistoryController extends Controller
 {
@@ -21,7 +21,7 @@ class HistoryController extends Controller
      */
     public function historySessionAction()
     {
-        return $this->render('history_session.html.twig');
+        return $this->render('manager/history_session.html.twig');
     }
 
     /**
@@ -31,7 +31,7 @@ class HistoryController extends Controller
      */
     public function historyRequestAction()
     {
-        return $this->render('history_request.html.twig');
+        return $this->render('manager/history_request.html.twig');
     }
 
     /**

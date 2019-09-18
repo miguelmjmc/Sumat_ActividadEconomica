@@ -33,6 +33,23 @@
         <div class="modal-body">
             <div class="modal-container">
                 {{ form_widget(form) }}
+
+                {% if form.vars.value.img|default and (method == 'GET' or method == 'DELETE') %}
+                    <div class="form-group">
+                        <label class="control-label">Imagen</label>
+                        <div class="modal-img-container">
+                            <img src="{{ asset(form.vars.value.img) }}">
+                        </div>
+                    </div>
+                {% endif %}
+
+                {% if path('website_video') in app.request.pathInfo and (method == 'GET' or method == 'DELETE') %}
+                    <div class="form-group">
+                        <div class="modal-iframe-container">
+                            <iframe src="{{ asset(form.vars.value.url) }}"></iframe>
+                        </div>
+                    </div>
+                {% endif %}
             </div>
             <div class="loader"></div>
         </div>

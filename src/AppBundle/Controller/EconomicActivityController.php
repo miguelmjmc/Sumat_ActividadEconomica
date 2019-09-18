@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/admin/economicActivity")
+ * @Route("/system/admin/economicActivity")
  */
 class EconomicActivityController extends Controller
 {
@@ -22,7 +22,7 @@ class EconomicActivityController extends Controller
      */
     public function indexAction()
     {
-        return $this->render('economic_activity.html.twig');
+        return $this->render('manager/economic_activity.html.twig');
     }
 
     /**
