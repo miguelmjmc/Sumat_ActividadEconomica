@@ -22,7 +22,7 @@ class WebsiteMainSlideController extends Controller
      */
     public function indexAction()
     {
-        return $this->render('manager/website_main_slide.html.twig');
+        return $this->render('system/website_main_slide.html.twig');
     }
 
     /**

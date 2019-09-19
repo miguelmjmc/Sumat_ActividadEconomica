@@ -538,7 +538,7 @@ function initializeInputs() {
         lang: 'es-ES'
     });
 
-    if($('.summernote').is('[readonly]')) {
+    if ($('.summernote').is('[readonly]')) {
         $('.summernote').summernote('disable');
     }
 

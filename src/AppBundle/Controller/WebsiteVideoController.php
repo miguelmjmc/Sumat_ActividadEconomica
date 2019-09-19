@@ -22,7 +22,7 @@ class WebsiteVideoController extends Controller
      */
     public function indexAction()
     {
-        return $this->render('manager/website_video.html.twig');
+        return $this->render('system/website_video.html.twig');
     }
 
     /**

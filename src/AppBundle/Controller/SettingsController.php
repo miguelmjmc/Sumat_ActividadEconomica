@@ -27,7 +27,7 @@ class SettingsController extends Controller
 
         $form = $this->createForm(SettingsType::class, $settings, $parameters);
 
-        return $this->render('manager/settings.html.twig', array('form' => $form->createView()));
+        return $this->render('system/settings.html.twig', array('form' => $form->createView()));
     }
 
     /**

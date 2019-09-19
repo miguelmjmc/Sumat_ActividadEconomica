@@ -22,7 +22,7 @@ class WebsiteRelatedPageController extends Controller
      */
     public function indexAction()
     {
-        return $this->render('manager/website_related_page.html.twig');
+        return $this->render('system/website_related_page.html.twig');
     }
 
     /**

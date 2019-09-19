@@ -22,7 +22,7 @@ class WebsiteActivityController extends Controller
      */
     public function indexAction()
     {
-        return $this->render('manager/website_activity.html.twig');
+        return $this->render('system/website_activity.html.twig');
     }
 
     /**

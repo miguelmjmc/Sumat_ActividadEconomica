@@ -22,7 +22,7 @@ class PaymentMethodController extends Controller
      */
     public function indexAction()
     {
-        return $this->render('manager/payment_method.html.twig');
+        return $this->render('system/payment_method.html.twig');
     }
 
     /**
@@ -82,7 +82,7 @@ class PaymentMethodController extends Controller
             $em = $this->getDoctrine()->getManager();
 
             if ('DELETE' === $request->getMethod()) {
-                if (0 !== $paymentMethod->getTaxReturn()->count()) {
+                if (0 !== $paymentMethod->getTaxReturn()->count() || 0 !== $paymentMethod->getTaxpayer()->count()) {
                     return new Response('error');
                 }
 

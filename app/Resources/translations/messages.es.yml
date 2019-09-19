@@ -1,4 +1,4 @@
-Rif: Rif
+Rif: RIF
 Dni: Documento de Identificación
 Name: Nombre
 Last name: Apellido
@@ -10,7 +10,7 @@ Repeat password: 'Repita la contraseña'
 Email: Email
 Phone: Teléfono
 Start tax return: 'Inicio de Declaración'
-Economic activity: 'Actividades Economicas'
+Economic activity: 'Actividades Económicas'
 Tax return economic activity: 'Actividades Economicas'
 Code: Código
 Description: Descripción
@@ -21,6 +21,7 @@ Select: Seleccione...
 Taxpayer: Contribuyente
 Period: Periodo
 Payment method: 'Método de Pago'
+Payment methods: 'Métodos de Pago Aceptados'
 Payment method comment: 'Detalles del Método de Pago'
 Declared amount: 'Monto Declarado'
 Tax unit: 'Valor de la Unidad Tributaria (BS)'
@@ -32,10 +33,7 @@ Disabled: Desabilitado
 Rol: Rol
 User: Usuario
 Admin: Administrador
-Logo: Logo
-Profile picture: 'Foto de Perfil'
-Image: Imagen
-File: Archivo
+File: Imagen
 Account holder: 'Titular'
 Number: Número
 Comment: Observaciones

@@ -24,7 +24,7 @@ class DefaultController extends Controller
         $user = $this->getUser();
 
         if (!$this->isGranted('ROLE_FISCAL', $user)) {
-            $this->render('manager/index.html.twig');
+            $this->render('system/index.html.twig');
         }
 
         $taxpayers = $this->getDoctrine()->getRepository(Taxpayer::class)->findAll();
@@ -55,7 +55,7 @@ class DefaultController extends Controller
             }
         }
 
-        return $this->render('manager/index.html.twig', array('taxpayerTotals' => $taxpayerTotals));
+        return $this->render('system/index.html.twig', array('taxpayerTotals' => $taxpayerTotals));
     }
 
     /**

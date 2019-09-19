@@ -59,10 +59,10 @@
                             <div class="row">
                                 <div class="col-xs-12">República Bolivariana de Venezuela</div>
                                 <div class="col-xs-12">Estado Sucre</div>
-                                <div class="col-xs-12">Alcaldia del Municipo Bermúdez</div>
+                                <div class="col-xs-12">Alcaldía del Municipo Bermúdez</div>
                                 <div class="col-xs-12">Superintendencia Municipal de Administración Tributaria</div>
                                 <div class="col-xs-12">Rif G-20000292-1</div>
-                                <div class="col-xs-12">Dirección: Av. Carabobo, Edificio Municipal de Carupano</div>
+                                <div class="col-xs-12">Dirección: Av. Carabobo, Edificio Municipal de Carúpano</div>
                             </div>
                         </div>
                         <div class="col-xs-5">
@@ -82,7 +82,7 @@
                 <table class="table table-bordered">
                     <thead>
                     <tr>
-                        <th>Rif</th>
+                        <th>RIF</th>
                         <th>Razón Social</th>
                         <th>Dirección</th>
                     </tr>
@@ -106,7 +106,7 @@
                     <tbody>
                     <tr>
                         <td>{{ taxReturn.paymentMethod.name }}{{ taxReturn.paymentMethodComment|default ? ' (' ~ taxReturn.paymentMethodComment ~ ')' }}</td>
-                        <td>Liquidación de Actividad Economica del mes {{ taxReturn.date|date('m') }} del
+                        <td>Liquidación de Actividad Económica del mes {{ taxReturn.date|date('m') }} del
                             año {{ taxReturn.date|date('Y') }}</td>
                         <td>{{ app.user.fullName }}</td>
                     </tr>

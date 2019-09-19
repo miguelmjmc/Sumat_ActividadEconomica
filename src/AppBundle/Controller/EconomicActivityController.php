@@ -22,7 +22,7 @@ class EconomicActivityController extends Controller
      */
     public function indexAction()
     {
-        return $this->render('manager/economic_activity.html.twig');
+        return $this->render('system/economic_activity.html.twig');
     }
 
     /**
@@ -40,7 +40,7 @@ class EconomicActivityController extends Controller
         foreach ($economicActivities as $economicActivity) {
 
             $parameters = array(
-                'suffix' => 'actividad economica',
+                'suffix' => 'actividad económica',
                 'grammaticalGender' => 'f',
                 'actions' => array('show', 'edit', 'delete'),
                 'path' => $this->generateUrl('economic_activity_modal', array('id' => $economicActivity->getId())),
@@ -104,7 +104,7 @@ class EconomicActivityController extends Controller
 
         $parameters = array(
             'form' => $form->createView(),
-            'suffix' => 'Actividad Economica',
+            'suffix' => 'Actividad Económica',
             'grammaticalGender' => 'f',
             'action' => $this->generateUrl('economic_activity_modal', array('id' => $id)),
             'method' => $request->getMethod(),

@@ -176,3 +176,20 @@ form[readonly] input[readonly="readonly"] {
 .note-group-select-from-files {
     display: none;
 }
+
+.bold {
+    font-weight: bold;
+}
+
+.main-header .logo img {
+    width: 40px;
+}
+
+.navbar, .main-sidebar, .main-footer, .box, .small-box, .nav-tabs-custom, .callout, .btn-primary, .sidebar-menu > .active {
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, .16), 0 2px 10px 0 rgba(0, 0, 0, .12);
+}
+
+.sidebar-menu li > a > .pull-right-container {
+    margin-top: 0;
+    top: inherit;
+}

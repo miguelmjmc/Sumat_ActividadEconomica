@@ -29,25 +29,11 @@ class UploadFileSubscriber implements EventSubscriberInterface
         $data = $event->getData();
 
         if ('POST' === $form->getConfig()->getMethod() || 'PUT' === $form->getConfig()->getMethod()) {
-
-            $label = function () use ($data) {
-                if ($data instanceof Settings || $data instanceof WebsiteSettings || $data instanceof Taxpayer) {
-                    return 'Logo';
-                }
-
-                if ($data instanceof User) {
-                    return 'Profile picture';
-                }
-
-                return 'Image';
-            };
-
             $form->add(
                 'file',
                 FileType::class,
                 array(
                     'mapped' => false,
-                    'label' => $label(),
                     'constraints' => array(
                         new File(array('maxSize' => '2048k', 'mimeTypes' => array('image/jpeg', 'image/png'))),
                     ),

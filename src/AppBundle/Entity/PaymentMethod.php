@@ -46,6 +46,13 @@ class PaymentMethod
      */
     private $taxReturn;
 
+    /**
+     * @var ArrayCollection
+     *
+     * @ORM\ManyToMany(targetEntity="Taxpayer", mappedBy="paymentMethod")
+     */
+    private $taxpayer;
+
 
     /**
      * Constructor
@@ -53,6 +60,7 @@ class PaymentMethod
     public function __construct()
     {
         $this->taxReturn = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->taxpayer = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
@@ -123,5 +131,41 @@ class PaymentMethod
     public function getTaxReturn()
     {
         return $this->taxReturn;
+    }
+
+    /**
+     * Add taxpayer.
+     *
+     * @param \AppBundle\Entity\Taxpayer $taxpayer
+     *
+     * @return PaymentMethod
+     */
+    public function addTaxpayer(\AppBundle\Entity\Taxpayer $taxpayer)
+    {
+        $this->taxpayer[] = $taxpayer;
+
+        return $this;
+    }
+
+    /**
+     * Remove taxpayer.
+     *
+     * @param \AppBundle\Entity\Taxpayer $taxpayer
+     *
+     * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
+     */
+    public function removeTaxpayer(\AppBundle\Entity\Taxpayer $taxpayer)
+    {
+        return $this->taxpayer->removeElement($taxpayer);
+    }
+
+    /**
+     * Get taxpayer.
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getTaxpayer()
+    {
+        return $this->taxpayer;
     }
 }

@@ -21,7 +21,7 @@ class HistoryController extends Controller
      */
     public function historySessionAction()
     {
-        return $this->render('manager/history_session.html.twig');
+        return $this->render('system/history_session.html.twig');
     }
 
     /**
@@ -31,7 +31,7 @@ class HistoryController extends Controller
      */
     public function historyRequestAction()
     {
-        return $this->render('manager/history_request.html.twig');
+        return $this->render('system/history_request.html.twig');
     }
 
     /**

@@ -25,6 +25,8 @@
 
     {# custom #}
     <link type="text/css" rel="stylesheet" href="{{ asset('css/calculator.css') }}">
+
+    <link rel="stylesheet" href="{{ asset('css/skin-custom.css') }}">
     <link type="text/css" rel="stylesheet" href="{{ asset('css/custom.css') }}">
 
 {% endblock styles %}
@@ -59,14 +61,46 @@
 {% block header_logo %}
 
     <a href="{{ path('homepage') }}" class="logo">
-        <span class="logo-mini"></span>
-        <span class="logo-lg">SUMAT</span>
+        <span class="logo-mini"><img src="{{ asset('/bundles/app/img/logo.svg') }}"></span>
+        <span class="logo-lg"><img src="{{ asset('/bundles/app/img/logo.svg') }}"> Soberano-T</span>
     </a>
 
 {% endblock header_logo %}
 
 {% block header_widgets %}
 
+    <li class="dropdown messages-menu">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+            <i class="fa fa-envelope-o"></i>
+            <span class="label label-success"></span>
+        </a>
+        <ul class="dropdown-menu">
+            <li class="header">No tiene nuevos mensajes</li>
+            <li class="footer"><a href="#">Ver todos</a></li>
+        </ul>
+    </li>
+    <li class="dropdown notifications-menu">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+            <i class="fa fa-bell-o"></i>
+            <span class="label label-warning"></span>
+        </a>
+        <ul class="dropdown-menu">
+            <li class="header">No tiene nuevas notificaciones</li>
+            <li class="footer"><a href="#">Ver todos</a></li>
+        </ul>
+    </li>
+    <li class="dropdown tasks-menu">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+            <i class="fa fa-flag-o"></i>
+            <span class="label label-danger"></span>
+        </a>
+        <ul class="dropdown-menu">
+            <li class="header">No tiene nuevas tareas</li>
+            <li class="footer">
+                <a href="#">Ver todos</a>
+            </li>
+        </ul>
+    </li>
     <li class="dropdown user user-menu">
         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
             <img src="{{ asset(app.user.img|default('bundles/app/img/user.png')) }}" class="user-image"
@@ -84,10 +118,10 @@
             </li>
             <li class="user-footer">
                 <div class="pull-left">
-                    <a href="{{ path('user_profile') }}" class="btn btn-default btn-flat">Perfil</a>
+                    <a href="{{ path('user_profile') }}" class="btn btn-default btn-flat"><i class="fa fa-user-o"></i> Perfil</a>
                 </div>
                 <div class="pull-right">
-                    <a href="{{ path('fos_user_security_logout') }}" class="btn btn-default btn-flat">Salir</a>
+                    <a href="{{ path('fos_user_security_logout') }}" class="btn btn-default btn-flat"><i class="fa fa-sign-out"></i> Salir</a>
                 </div>
             </li>
         </ul>
@@ -157,7 +191,7 @@
                 <ul class="treeview-menu">
                     <li><a href="{{ path('settings') }}"><i class="fa fa-circle-o"></i><span>Configuraciónes</span></a>
                     </li>
-                    <li><a href="{{ path('economic_activity') }}"><i class="fa fa-circle-o"></i><span>Actividades Economicas</span></a>
+                    <li><a href="{{ path('economic_activity') }}"><i class="fa fa-circle-o"></i><span>Actividades Económicas</span></a>
                     </li>
                     <li><a href="{{ path('payment_method') }}"><i
                                     class="fa fa-circle-o"></i><span>Métodos de Pago</span></a></li>

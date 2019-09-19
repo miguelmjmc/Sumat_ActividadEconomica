@@ -29,15 +29,13 @@
                          src="{{ asset(taxpayer.img|default('bundles/app/img/industry.png')) }}">
                     <h3 class="profile-username text-center">{{ taxpayer.name }}</h3>
                     <p class="text-muted text-center">{{ taxpayer.rif }}</p>
-
                     <ul class="list-group list-group-unbordered">
-
                         <li class="list-group-item">
                             <b>Estado</b>
                             <a class="pull-right" style="padding-top: 5px;">{{ taxpayer.status|raw }}</a>
                         </li>
                         <li class="list-group-item">
-                            <b>Decraraciones Totales</b>
+                            <b>Declaraciones Totales</b>
                             <a class="pull-right">{{ taxpayer.taxReturn.count }}</a>
                         </li>
                         <li class="list-group-item">
@@ -73,17 +71,26 @@
         </div>
         <div class="col-md-9">
             <div class="nav-tabs-custom">
-                <ul class="nav nav-tabs">
+                <ul class="nav nav-tabs bold">
                     <li class="active">
-                        <a href="#taxReturn" data-toggle="tab" aria-expanded="true"><i class="fa fa-money"></i> Declaraciones</a>
+                        <a href="#taxReturn" data-toggle="tab" aria-expanded="true">
+                            <i class="fa fa-money"></i> Declaraciones
+                        </a>
                     </li>
                     <li>
-                        <a href="#taxpayer-profile" data-toggle="tab" aria-expanded="false"><i class="fa fa-id-card-o"></i> Perfil</a></li>
-                    <li>
-                        <a href="#financialData" data-toggle="tab" aria-expanded="false"><i class="fa fa-credit-card"></i> Datos Financieros</a>
+                        <a href="#taxpayer-profile" data-toggle="tab" aria-expanded="false">
+                            <i class="fa fa-id-card-o"></i> Perfil
+                        </a>
                     </li>
                     <li>
-                        <a href="#statistics" data-toggle="tab" aria-expanded="false"><i class="fa fa-area-chart"></i> Estadísticas</a>
+                        <a href="#financialData" data-toggle="tab" aria-expanded="false">
+                            <i class="fa fa-credit-card"></i> Datos Financieros
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#statistics" data-toggle="tab" aria-expanded="false">
+                            <i class="fa fa-area-chart"></i> Estadísticas
+                        </a>
                     </li>
                 </ul>
                 <div class="tab-content">
@@ -159,10 +166,10 @@
                                            data-src="{{ path('taxpayer_bank_account_list', { id: taxpayer.id }) }}">
                                         <thead>
                                         <tr>
-                                            <th>Numero de Cuenta</th>
+                                            <th>Número de Cuenta</th>
                                             <th>Tipo de Cuenta</th>
                                             <th>Titular</th>
-                                            <th>DNI</th>
+                                            <th>RIF/CI</th>
                                             <th>Acciones</th>
                                         </tr>
                                         </thead>

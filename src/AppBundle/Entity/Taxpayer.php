@@ -101,6 +101,13 @@ class Taxpayer
     /**
      * @var ArrayCollection
      *
+     * @ORM\ManyToMany(targetEntity="PaymentMethod", inversedBy="taxpayer")
+     */
+    private $paymentMethod;
+
+    /**
+     * @var ArrayCollection
+     *
      * @ORM\ManyToMany(targetEntity="EconomicActivity", inversedBy="taxpayer")
      */
     private $economicActivity;
@@ -125,6 +132,7 @@ class Taxpayer
      */
     public function __construct()
     {
+        $this->paymentMethod = new \Doctrine\Common\Collections\ArrayCollection();
         $this->economicActivity = new \Doctrine\Common\Collections\ArrayCollection();
         $this->taxReturn = new \Doctrine\Common\Collections\ArrayCollection();
     }
@@ -246,7 +254,7 @@ class Taxpayer
             return '<span class="label label-warning">Periodo de Gracia</span>';
         }
 
-        return '<span class="label label-danger">Inolvente</span>';
+        return '<span class="label label-danger">Insolvente</span>';
     }
 
     /**
@@ -533,6 +541,42 @@ class Taxpayer
     public function getImg()
     {
         return $this->img;
+    }
+
+    /**
+     * Add paymentMethod.
+     *
+     * @param \AppBundle\Entity\PaymentMethod $paymentMethod
+     *
+     * @return Taxpayer
+     */
+    public function addPaymentMethod(\AppBundle\Entity\PaymentMethod $paymentMethod)
+    {
+        $this->paymentMethod[] = $paymentMethod;
+
+        return $this;
+    }
+
+    /**
+     * Remove paymentMethod.
+     *
+     * @param \AppBundle\Entity\PaymentMethod $paymentMethod
+     *
+     * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
+     */
+    public function removePaymentMethod(\AppBundle\Entity\PaymentMethod $paymentMethod)
+    {
+        return $this->paymentMethod->removeElement($paymentMethod);
+    }
+
+    /**
+     * Get paymentMethod.
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getPaymentMethod()
+    {
+        return $this->paymentMethod;
     }
 
     /**

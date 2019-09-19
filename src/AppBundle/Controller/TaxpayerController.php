@@ -32,7 +32,7 @@ class TaxpayerController extends Controller
      */
     public function indexAction()
     {
-        return $this->render('manager/taxpayer.html.twig');
+        return $this->render('system/taxpayer.html.twig');
     }
 
     /**
@@ -172,7 +172,7 @@ class TaxpayerController extends Controller
         $form = $this->createForm(TaxpayerType::class, $taxpayer, array('disabled' => true, 'method' => 'GET'));
 
         return $this->render(
-            'manager/taxpayer_manage.html.twig',
+            'system/taxpayer_manage.html.twig',
             array('taxpayer' => $taxpayer, 'form' => $form->createView())
         );
     }

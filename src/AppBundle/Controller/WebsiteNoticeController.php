@@ -22,7 +22,7 @@ class WebsiteNoticeController extends Controller
      */
     public function indexAction()
     {
-        return $this->render('manager/website_notice.html.twig');
+        return $this->render('system/website_notice.html.twig');
     }
 
     /**

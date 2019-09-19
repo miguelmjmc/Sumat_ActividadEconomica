@@ -22,7 +22,7 @@ class UserController extends Controller
      */
     public function indexAction()
     {
-        return $this->render('manager/user.html.twig');
+        return $this->render('system/user.html.twig');
     }
 
     /**
@@ -120,7 +120,7 @@ class UserController extends Controller
 
         $form = $this->createForm(UserType::class, $user, $parameters);
 
-        return $this->render('manager/user_profile.html.twig', array('form' => $form->createView()));
+        return $this->render('system/user_profile.html.twig', array('form' => $form->createView()));
     }
 
     /**

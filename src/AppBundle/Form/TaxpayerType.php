@@ -3,6 +3,7 @@
 namespace AppBundle\Form;
 
 use AppBundle\Entity\Taxpayer;
+use AppBundle\Form\Events\UploadFileSubscriber;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -50,10 +51,17 @@ class TaxpayerType extends AbstractType
                 )
             )
             ->add(
+                'paymentMethod',
+                null,
+                array('choice_label' => 'name', 'label' => 'Payment methods', 'attr' => array('class' => 'selectpicker'))
+            )
+            ->add(
                 'economicActivity',
                 null,
                 array('choice_label' => 'fullName', 'attr' => array('class' => $economicActivityClass))
             );
+
+        $builder->addEventSubscriber(new UploadFileSubscriber());
     }
 
     /**
